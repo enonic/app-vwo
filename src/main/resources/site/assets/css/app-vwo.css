@@ -1,0 +1,26 @@
+.vwo-new-campaign {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.vwo-new-campaign button {
+    background-color: #5E337B;
+    color: white;
+    font-size: 16px;
+    border: none;
+    height: 40px;
+    width: 220px;
+    cursor: pointer;
+}
+
+.vwo-new-campaign button em {
+    float: left;
+    font-size: 32px;
+    margin: 0 20px;
+    line-height: 23px;
+}
+
+.vwo-new-campaign button p {
+    text-align: left;
+    line-height: 28px;
+}
