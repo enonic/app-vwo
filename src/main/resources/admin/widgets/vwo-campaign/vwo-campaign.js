@@ -15,7 +15,7 @@ function handleGet(req) {
 
     var params = {
         vwoCssUrl: portal.assetUrl({path: 'css/app-vwo.css'}),
-        accountId: siteConfig && siteConfig.accountId ? siteConfig.accountId : "",
+        accountId: siteConfig && siteConfig.accountId ? siteConfig.accountId : undefined,
         uid: uid,
         pageId: pageId
     }

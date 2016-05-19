@@ -1,9 +1,14 @@
 <body>
 <div>
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
+    {{#accountId}}
     <div id="vwo-authenticated_{{uid}}">
         <div class="vwo-new-campaign"><button><em>+</em><p>New Campaign</p></button></div>
     </div>
     <div id="vwo-not-authenticated_{{uid}}" class="error" hidden="true"></div>
+    {{/accountId}}
+    {{^accountId}}
+        <div class="error">You need an account to use VWO</div>
+    {{/accountId}}
 </div>
 </body>
