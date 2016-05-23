@@ -5,19 +5,13 @@ function handleGet(req) {
     var uid = req.url.split('?uid=')[1];
     var view = resolve('vwo-campaign.html');
     var siteConfig = portal.getSiteConfig();
-    var content = portal.getContent();
-    var site = portal.getSite();
-    var pageId = "";
-
-    if (content.type.indexOf(":site") == -1 && !!site) {
-        pageId = content._path.replace(site._path, "");
-    }
+    var completeSetup = siteConfig && !!siteConfig.accountId && !!siteConfig.domain;
 
     var params = {
         vwoCssUrl: portal.assetUrl({path: 'css/app-vwo.css'}),
-        accountId: siteConfig && siteConfig.accountId ? siteConfig.accountId : undefined,
-        uid: uid,
-        pageId: pageId
+        completeSetup: completeSetup,
+        domain: siteConfig && !!siteConfig.domain ? siteConfig.domain : undefined,
+        uid: uid
     }
 
     return {

@@ -1,14 +1,84 @@
 <body>
 <div>
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
-    {{#accountId}}
-    <div id="vwo-authenticated_{{uid}}">
-        <div class="vwo-new-campaign"><button><em>+</em><p>New Campaign</p></button></div>
+    {{#completeSetup}}
+    <div class="no-error">
+        <div id="vwo-authenticated_{{uid}}" style="text-align: center;">
+            <div class="vwo-new-campaign">
+                <div class="vwo-campaign">
+                    <div class="vwo-campaign-radio">
+                        <input type="radio" name="campaignType" value="ab" checked>
+                    </div>
+                    <div class="vwo-campaign-info vwo-ab-test">
+                        <div class="vwo-campaign-pic-title">
+                            <p class="vwo-campaign-pic"></p>
+                            <p class="vwo-campaign-title">A/B Test</p>
+                        </div>
+                        <div class="vwo-campaign-desc">
+                            <p>Create multiple versions of your landing page and find which one converts the best.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vwo-campaign">
+                    <div class="vwo-campaign-radio">
+                        <input type="radio" name="campaignType" value="split">
+                    </div>
+                    <div class="vwo-campaign-info vwo-split-test">
+                        <div class="vwo-campaign-pic-title">
+                            <p class="vwo-campaign-pic"></p>
+                            <p class="vwo-campaign-title">Split URL Test</p>
+                        </div>
+                        <div class="vwo-campaign-desc">
+                            <p>Distribute traffic to multiple URLs and identify which one converts more.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="vwo-campaign">
+                    <div class="vwo-campaign-radio">
+                        <input type="radio" name="campaignType" value="multivariate">
+                    </div>
+                    <div class="vwo-campaign-info vwo-multi-test">
+                        <div class="vwo-campaign-pic-title">
+                            <p class="vwo-campaign-pic"></p>
+                            <p class="vwo-campaign-title">Multivariate Test</p>
+                        </div>
+                        <div class="vwo-campaign-desc">
+                            <p>Change multiple elements on a single page and find the optimal combination of those changes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="vwo-new-campaign-btn" onclick="openCampaignPage()"><em>+</em><p>New Campaign</p></button>
+        </div>
+        <div id="vwo-not-authenticated_{{uid}}" class="error" hidden="true"></div>
     </div>
-    <div id="vwo-not-authenticated_{{uid}}" class="error" hidden="true"></div>
-    {{/accountId}}
-    {{^accountId}}
-        <div class="error">You need an account to use VWO</div>
-    {{/accountId}}
+    {{/completeSetup}}
+    {{^completeSetup}}
+    <div class="error">Please set up account Id and domain</div>
+    {{/completeSetup}}
+
+    {{#completeSetup}}
+    <script type="text/javascript">
+        function getSelectedCampignType() {
+            var radios = document.getElementsByName('campaignType'), campaignType = "ab";
+
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    campaignType = radios[i].value;
+                    break;
+                }
+            }
+
+            return campaignType;
+        }
+
+        function openCampaignPage() {
+            window.open("http://app.vwo.com/#/create/web/" + getSelectedCampignType(), "_blank");
+        }
+    </script>
+    {{/completeSetup}}
 </div>
 </body>
