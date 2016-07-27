@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
   <config>
-    <input type="TextLine" name="accountId">
-      <label>Account Id</label>
+    <input type="TextLine" name="tokenId">
+      <label>Token</label>
       <occurrences minimum="1" maximum="1"/>
     </input>
     <input type="TextLine" name="domain">
       <label>Domain</label>
       <occurrences minimum="1" maximum="1"/>
+    </input>
+    <input type="TextLine" name="accountId">
+      <label>Account Id</label>
+      <occurrences minimum="0" maximum="1"/>
     </input>
     <input type="Checkbox" name="enableTracking">
       <label>Enable VWO Smart Code</label>

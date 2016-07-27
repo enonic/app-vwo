@@ -57,28 +57,18 @@
     </div>
     {{/completeSetup}}
     {{^completeSetup}}
-    <div class="error">Please set up account Id and domain</div>
+    <div class="error">Please set up token and domain</div>
     {{/completeSetup}}
 
     {{#completeSetup}}
-    <script type="text/javascript">
-        function getSelectedCampignType() {
-            var radios = document.getElementsByName('campaignType'), campaignType = "ab";
-
-            for (var i = 0, length = radios.length; i < length; i++) {
-                if (radios[i].checked) {
-                    campaignType = radios[i].value;
-                    break;
-                }
-            }
-
-            return campaignType;
-        }
-
-        function openCampaignPage() {
-            window.open("http://app.vwo.com/#/create/web/" + getSelectedCampignType(), "_blank");
-        }
-    </script>
+        <script type="text/javascript">
+            var vwoConfig = {
+                    tokenId: "{{tokenId}}",
+                    accountId: "{{ accountId }}",
+                    domain: "{{domain}}"
+                };
+        </script>
+        <script src="{{vwoJsUrl}}" type="text/javascript"></script>
     {{/completeSetup}}
 </div>
 </body>
