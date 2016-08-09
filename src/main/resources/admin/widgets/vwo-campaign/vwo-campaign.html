@@ -3,9 +3,10 @@
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
     {{#completeSetup}}
     <div class="no-error">
-        <div id="vwo-authenticated_{{uid}}" style="text-align: center;">
-            <div class="vwo-new-campaign">
-                <div class="vwo-campaign">
+        <p id="vwo-authenticated_{{uid}}" style="text-align: center;">
+            <p class="campaigns-header">Campaigns</p>
+            <div id="campaigns-list" class="vwo-new-campaign">
+                <!--<div class="vwo-campaign">
                     <div class="vwo-campaign-radio">
                         <input type="radio" name="campaignType" value="ab" checked>
                     </div>
@@ -49,9 +50,9 @@
                             <p>Change multiple elements on a single page and find the optimal combination of those changes.</p>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
-            <button class="vwo-new-campaign-btn" onclick="openCampaignPage()"><em>+</em><p>New Campaign</p></button>
+            <!--<button class="vwo-new-campaign-btn" onclick="openCampaignPage()"><em>+</em><p>New Campaign</p></button>-->
         </div>
         <div id="vwo-not-authenticated_{{uid}}" class="error" hidden="true"></div>
     </div>

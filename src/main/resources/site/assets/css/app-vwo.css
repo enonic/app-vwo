@@ -1,51 +1,53 @@
-.vwo-new-campaign {
-    margin-top: 15px;
-    text-align: center;
-    padding-right: 10px;
-}
-
-.vwo-new-campaign-btn {
-    background-color: #5E337B;
-    color: white;
-    font-size: 16px;
-    border: none;
-    height: 40px;
-    width: 220px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.vwo-new-campaign-btn em {
-    float: left;
-    font-size: 32px;
-    margin: 0 20px;
-    line-height: 23px;
-}
-
-.vwo-new-campaign-btn p {
-    text-align: left;
-    line-height: 28px;
-}
-
 .vwo-campaign {
     display: flex;
-    margin-bottom: 10px;
 }
 
-.vwo-campaign-pic-title {
-    height: 40px;
+.vwo-campaign-title-info {
+    text-align: left;
+    margin-top: 10px;
+    display: inline-block;
+    width: calc(100% - 95px);
+    margin-right: 5px;
+}
+
+.vwo-campaign-info {
+    width: 100%;
     position: relative;
+    border-bottom: 1px solid #D9DDE1;
+    background: #EEEFF1;
 }
 
-.vwo-campaign-pic {
-    position: absolute;
-    top: -11px;
-    left: -9px;
-    background-image: url('http://app.vwo.com/assets/icons/sprite/sprite.png');
-    background-size: 451px 446px;
+.campaigns-header {
+    font-size: 14px;
+    padding: 10px 6px 5px;
+    color: gray;
+    border-bottom: 1px solid #D9DDE1;
+}
+
+.vwo-campaign-name {
+    color: #CC626F;
+    display: block;
+    font-size: 14px;
+    white-space: pre;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.vwo-campaign-url {
+    color: gray;
+    white-space: pre;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.vwo-campaign-logo {
+    background-size: 400px;
+    background-repeat: no-repeat;
+    float: left;
+    background-image: url('../images/sprite.png');
     width: 60px !important;
     height: 60px !important;
-    transform: scale(0.6);
+    transform: scale(0.8);
 }
 
 .vwo-ab-test .vwo-campaign-pic {
@@ -72,28 +74,99 @@
     color: #FC6A41;
 }
 
-.vwo-campaign-title {
-    position: absolute;
+.vwo-campaign-status {
+    background: #788290;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.vwo-campaign-status.not_started {
+    background: #788290;
+}
+
+.vwo-campaign-status.running {
+    background: #47B178;
+}
+
+.vwo-campaign-status.paused {
+    background: #EB5055;
+}
+
+.vwo-campaign-status.stopped {
+    background: #EB5055;
+}
+
+i.icon {
+    height: 10px !important;
+    width: 10px !important;
+    vertical-align: middle;
+    display: block;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+i.icon.icon-status-not_started {
+    border-radius: 50%;
+    border: 3px solid #FFF;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+i.icon.icon-status-running {
+    color: white;
     font-size: 20px;
-    top: 5px;
-    left: 55px;
-    font-family: "Open Sans", sans-serif;
 }
 
-.vwo-campaign-radio{
-    flex: 0 0 3em;
+i.icon.icon-status-running::before {
+    content: '\e3b5';
 }
 
-.vwo-campaign-radio input {
-    margin-top: 13px;
+i.icon.icon-status-paused {
+    color: white;
+    font-size: 20px;
+    position: relative;
 }
 
-.vwo-campaign-desc {
-    margin: 5px 0;
+i.icon.icon-status-paused::before {
+    position: absolute;
+    content: 'II';
+    font-size: 14px;
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif !important;
+    top: 3px;
+    left: 6px;
 }
 
-.vwo-campaign-desc p {
-    text-align: left;
-    font-family: "Open Sans", sans-serif;
-    color: #777777;
+i.icon.icon-status-stopped {
+    height: 8px !important;
+    width: 8px !important;
+    background: white;
+    margin: 6px;
+    border-radius: 1px;
+}
+
+i.icon.icon-status-trashed {
+    color: white;
+    font-size: 20px;
+    position: relative;
+}
+
+i.icon.icon-status-trashed::before {
+    content: '\e364';
+    font-size: 14px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
 }
