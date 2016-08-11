@@ -1,4 +1,4 @@
-(function () {
+var api = function () {
 
     var ajax = function () {
         return {
@@ -58,11 +58,12 @@
                                                   '<dt class="value">${traffic}</dt>' +
                                                   '<dd class="label">Visitors: </dd>' +
                                                   '<dt class="value">${visitors}</dt>' +
+                                                    '<button class="open-campaign-in-vwo-btn" onclick="api.vwo.openCampaignPage(${id})"><p>Open in VWO</p></button>' +
                                               '</dl>';
         return {
             makeCampaignShortcut: function (campaignInfo) {
                 return campaignShortcutTemplate.
-                        replace("${id}", campaignInfo.id).
+                        replace(/\$\{id\}/g, campaignInfo.id).
                         replace("${name}", campaignInfo.name).
                         replace("${type}", campaignInfo.type).
                         replace("${url}", campaignInfo.primaryUrl).
@@ -71,7 +72,7 @@
             },
             makeCampaignDetailsShortcut: function (campaignDetails) {
                 return campaignDetailsShortcutTemplate.
-                    replace("${id}", campaignDetails.id).
+                    replace(/\$\{id\}/g, campaignDetails.id).
                     replace("${goals}", campaignDetails.goals.length).
                     replace("${variations}", campaignDetails.variations.length).
                     replace("${traffic}", campaignDetails.percentTraffic);
@@ -121,11 +122,6 @@
                 // just toggle
                 var detailsEl = document.getElementById("vwo-campaign-details-" + campaignId);
                 detailsEl.classList.toggle("hidden");
-                //detailsEl.style.display = detailsEl.style.display == 'none' ? 'block' : 'none';
-                //detailsEl.style.display = detailsEl.style.opacity == '0' ? '1' : '0';
-                /*detailsEl.style.height = detailsEl.style.height == '0px' ? campaignDetailsStore[campaignId] : '0px';
-                detailsEl.style.margin = detailsEl.style.margin == '0px' ? '10px' : '0px';
-                detailsEl.style.padding = detailsEl.style.padding == '0px' ? '5px' : '0px';*/
             } else {
                 // get details, render and save
                 vwo.getCampaignDetailsAndRender(campaignId);
@@ -189,7 +185,9 @@
 
             showMask: function() {
                 var detailsEl = document.getElementById("vwo-widget-loadmask");
-                detailsEl.style.display = 'block';
+                if(detailsEl != null) {
+                    detailsEl.style.display = 'block';
+                }
                 return this;
             },
 
@@ -197,30 +195,19 @@
                 var detailsEl = document.getElementById("vwo-widget-loadmask");
                 detailsEl.style.display = 'none';
                 return this;
+            },
+
+            openCampaignPage: function(campaignId) {
+                window.open("http://app.vwo.com/#/campaign/" + campaignId + "/summary", "_blank");
             }
         };
     }();
 
-    testListCampaigns();
-
-    function testListCampaigns() {
-        vwo.getCampaignsAndShow();
+    return {
+        vwo: vwo
     }
+}();
+
+(function () {
+    api.vwo.getCampaignsAndShow();
 }());
-
-function getSelectedCampaignType() {
-    var radios = document.getElementsByName('campaignType'), campaignType = "ab";
-
-    for (var i = 0, length = radios.length; i < length; i++) {
-        if (radios[i].checked) {
-            campaignType = radios[i].value;
-            break;
-        }
-    }
-
-    return campaignType;
-}
-
-function openCampaignPage() {
-    window.open("http://app.vwo.com/#/create/web/" + getSelectedCampaignType(), "_blank");
-}
