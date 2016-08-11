@@ -3,40 +3,56 @@ package com.enonic.app.vwo.rest.json;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class VWOCampaignJson
+public class VWOCampaignsJson
 {
-    @JsonProperty(access = WRITE_ONLY)
+
+    private List<VWOCampaignJson> campaigns;
+
+    public List<VWOCampaignJson> getCampaigns()
+    {
+        return campaigns;
+    }
+
+    @JsonProperty("_data")
+    public void setCampaigns( final List<VWOCampaignJson> campaigns )
+    {
+        this.campaigns = campaigns;
+    }
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class VWOCampaignJson
+{
     private Integer id;
 
     private String name;
 
-    @JsonProperty(access = WRITE_ONLY)
     private String type;
 
-    @JsonProperty(access = WRITE_ONLY)
+    @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private String platform;
 
     private String status;
 
-    @JsonProperty(access = WRITE_ONLY)
+    @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private Long createdOn;
 
-    @JsonProperty(access = WRITE_ONLY)
+    @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private boolean isDeleted;
 
-    @JsonProperty(access = WRITE_ONLY)
+    @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private CreatedBy createdBy;
 
     private String primaryUrl;
 
-    @JsonProperty(access = WRITE_ONLY)
+    @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private List<Url> urls;
 
-    @JsonProperty(access = WRITE_ONLY)
+    @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private List<String> labels;
 
     public Integer getId()
