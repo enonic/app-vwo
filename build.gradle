@@ -33,6 +33,7 @@ dependencies {
     include "com.enonic.xp:lib-mustache:${xpVersion}"
     include "com.enonic.xp:lib-i18n:${xpVersion}"
     include 'org.codehaus.jackson:jackson-mapper-asl:1.8.5'
+    include 'org.apache.httpcomponents:httpclient:4.5.2'
 }
 
 repositories {
