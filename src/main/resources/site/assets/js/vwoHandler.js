@@ -1,4 +1,4 @@
-var api = function () {
+var vwoAPI = function () {
 
     var ajax = function () {
         return {
@@ -50,6 +50,14 @@ var api = function () {
                                        '</div>',
 
             campaignDetailsShortcutTemplate = '<dl class="vwo-campaign-details" onclick="event.stopPropagation()" id="vwo-campaign-details-${id}">' +
+                                                  '<div class="update-campaign-buttons-row">' +
+                                                      '<div class="btn start-btn"><i class="icon"></i><div class="label">Start</div></div>' +
+                                                      '<div class="btn pause-btn"><i class="icon"></i><div class="label">Pause</div></div>' +
+                                                        '<div class="btn archive-btn"><i class="icon"></i><div class="label">Archive</div></div>' +
+                                                      '<div class="btn delete-btn"><i class="icon"></i><div class="label">Delete</div></div>' +
+                                                  '</div>' +
+                                                    '<dd class="label">Status: </dd>' +
+                                                  '<dt class="value details-campaign-status">${status}</dt>' +
                                                   '<dd class="label">Number of goals: </dd>' +
                                                   '<dt class="value">${goals}</dt>' +
                                                   '<dd class="label">Number of variations: </dd>' +
@@ -75,7 +83,9 @@ var api = function () {
                     replace(/\$\{id\}/g, campaignDetails.id).
                     replace("${goals}", campaignDetails.goals.length).
                     replace("${variations}", campaignDetails.variations.length).
-                    replace("${traffic}", campaignDetails.percentTraffic);
+                    replace("${status}", campaignDetails.status.replace("_", " ").toLowerCase()).
+                    replace("${traffic}", campaignDetails.percentTraffic).
+                    replace("${visitors}", campaignDetails.thresholds.visitors);
             }
         };
     }();
@@ -85,7 +95,9 @@ var api = function () {
             listCampaigns: function (listCampaignsCallback) {
 
                 var callback = function (data) {
-                    listCampaignsCallback(JSON.parse(data).campaigns);
+                    if(data != null && data.length > 0) {
+                        listCampaignsCallback(JSON.parse(data).campaigns);
+                    }
                 };
 
                 var params = {
@@ -98,7 +110,9 @@ var api = function () {
 
             getCampaignDetails: function (campaignId, getCampaignDetailsCallback) {
                 var callback = function (data) {
-                    getCampaignDetailsCallback(JSON.parse(data).campaign);
+                    if(data != null && data.length > 0) {
+                        getCampaignDetailsCallback(JSON.parse(data).campaign);
+                    }
                 };
 
                 var params = {
@@ -113,8 +127,6 @@ var api = function () {
     }();
 
     var vwo = function () {
-        "use strict";
-
         var campaignDetailsStore = new Object();
 
         var toggleCampaignDetails = function(campaignId) {
@@ -143,7 +155,6 @@ var api = function () {
                 vwo.showMask();
                 var callback = function (campaigns) {
                     var campaignShortcuts = "";
-                    console.log(campaigns);
                     for(var i = 0; i < campaigns.length; i++) {
                         campaignShortcuts += templateHelper.makeCampaignShortcut(campaigns[i]);
                     }
@@ -165,8 +176,6 @@ var api = function () {
                 vwo.showMask();
 
                 var callback = function (campaignDetails) {
-                    console.log(campaignDetails);
-
                     var campaignDetailsHtml = templateHelper.makeCampaignDetailsShortcut(campaignDetails),
                         campaignElem = document.getElementById('vwo-campaign-' + campaignId);
 
@@ -209,5 +218,5 @@ var api = function () {
 }();
 
 (function () {
-    api.vwo.getCampaignsAndShow();
+    vwoAPI.vwo.getCampaignsAndShow();
 }());

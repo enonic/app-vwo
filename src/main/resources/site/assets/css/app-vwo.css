@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'icomoon';
+    src: url('../icons/fonts/icomoon.eot');
+    src: url('../icons/fonts/icomoon.eot') format('embedded-opentype'),
+    url('../icons/fonts/icomoon.woff') format('woff'),
+    url('../icons/fonts/icomoon.ttf') format('truetype'),
+    url('../icons/fonts/icomoon.svg') format('svg');
+}
+
 .no-error {
     position: relative;
     min-height: 80px;
@@ -78,6 +87,7 @@
     width: 20px;
     display: inline-block;
     text-align: center;
+    position: relative;
 
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -103,8 +113,8 @@
 }
 
 i.icon {
-    height: 10px !important;
-    width: 10px !important;
+    height: 10px;
+    width: 10px;
     vertical-align: middle;
     display: block;
 
@@ -133,18 +143,14 @@ i.icon.icon-status-running::before {
 
 i.icon.icon-status-paused {
     color: white;
-    font-size: 20px;
-    position: relative;
+    position: absolute;
+    font-size: 14px;
+    top: 3px;
+    left: 3px;
 }
 
 i.icon.icon-status-paused::before {
-    position: absolute;
-    content: 'II';
-    font-size: 14px;
-    font-weight: bold;
-    font-family: "Open Sans", sans-serif !important;
-    top: 3px;
-    left: 6px;
+    content: '\e386';
 }
 
 i.icon.icon-status-stopped {
@@ -162,7 +168,7 @@ i.icon.icon-status-trashed {
 }
 
 i.icon.icon-status-trashed::before {
-    content: '\e364';
+    content: '\e251';
     font-size: 14px;
     position: absolute;
     top: 3px;
@@ -198,6 +204,11 @@ i.icon.icon-status-trashed::before {
     overflow: hidden;
     white-space: pre;
     text-overflow: ellipsis;
+}
+
+.vwo-campaign-details .value.details-campaign-status {
+    text-transform: capitalize;
+    cursor: pointer;
 }
 
 .vwo-load-mask {
@@ -250,4 +261,60 @@ i.icon.icon-status-trashed::before {
     width: 100%;
     cursor: pointer;
     margin-top: 10px;
+}
+.update-campaign-buttons-row {
+    background-color: #EEEFF1;
+    height: 30px;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 5px;
+    line-height: 30px;
+}
+.update-campaign-buttons-row .btn {
+    display: inline-block;
+    border: 1px solid #D9DDE1;
+    box-sizing: border-box;
+    width: 25%;
+    height: 100%;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.update-campaign-buttons-row .label , .update-campaign-buttons-row i.icon {
+    display: inline-block;
+}
+
+.update-campaign-buttons-row i.icon {
+    vertical-align: inherit;
+    font-size: 16px;
+    height: 100%;
+    position: relative;
+    top: 2px;
+    text-align: right;
+    width: inherit;
+}
+
+.update-campaign-buttons-row .btn .label {
+    float: right;
+    white-space: pre;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-right: 3px;
+}
+
+.update-campaign-buttons-row .btn.start-btn i::before {
+    content: '\e385';
+    font-family: 'icomoon' !important;
+}
+
+.update-campaign-buttons-row .btn.pause-btn i::before {
+    content: '\e386';
+}
+
+.update-campaign-buttons-row .btn.archive-btn i::before {
+    content: '\e12d';
+}
+
+.update-campaign-buttons-row .btn.delete-btn i::before {
+    content: '\e251';
 }
