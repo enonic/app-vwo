@@ -5,10 +5,9 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings( "unused" )
 public class VWOCampaignDetailsJson extends VWOCampaignJson
 {
-
     private VWOCampaignDetails campaign;
 
     public VWOCampaignDetails getCampaign()
@@ -24,12 +23,13 @@ public class VWOCampaignDetailsJson extends VWOCampaignJson
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings( "unused" )
 class VWOCampaignDetails extends VWOCampaignJson
 {
-
     private Float percentTraffic;
     private List<Goal> goals;
     private List<Variation> variations;
+    private Thresholds thresholds;
 
     public Float getPercentTraffic()
     {
@@ -60,9 +60,37 @@ class VWOCampaignDetails extends VWOCampaignJson
     {
         this.variations = variations;
     }
+
+    public Thresholds getThresholds()
+    {
+        return thresholds;
+    }
+
+    public void setThresholds( final Thresholds thresholds )
+    {
+        this.thresholds = thresholds;
+    }
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings( "unused" )
+class Thresholds
+{
+    private Integer visitors;
+
+    public Integer getVisitors()
+    {
+        return visitors;
+    }
+
+    public void setVisitors( final Integer visitors )
+    {
+        this.visitors = visitors;
+    }
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings( "unused" )
 class Variation {
     private Integer id;
     private String name;
@@ -110,10 +138,9 @@ class Variation {
     }
 }
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings( "unused" )
 class Goal {
-
     private Integer id;
     private boolean isPrimary;
     private String name;
