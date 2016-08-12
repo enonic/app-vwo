@@ -1,13 +1,13 @@
-package com.enonic.app.vwo.rest.json;
+package com.enonic.app.vwo.rest.json.resource;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VWOServiceGeneralRequestJson
 {
-    final private String accountId;
+    final protected String accountId;
 
-    final private String tokenId;
+    final protected String tokenId;
 
     @JsonCreator
     public VWOServiceGeneralRequestJson( @JsonProperty("accountId") final String accountId, @JsonProperty("tokenId") final String tokenId ) {

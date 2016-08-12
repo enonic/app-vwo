@@ -5,7 +5,7 @@
     <div class="no-error">
         <p id="vwo-authenticated_{{uid}}" style="text-align: center;">
             <p class="campaigns-header">Campaigns</p>
-            <div id="campaigns-list" class="vwo-new-campaign">
+            <div id="campaigns-list">
                 <!--<div class="vwo-campaign">
                     <div class="vwo-campaign-radio">
                         <input type="radio" name="campaignType" value="ab" checked>
@@ -52,7 +52,11 @@
                     </div>
                 </div>-->
             </div>
-            <!--<button class="vwo-new-campaign-btn" onclick="openCampaignPage()"><em>+</em><p>New Campaign</p></button>-->
+            <div id="vwo-widget-loadmask" class="vwo-load-mask">
+                <div class="mask-splash">
+                    <div class="spinner"/>
+                </div>
+            </div>
         </div>
         <div id="vwo-not-authenticated_{{uid}}" class="error" hidden="true"></div>
     </div>

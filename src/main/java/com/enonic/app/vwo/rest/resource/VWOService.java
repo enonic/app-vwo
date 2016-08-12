@@ -1,4 +1,4 @@
-package com.enonic.app.vwo.rest;
+package com.enonic.app.vwo.rest.resource;
 
 import java.io.IOException;
 
@@ -16,8 +16,10 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.osgi.service.component.annotations.Component;
 
-import com.enonic.app.vwo.rest.json.ListCampaignsResponseJson;
-import com.enonic.app.vwo.rest.json.VWOServiceGeneralRequestJson;
+import com.enonic.app.vwo.rest.json.resource.GetCampaignDetailsRequestJson;
+import com.enonic.app.vwo.rest.json.VWOCampaignDetailsJson;
+import com.enonic.app.vwo.rest.json.VWOCampaignsJson;
+import com.enonic.app.vwo.rest.json.resource.VWOServiceGeneralRequestJson;
 import com.enonic.xp.jaxrs.JaxRsComponent;
 import com.enonic.xp.security.RoleKeys;
 
@@ -30,7 +32,7 @@ public class VWOService
 {
     @POST
     @Path("listCampaigns")
-    public ListCampaignsResponseJson listCampaigns( final VWOServiceGeneralRequestJson json )
+    public VWOCampaignsJson listCampaigns( final VWOServiceGeneralRequestJson json )
         throws IOException
     {
         CloseableHttpResponse response = null;
@@ -41,7 +43,7 @@ public class VWOService
 
             if ( response.getStatusLine().getStatusCode() == 200 )
             {
-                return new ListCampaignsResponseJson( parseVWOCampaignsHttpResponse( response ).getCampaigns() );
+                return parseVWOHttpResponse( response, VWOCampaignsJson.class );
             }
             return null;
         }
@@ -51,15 +53,45 @@ public class VWOService
         }
     }
 
-    private VWOCampaignsJson parseVWOCampaignsHttpResponse( final CloseableHttpResponse response ) throws IOException {
+    @POST
+    @Path("getCampaignDetails")
+    public VWOCampaignDetailsJson getCampaignDetails( final GetCampaignDetailsRequestJson json )
+        throws IOException
+    {
+        CloseableHttpResponse response = null;
+        try
+        {
+            response = HttpClients.createDefault().execute( makeGetCampaignDetailsVWOApiRequest( json ) );
+            System.out.println( response.getStatusLine() );
+
+            if ( response.getStatusLine().getStatusCode() == 200 )
+            {
+                return parseVWOHttpResponse( response, VWOCampaignDetailsJson.class );
+            }
+            return null;
+        }
+        finally
+        {
+            response.close();
+        }
+    }
+
+
+    private <T> T parseVWOHttpResponse( final CloseableHttpResponse response, Class<T> clazz) throws IOException {
         final HttpEntity entity = response.getEntity();
-        final VWOCampaignsJson vwoCampaigns = new ObjectMapper().readValue( response.getEntity().getContent(), VWOCampaignsJson.class );
+        final T result = new ObjectMapper().readValue( response.getEntity().getContent(), clazz );
         EntityUtils.consume( entity );
-        return vwoCampaigns;
+        return result;
     }
 
     private HttpGet makeListCampaignsVWOApiRequest( final VWOServiceGeneralRequestJson json ) {
         final HttpGet httpGet = new HttpGet( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns" );
+        httpGet.addHeader( "token", json.getTokenId() );
+        return httpGet;
+    }
+
+    private HttpGet makeGetCampaignDetailsVWOApiRequest( final GetCampaignDetailsRequestJson json ) {
+        final HttpGet httpGet = new HttpGet( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns/" + json.getCampaignId());
         httpGet.addHeader( "token", json.getTokenId() );
         return httpGet;
     }
