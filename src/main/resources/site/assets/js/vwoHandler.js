@@ -49,17 +49,23 @@ var api = function () {
                                            '</div>' +
                                        '</div>',
 
-            campaignDetailsShortcutTemplate = '<dl class="vwo-campaign-details" onclick="event.stopPropagation()" id="vwo-campaign-details-${id}">' +
-                                                  '<dd class="label">Number of goals: </dd>' +
-                                                  '<dt class="value">${goals}</dt>' +
-                                                  '<dd class="label">Number of variations: </dd>' +
-                                                  '<dt class="value">${variations}</dt>' +
-                                                  '<dd class="label">% traffic: </dd>' +
-                                                  '<dt class="value">${traffic}</dt>' +
-                                                  '<dd class="label">Visitors: </dd>' +
-                                                  '<dt class="value">${visitors}</dt>' +
-                                                    '<button class="open-campaign-in-vwo-btn" onclick="api.vwo.openCampaignPage(${id})"><p>Open in VWO</p></button>' +
-                                              '</dl>';
+            campaignDetailsShortcutTemplate = '<div class="vwo-campaign-details" onclick="event.stopPropagation()" id="vwo-campaign-details-${id}">' +
+                                                '<table>' +
+                                                '<tr class="value">' +
+                                                '<td>${goals}</td><td>${variations}</td>' +
+                                                '</tr>' +
+                                                '<tr class="label">' +
+                                                '<td>Goals</td><td>Variations</td>' +
+                                                '</tr>' +
+                                                '<tr class="value">' +
+                                                '<td>${visitors}</td><td>${traffic}%</td>' +
+                                                '</tr>' +
+                                                '<tr class="label">' +
+                                                '<td>Visitors</td><td>Traffic</td>' +
+                                                '</tr>' +
+                                                '</table>' +
+                                              '<button class="open-campaign-in-vwo-btn" onclick="api.vwo.openCampaignPage(${id})"><p>Open in VWO</p></button>' +
+                                              '</div>';
         return {
             makeCampaignShortcut: function (campaignInfo) {
                 return campaignShortcutTemplate.
@@ -120,11 +126,13 @@ var api = function () {
         var toggleCampaignDetails = function(campaignId) {
             if(campaignDetailsStore.hasOwnProperty(campaignId)) {
                 // just toggle
+                document.getElementById("vwo-campaign-" + campaignId).classList.toggle("expanded");
                 var detailsEl = document.getElementById("vwo-campaign-details-" + campaignId);
                 detailsEl.classList.toggle("hidden");
             } else {
                 // get details, render and save
                 vwo.getCampaignDetailsAndRender(campaignId);
+                document.getElementById("vwo-campaign-" + campaignId).classList.add("expanded");
             }
         }
 
