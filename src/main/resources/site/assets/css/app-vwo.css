@@ -58,6 +58,7 @@
     white-space: pre;
     text-overflow: ellipsis;
     overflow: hidden;
+    display: block;
 }
 
 .vwo-campaign-logo {
@@ -97,6 +98,7 @@
     display: inline-block;
     text-align: center;
     position: relative;
+    margin-bottom: 3px;
 
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -144,6 +146,7 @@ i.icon.icon-status-not_started {
 i.icon.icon-status-running {
     color: white;
     font-size: 20px;
+    position: absolute;
 }
 
 i.icon.icon-status-running::before {
@@ -153,9 +156,9 @@ i.icon.icon-status-running::before {
 i.icon.icon-status-paused {
     color: white;
     position: absolute;
-    font-size: 14px;
-    top: 3px;
-    left: 3px;
+    font-size: 12px;
+    top: 4px;
+    left: 4px;
 }
 
 i.icon.icon-status-paused::before {
@@ -195,6 +198,10 @@ i.icon.icon-status-trashed::before {
     -moz-transition: all 0.5s linear;
     -webkit-transition: all 0.5s linear;
     -o-transition: all 0.5s linear;
+}
+
+.vwo-campaign-details table {
+    text-align: center;
 }
 
 .vwo-campaign-details.hidden {
@@ -276,7 +283,7 @@ i.icon.icon-status-trashed::before {
     height: 30px;
     width: 100%;
     cursor: pointer;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     line-height: 30px;
 }
 .update-campaign-buttons-row .btn {
@@ -287,6 +294,18 @@ i.icon.icon-status-trashed::before {
     height: 100%;
     text-transform: uppercase;
     position: relative;
+    font-size: 12px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.update-campaign-buttons-row .btn:hover {
+    background-color: #ccc;
+}
+
+.update-campaign-buttons-row .btn:active {
+    background-color: #969090;
 }
 
 .update-campaign-buttons-row .label , .update-campaign-buttons-row i.icon {
@@ -300,15 +319,14 @@ i.icon.icon-status-trashed::before {
     position: relative;
     top: 2px;
     text-align: right;
-    width: inherit;
-}
-
-.update-campaign-buttons-row .btn .label {
-    float: right;
+    width: auto;
+    margin: 0px 5px;
     white-space: pre;
     text-overflow: ellipsis;
-    overflow: hidden;
-    margin-right: 3px;
+}
+
+.update-campaign-buttons-row span.label {
+    min-width: 50px;
 }
 
 .update-campaign-buttons-row .btn.start-btn i::before {
