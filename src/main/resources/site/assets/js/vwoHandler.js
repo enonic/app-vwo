@@ -252,13 +252,24 @@ var vwoAPI = function () {
             infoElem.insertAdjacentHTML('beforeend', templateHelper.makeCampaignStatusIconShortcut(id, status));
         }
 
+        var toggleCampaignDetail = function(campaignId) {
+            document.getElementById("vwo-campaign-" + campaignId).classList.toggle("expanded");
+            var detailsEl = document.getElementById("vwo-campaign-details-" + campaignId);
+            detailsEl.classList.toggle("hidden");
+        }
+
+
         return {
             toggleCampaignDetails: function(campaignId) {
-                if(campaignDetailsStore.hasOwnProperty(campaignId)) { // already fetched & rendered
+                document.querySelectorAll(".vwo-campaign.expanded").forEach(function(campaignEl) {
+                    let id = campaignEl.id.replace("vwo-campaign-", "");
+                    if (id !== campaignId.toString()) {
+                        toggleCampaignDetail(id);
+                    }
+                });
+                if (campaignDetailsStore.hasOwnProperty(campaignId)) { // already fetched & rendered
                     // just toggle
-                    document.getElementById("vwo-campaign-" + campaignId).classList.toggle("expanded");
-                    var detailsEl = document.getElementById("vwo-campaign-details-" + campaignId);
-                    detailsEl.classList.toggle("hidden");
+                    toggleCampaignDetail(campaignId);
                 } else {
                     // get details, render and save
                     getCampaignDetailsAndRender(campaignId);

@@ -23,17 +23,18 @@
 .vwo-campaign-info {
     width: 100%;
     position: relative;
-    border: 1px solid #D9DDE1;
-    border-bottom: none;
     cursor: pointer;
     padding-bottom: 15px;
 }
+.vwo-campaign:first-child {
+    border-top: 1px solid #D9DDE1;
+}
 
-.vwo-campaign:last-child .vwo-campaign-info{
+.vwo-campaign {
     border-bottom: 1px solid #D9DDE1;
 }
 
-.vwo-campaign.expanded .vwo-campaign-info, .vwo-campaign-info:hover {
+.vwo-campaign.expanded, .vwo-campaign-info:hover {
     background: #EEEFF1;
 }
 
@@ -191,9 +192,6 @@ i.icon.icon-status-trashed::before {
     overflow: hidden;
     position: relative;
     margin: 10px;
-    padding: 10px 15px;
-    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
-
     transition: all 0.5s linear;
     -moz-transition: all 0.5s linear;
     -webkit-transition: all 0.5s linear;
@@ -279,7 +277,7 @@ i.icon.icon-status-trashed::before {
     margin-top: 10px;
 }
 .update-campaign-buttons-row {
-    background-color: #EEEFF1;
+    background-color: white;
     height: 30px;
     width: 100%;
     cursor: pointer;
