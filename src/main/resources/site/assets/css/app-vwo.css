@@ -24,7 +24,7 @@
     width: 100%;
     position: relative;
     cursor: pointer;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 .vwo-campaign:first-child {
     border-top: 1px solid #D9DDE1;
@@ -39,9 +39,10 @@
 }
 
 .campaigns-header {
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 6px 5px;
     color: gray;
+    margin-top: 10px;
 }
 
 .vwo-campaign-name {
@@ -342,4 +343,123 @@ i.icon.icon-status-trashed::before {
 
 .update-campaign-buttons-row .btn.delete-btn i::before {
     content: '\e251';
+}
+
+.vwo-new-campaign-btn {
+    background-color: #5E337B;
+    color: white;
+    font-size: 16px;
+    border: none;
+    height: 40px;
+    width: 220px;
+    cursor: pointer;
+    margin-top: 25px;
+    display: none;
+}
+
+.vwo-new-campaign-btn.expanded {
+    display: inline-block;
+}
+
+.new-campaign-selection-list {
+    margin-top: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #D9DDE1;
+    display: none;
+}
+
+.new-campaign-selection-list.expanded {
+    display: block;
+}
+
+.vwo-new-campaign-btn em {
+    float: left;
+    font-size: 32px;
+    margin: 0 20px;
+}
+
+.vwo-new-campaign-btn p {
+    text-align: left;
+    margin-top: 9px;
+}
+
+.vwo-campaign-radio {
+    display: inline-block;
+    padding: 0px 4px 0px 8px;
+}
+
+.vwo-campaign-radio input {
+    height: 26px;
+    cursor: pointer;
+}
+
+.vwo-campaign-name.new {
+    display: inline-block;
+    line-height: 32px;
+    width: calc(100% - 94px);
+    margin-left: 5px;
+}
+
+.vwo-campaign-desc {
+    display: none;
+    margin: 0 10px 0px 30px;
+}
+
+.vwo-campaign-desc.expanded {
+    display: block;
+}
+
+.vwo-new-campaign-logo {
+    background-size: 400px;
+    background-repeat: no-repeat;
+    background-image: url('../images/sprite.png');
+    width: 32px !important;
+    height: 32px !important;
+    display: inline-block;
+}
+
+.vwo-new-campaign-logo.ab {
+     background-position: -345px -67px;
+}
+
+.vwo-new-campaign-logo.multivariate {
+    background-position: -290px -284px;
+}
+
+.vwo-new-campaign-logo.split {
+    background-position: -243px -203px;
+}
+
+.vwo-new-campaign-logo.conversion {
+    background-position: -123px -284px;
+}
+
+.vwo-new-campaign-item {
+    margin: 10px 0px;
+}
+
+.open-new-campaign-in-vwo-btn {
+    background-color: #5E337B;
+    color: white;
+    font-size: 12px;
+    border: none;
+    height: 30px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px 0 0 30px;
+}
+
+.open-new-campaign-in-vwo-btn:disabled {
+    opacity: 0.5;
+}
+
+.cancel-open-new-campaign-btn {
+    background-color: gray;
+    color: white;
+    font-size: 12px;
+    border: none;
+    height: 30px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px 0px 0px 10px;
 }
