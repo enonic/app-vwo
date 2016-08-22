@@ -5,15 +5,28 @@ var vwo = function () {
             getRequest: function () {
                 return new XMLHttpRequest();
             },
-            send: function (url, callback, method, data, async) {
+            send: function (url, callback, errorCallback, method, data, async) {
                 if (async === undefined) {
                     async = true;
                 }
                 var xhr = ajax.getRequest();
                 xhr.open(method, url, async);
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
-                        callback(xhr.responseText)
+                    if (xhr.readyState === 4) {
+                        if(xhr.status === 200) {
+                            callback(xhr.responseText);
+                        } else {
+                            if (errorCallback) {
+                                errorCallback(xhr.responseText);
+                            }
+                            if (xhr.responseText) {
+                                if (api.notify.NotifyManager) {
+                                    api.notify.NotifyManager.get().showError(xhr.responseText);
+                                } else {
+                                    console.log(xhr.responseText);
+                                }
+                            }
+                        }
                     }
                 };
                 if (method == 'POST') {
@@ -21,15 +34,15 @@ var vwo = function () {
                 }
                 xhr.send(data)
             },
-            get: function (url, data, callback, async) {
+            get: function (url, data, callback, errorCallback, async) {
                 var query = [];
                 for (var key in data) {
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
                 }
-                ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null, async)
+                ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, errorCallback, 'GET', null, async)
             },
-            post: function (url, data, callback, async) {
-                ajax.send(url, callback, 'POST', JSON.stringify(data), async)
+            post: function (url, data, callback, errorCallback, async) {
+                ajax.send(url, callback, errorCallback, 'POST', JSON.stringify(data), async)
             }
         };
     }();
@@ -120,7 +133,7 @@ var vwo = function () {
                     accountId: vwoConfig.accountId,
                     tokenId: vwoConfig.tokenId
                 }
-                ajax.post("/admin/rest/vwo/listCampaigns", params, callback);
+                ajax.post("/admin/rest/vwo/listCampaigns", params, callback, errorCallback);
                 return this;
             },
 
@@ -138,7 +151,7 @@ var vwo = function () {
                     tokenId: vwoConfig.tokenId,
                     campaignId: campaignId
                 }
-                ajax.post("/admin/rest/vwo/getCampaignDetails", params, callback);
+                ajax.post("/admin/rest/vwo/getCampaignDetails", params, callback, errorCallback);
                 return this;
             },
 
@@ -157,7 +170,7 @@ var vwo = function () {
                     campaignId: campaignId,
                     status: status
                 }
-                ajax.post("/admin/rest/vwo/updateCampaignStatus", params, callback);
+                ajax.post("/admin/rest/vwo/updateCampaignStatus", params, callback, errorCallback);
                 return this;
             },
 
@@ -265,12 +278,13 @@ var vwo = function () {
 
         return {
             toggleCampaignDetails: function(campaignId) {
-                document.querySelectorAll(".vwo-campaign.expanded").forEach(function(campaignEl) {
-                    let id = campaignEl.id.replace("vwo-campaign-", "");
-                    if (id !== campaignId.toString()) {
+                var expandedCampaingsNodeList = document.querySelectorAll(".vwo-campaign.expanded");
+                for(let i = 0; i < expandedCampaingsNodeList.length; i++) {
+                    let id = expandedCampaingsNodeList[i].id.replace("vwo-campaign-", "");
+                    if (id !== expandedCampaingsNodeList[i].toString()) {
                         toggleCampaignDetail(id);
                     }
-                });
+                }
                 if (campaignDetailsStore.hasOwnProperty(campaignId)) { // already fetched & rendered
                     // just toggle
                     toggleCampaignDetail(campaignId);
@@ -298,7 +312,9 @@ var vwo = function () {
 
         hideMask: function() {
             var detailsEl = document.getElementById("vwo-widget-loadmask");
-            detailsEl.style.display = 'none';
+            if(detailsEl != null) {
+                detailsEl.style.display = 'none';
+            }
             return this;
         },
 

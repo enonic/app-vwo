@@ -359,6 +359,7 @@ i.icon.icon-status-trashed::before {
 
 .vwo-new-campaign-btn.expanded {
     display: inline-block;
+    line-height: 38px;
 }
 
 .new-campaign-selection-list {
@@ -374,13 +375,12 @@ i.icon.icon-status-trashed::before {
 
 .vwo-new-campaign-btn em {
     float: left;
-    font-size: 32px;
+    font-size: 30px;
     margin: 0 20px;
 }
 
 .vwo-new-campaign-btn p {
     text-align: left;
-    margin-top: 9px;
 }
 
 .vwo-campaign-radio {
