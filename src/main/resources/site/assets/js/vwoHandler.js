@@ -1,19 +1,32 @@
-var vwoAPI = function () {
+var vwo = function () {
 
     var ajax = function () {
         return {
             getRequest: function () {
                 return new XMLHttpRequest();
             },
-            send: function (url, callback, method, data, async) {
+            send: function (url, callback, errorCallback, method, data, async) {
                 if (async === undefined) {
                     async = true;
                 }
                 var xhr = ajax.getRequest();
                 xhr.open(method, url, async);
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
-                        callback(xhr.responseText)
+                    if (xhr.readyState === 4) {
+                        if(xhr.status === 200) {
+                            callback(xhr.responseText);
+                        } else {
+                            if (errorCallback) {
+                                errorCallback(xhr.responseText);
+                            }
+                            if (xhr.responseText) {
+                                if (api.notify.NotifyManager) {
+                                    api.notify.NotifyManager.get().showError(xhr.responseText);
+                                } else {
+                                    console.log(xhr.responseText);
+                                }
+                            }
+                        }
                     }
                 };
                 if (method == 'POST') {
@@ -21,15 +34,15 @@ var vwoAPI = function () {
                 }
                 xhr.send(data)
             },
-            get: function (url, data, callback, async) {
+            get: function (url, data, callback, errorCallback, async) {
                 var query = [];
                 for (var key in data) {
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
                 }
-                ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null, async)
+                ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, errorCallback, 'GET', null, async)
             },
-            post: function (url, data, callback, async) {
-                ajax.send(url, callback, 'POST', JSON.stringify(data), async)
+            post: function (url, data, callback, errorCallback, async) {
+                ajax.send(url, callback, errorCallback, 'POST', JSON.stringify(data), async)
             }
         };
     }();
@@ -70,7 +83,7 @@ var vwoAPI = function () {
                                                       '<td>Visitors</td><td>Traffic</td>' +
                                                       '</tr>' +
                                                   '</table>' +
-                                                  '<button class="open-campaign-in-vwo-btn" onclick="vwoAPI.vwo.openCampaignPage(${id})"><p>Open in VWO</p></button>' +
+                                                  '<button class="open-campaign-in-vwo-btn" onclick="vwo.openCampaignPage(${id})"><p>Open in VWO</p></button>' +
                                               '</div>',
 
             campaignStatusIconTemplate = '<div class="vwo-campaign-status ${status}" id="vwo-campaign-status-${id}">' +
@@ -120,7 +133,7 @@ var vwoAPI = function () {
                     accountId: vwoConfig.accountId,
                     tokenId: vwoConfig.tokenId
                 }
-                ajax.post("/admin/rest/vwo/listCampaigns", params, callback);
+                ajax.post("/admin/rest/vwo/listCampaigns", params, callback, errorCallback);
                 return this;
             },
 
@@ -138,7 +151,7 @@ var vwoAPI = function () {
                     tokenId: vwoConfig.tokenId,
                     campaignId: campaignId
                 }
-                ajax.post("/admin/rest/vwo/getCampaignDetails", params, callback);
+                ajax.post("/admin/rest/vwo/getCampaignDetails", params, callback, errorCallback);
                 return this;
             },
 
@@ -157,8 +170,12 @@ var vwoAPI = function () {
                     campaignId: campaignId,
                     status: status
                 }
-                ajax.post("/admin/rest/vwo/updateCampaignStatus", params, callback);
+                ajax.post("/admin/rest/vwo/updateCampaignStatus", params, callback, errorCallback);
                 return this;
+            },
+
+            defaultServiceErrorCallback: function() {
+                vwo.hideMask();
             }
         };
     }();
@@ -177,7 +194,7 @@ var vwoAPI = function () {
 
         return {
             getCampaignsAndShow: function () {
-                vwoAPI.vwo.showMask();
+                vwo.showMask();
                 var callback = function (campaigns) {
                     var campaignShortcuts = "";
                     for(var i = 0; i < campaigns.length; i++) {
@@ -187,12 +204,12 @@ var vwoAPI = function () {
                         document.getElementById("campaigns-list").innerHTML = campaignShortcuts;
                     }
 
-                    vwoAPI.vwo.hideMask();
+                    vwo.hideMask();
 
                     bindToggleOnCampaignClick(campaigns);
                 };
 
-                vwoService.listCampaigns(callback, vwoAPI.vwo.defaultServiceErrorCallback);
+                vwoService.listCampaigns(callback, vwoService.defaultServiceErrorCallback);
 
                 return this;
             }
@@ -204,7 +221,7 @@ var vwoAPI = function () {
         var campaignDetailsStore = new Object();
 
         var getCampaignDetailsAndRender = function (campaignId) {
-            vwoAPI.vwo.showMask();
+            vwo.showMask();
 
             var getCampaignDetailsCallback = function (campaignDetails) {
                 var campaignDetailsHtml = templateHelper.makeCampaignDetailsShortcut(campaignDetails),
@@ -214,10 +231,10 @@ var vwoAPI = function () {
 
                 campaignDetailsStore[campaignId] = 1;
                 handleUpdateButtonsClick(campaignId);
-                vwoAPI.vwo.hideMask();
+                vwo.hideMask();
             };
 
-            vwoService.getCampaignDetails(campaignId, getCampaignDetailsCallback, vwoAPI.vwo.defaultServiceErrorCallback);
+            vwoService.getCampaignDetails(campaignId, getCampaignDetailsCallback, vwoService.defaultServiceErrorCallback);
         }
 
         var handleUpdateButtonsClick = function(campaignId) {
@@ -230,7 +247,7 @@ var vwoAPI = function () {
         var addClickListenerToButton = function(btnId, campaignId, newStatus) {
 
             var updateCampaignStatusCallback = function (updateResult) {
-                vwoAPI.vwo.hideMask();
+                vwo.hideMask();
                 var ids = updateResult.ids;
                 for(let i = 0; i < ids.length; i++) {
                     updateCampaignStatusView(ids[i], updateResult.status)
@@ -239,8 +256,8 @@ var vwoAPI = function () {
 
             let btn = document.getElementById(btnId);
             btn.addEventListener("click", function () {
-                vwoAPI.vwo.showMask();
-                vwoService.updateCampaignStatus(campaignId, newStatus, updateCampaignStatusCallback, vwoAPI.vwo.defaultServiceErrorCallback);
+                vwo.showMask();
+                vwoService.updateCampaignStatus(campaignId, newStatus, updateCampaignStatusCallback, vwo.defaultServiceErrorCallback);
             }, false);
         }
 
@@ -261,12 +278,13 @@ var vwoAPI = function () {
 
         return {
             toggleCampaignDetails: function(campaignId) {
-                document.querySelectorAll(".vwo-campaign.expanded").forEach(function(campaignEl) {
-                    let id = campaignEl.id.replace("vwo-campaign-", "");
-                    if (id !== campaignId.toString()) {
+                var expandedCampaingsNodeList = document.querySelectorAll(".vwo-campaign.expanded");
+                for(let i = 0; i < expandedCampaingsNodeList.length; i++) {
+                    let id = expandedCampaingsNodeList[i].id.replace("vwo-campaign-", "");
+                    if (id !== expandedCampaingsNodeList[i].toString()) {
                         toggleCampaignDetail(id);
                     }
-                });
+                }
                 if (campaignDetailsStore.hasOwnProperty(campaignId)) { // already fetched & rendered
                     // just toggle
                     toggleCampaignDetail(campaignId);
@@ -278,43 +296,67 @@ var vwoAPI = function () {
             }
         }
     }();
-
-    var vwo = function () {
-
-        return {
-            startWithCampaigns: function() {
-                vwoCampaignManager.getCampaignsAndShow();
-            },
-
-            showMask: function() {
-                var detailsEl = document.getElementById("vwo-widget-loadmask");
-                if(detailsEl != null) {
-                    detailsEl.style.display = 'block';
-                }
-                return this;
-            },
-
-            hideMask: function() {
-                var detailsEl = document.getElementById("vwo-widget-loadmask");
-                detailsEl.style.display = 'none';
-                return this;
-            },
-
-            openCampaignPage: function(campaignId) {
-                window.open("http://app.vwo.com/#/campaign/" + campaignId + "/summary", "_blank");
-            },
-
-            defaultServiceErrorCallback: function() {
-                vwo.hideMask();
-            }
-        };
-    }();
-
+    
     return {
-        vwo: vwo
+        startWithCampaigns: function() {
+            vwoCampaignManager.getCampaignsAndShow();
+        },
+
+        showMask: function() {
+            var detailsEl = document.getElementById("vwo-widget-loadmask");
+            if(detailsEl != null) {
+                detailsEl.style.display = 'block';
+            }
+            return this;
+        },
+
+        hideMask: function() {
+            var detailsEl = document.getElementById("vwo-widget-loadmask");
+            if(detailsEl != null) {
+                detailsEl.style.display = 'none';
+            }
+            return this;
+        },
+
+        openCampaignPage: function(campaignId) {
+            window.open("http://app.vwo.com/#/campaign/" + campaignId + "/summary", "_blank");
+        },
+
+        toggleCampaignDesc: function() {
+            var elems = document.getElementsByName('campaignType');
+            if(!!elems) {
+                for (var j = 0; j < elems.length; j++) {
+                    if (elems[j].checked) {
+                        document.getElementById("vwo-campaign-desc-" + elems[j].value).classList.add("expanded");
+                    }
+                    else {
+                        document.getElementById("vwo-campaign-desc-" + elems[j].value).classList.remove("expanded");
+                    }
+                }
+                document.getElementById("open-new-campaign-in-vwo-btn").removeAttribute("disabled");
+            }
+        },
+
+        toggleNewCampaignList: function() {
+            document.getElementById("vwo-new-campaign-btn").classList.toggle("expanded");
+            document.getElementById("new-campaign-selection-list").classList.toggle("expanded");
+        },
+
+        openNewCampaignWizard: function() {
+            var elems = document.getElementsByName('campaignType');
+            if(!!elems) {
+                for (var j = 0; j < elems.length; j++) {
+                    if (elems[j].checked) {
+                        window.open("http://app.vwo.com/#/test/create/web/" + elems[j].value, "_blank");
+                        break;
+                    }
+                }
+            }
+
+        }
     }
 }();
 
 (function () {
-    vwoAPI.vwo.startWithCampaigns();
+    vwo.startWithCampaigns();
 }());

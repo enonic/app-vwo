@@ -4,54 +4,45 @@
     {{#completeSetup}}
     <div class="no-error">
         <p id="vwo-authenticated_{{uid}}" style="text-align: center;">
-            <p class="campaigns-header">Campaigns</p>
-            <div id="campaigns-list">
-                <!--<div class="vwo-campaign">
+            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><em>+</em><p>New Campaign</p></button>
+            <div id="new-campaign-selection-list" class="new-campaign-selection-list">
+                <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="ab" checked>
+                        <input type="radio" name="campaignType" value="ab" onchange="vwo.toggleCampaignDesc()">
                     </div>
-                    <div class="vwo-campaign-info vwo-ab-test">
-                        <div class="vwo-campaign-pic-title">
-                            <p class="vwo-campaign-pic"></p>
-                            <p class="vwo-campaign-title">A/B Test</p>
-                        </div>
-                        <div class="vwo-campaign-desc">
-                            <p>Create multiple versions of your landing page and find which one converts the best.</p>
-                        </div>
-                    </div>
+                    <div class="vwo-new-campaign-logo ab"></div>
+                    <div class="vwo-campaign-name new">A/B Test</div>
+                    <div id="vwo-campaign-desc-ab" class="vwo-campaign-desc">Create multiple versions of your landing page and find which one converts the best</div>
                 </div>
-
-                <div class="vwo-campaign">
+                <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="split">
+                        <input type="radio" name="campaignType" value="multivariate" onchange="vwo.toggleCampaignDesc()">
                     </div>
-                    <div class="vwo-campaign-info vwo-split-test">
-                        <div class="vwo-campaign-pic-title">
-                            <p class="vwo-campaign-pic"></p>
-                            <p class="vwo-campaign-title">Split URL Test</p>
-                        </div>
-                        <div class="vwo-campaign-desc">
-                            <p>Distribute traffic to multiple URLs and identify which one converts more.</p>
-                        </div>
-                    </div>
+                    <div class="vwo-new-campaign-logo multivariate"></div>
+                    <div class="vwo-campaign-name new">Multivariate Test</div>
+                    <div id="vwo-campaign-desc-multivariate" class="vwo-campaign-desc">Change multiple elements on a single page and find the optimal combination of those changes</div>
                 </div>
-
-
-                <div class="vwo-campaign">
+                <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="multivariate">
+                        <input type="radio" name="campaignType" value="split" onchange="vwo.toggleCampaignDesc()">
                     </div>
-                    <div class="vwo-campaign-info vwo-multi-test">
-                        <div class="vwo-campaign-pic-title">
-                            <p class="vwo-campaign-pic"></p>
-                            <p class="vwo-campaign-title">Multivariate Test</p>
-                        </div>
-                        <div class="vwo-campaign-desc">
-                            <p>Change multiple elements on a single page and find the optimal combination of those changes.</p>
-                        </div>
+                    <div class="vwo-new-campaign-logo split"></div>
+                    <div class="vwo-campaign-name new">Split URL Test</div>
+                    <div id="vwo-campaign-desc-split" class="vwo-campaign-desc">Distribute traffic to multiple URLs and identify which one converts more</div>
+                </div>
+                <div class="vwo-new-campaign-item">
+                    <div class="vwo-campaign-radio">
+                        <input type="radio" name="campaignType" value="conversion" onchange="vwo.toggleCampaignDesc()">
                     </div>
-                </div>-->
+                    <div class="vwo-new-campaign-logo conversion"></div>
+                    <div class="vwo-campaign-name new">Conversion Tracking</div>
+                    <div id="vwo-campaign-desc-conversion" class="vwo-campaign-desc">Estimate conversion rate of your website</div>
+                </div>
+                <button id="open-new-campaign-in-vwo-btn" class="open-new-campaign-in-vwo-btn" onclick="vwo.openNewCampaignWizard()" disabled><p>Open in VWO</p></button>
+                <button class="cancel-open-new-campaign-btn" onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>
             </div>
+            <p class="campaigns-header">Campaigns</p>
+            <div id="campaigns-list"></div>
             <div id="vwo-widget-loadmask" class="vwo-load-mask">
                 <div class="mask-splash">
                     <div class="spinner"/>
