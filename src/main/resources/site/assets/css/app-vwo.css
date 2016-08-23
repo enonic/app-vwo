@@ -281,7 +281,6 @@ i.icon.icon-status-trashed::before {
     background-color: white;
     height: 30px;
     width: 100%;
-    cursor: pointer;
     margin-bottom: 20px;
     line-height: 30px;
 }
@@ -297,6 +296,13 @@ i.icon.icon-status-trashed::before {
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.update-campaign-buttons-row .btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
 }
 
 .update-campaign-buttons-row .btn:hover {
@@ -455,6 +461,7 @@ i.icon.icon-status-trashed::before {
 
 .open-new-campaign-in-vwo-btn:disabled {
     opacity: 0.5;
+    cursor: default;
 }
 
 .cancel-open-new-campaign-btn {
