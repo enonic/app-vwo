@@ -64,10 +64,10 @@ var vwo = function () {
 
             campaignDetailsShortcutTemplate = '<div class="vwo-campaign-details" onclick="event.stopPropagation()" id="vwo-campaign-details-${id}">' +
                                                   '<div class="update-campaign-buttons-row">' +
-                                                      '<div class="btn start-btn" id="start-btn-${id}"><i class="icon" title="Start"></i><span class="label">Start</span></div>' +
-                                                      '<div class="btn pause-btn" id="pause-btn-${id}"><i class="icon" title="Pause"></i><span class="label">Pause</span></div>' +
-                                                      '<div class="btn archive-btn" id="archive-btn-${id}"><i class="icon" title="Archive"></i><span class="label">Archive</span></div>' +
-                                                      '<div class="btn delete-btn" id="delete-btn-${id}"><i class="icon" title="Delete"></i><span class="label">Delete</span></div>' +
+                                                      '<div class="btn start-btn ${start-btn-disabled}" id="start-btn-${id}"><i class="icon" title="Start"></i><span class="label">Start</span></div>' +
+                                                      '<div class="btn pause-btn ${pause-btn-disabled}" id="pause-btn-${id}"><i class="icon" title="Pause"></i><span class="label">Pause</span></div>' +
+                                                      '<div class="btn archive-btn ${archive-btn-disabled}" id="archive-btn-${id}"><i class="icon" title="Archive"></i><span class="label">Archive</span></div>' +
+                                                      '<div class="btn delete-btn ${delete-btn-disabled}" id="delete-btn-${id}"><i class="icon" title="Delete"></i><span class="label">Delete</span></div>' +
                                                   '</div>' +
                                                   '<table>' +
                                                       '<tr class="value">' +
@@ -100,13 +100,17 @@ var vwo = function () {
                         replace(/\$\{status\}/g, campaignInfo.status.toLowerCase());
             },
             makeCampaignDetailsShortcut: function (campaignDetails) {
+                var status = campaignDetails.status.toLowerCase();
                 return campaignDetailsShortcutTemplate.
                     replace(/\$\{id\}/g, campaignDetails.id).
                     replace("${goals}", campaignDetails.goals.length).
                     replace("${variations}", campaignDetails.variations.length).
-                    replace("${status}", campaignDetails.status.replace("_", " ").toLowerCase()).
                     replace("${traffic}", campaignDetails.percentTraffic).
-                    replace("${visitors}", campaignDetails.thresholds.visitors);
+                    replace("${visitors}", campaignDetails.thresholds.visitors).
+                    replace("${start-btn-disabled}", status == 'running' ? 'disabled' : "").
+                    replace("${pause-btn-disabled}", status == 'paused' ? 'disabled' : "").
+                    replace("${archive-btn-disabled}", status == 'trashed' ? 'disabled' : "").
+                    replace("${delete-btn-disabled}", status == 'stopped' ? 'disabled' : "");
             },
             makeCampaignStatusIconShortcut: function (id, status) {
                 return campaignStatusIconTemplate.
@@ -238,27 +242,47 @@ var vwo = function () {
         }
 
         var handleUpdateButtonsClick = function(campaignId) {
-            addClickListenerToButton('start-btn-' + campaignId, campaignId, "RUNNING");
-            addClickListenerToButton('pause-btn-' + campaignId, campaignId, "PAUSED");
-            addClickListenerToButton('archive-btn-' + campaignId, campaignId, "STOPPED");
-            addClickListenerToButton('delete-btn-' + campaignId, campaignId, "TRASHED");
+            addClickListenerToButton(getStartBtn(campaignId), campaignId, "RUNNING");
+            addClickListenerToButton(getPauseBtn(campaignId), campaignId, "PAUSED");
+            addClickListenerToButton(getArchiveBtn(campaignId), campaignId, "STOPPED");
+            addClickListenerToButton(getDeleteBtn(campaignId), campaignId, "TRASHED");
         }
 
-        var addClickListenerToButton = function(btnId, campaignId, newStatus) {
+        var addClickListenerToButton = function(btnElement, campaignId, newStatus) {
 
             var updateCampaignStatusCallback = function (updateResult) {
                 vwo.hideMask();
-                var ids = updateResult.ids;
+                var ids = updateResult.ids; // ids of campaigns that got updated, we expect only one to come
                 for(let i = 0; i < ids.length; i++) {
                     updateCampaignStatusView(ids[i], updateResult.status)
+                    updateStatusButtons(ids[i], updateResult.status.toLowerCase());
                 }
             };
 
-            let btn = document.getElementById(btnId);
-            btn.addEventListener("click", function () {
+            btnElement.addEventListener("click", function () {
                 vwo.showMask();
-                vwoService.updateCampaignStatus(campaignId, newStatus, updateCampaignStatusCallback, vwo.defaultServiceErrorCallback);
+                vwoService.updateCampaignStatus(campaignId, newStatus, updateCampaignStatusCallback, vwoService.defaultServiceErrorCallback);
             }, false);
+        }
+
+        var getStartBtn = function (campaignId) {
+                return document.getElementById('start-btn-' + campaignId);
+            },
+            getPauseBtn = function (campaignId) {
+                return document.getElementById('pause-btn-' + campaignId);
+            },
+            getArchiveBtn = function (campaignId) {
+                return document.getElementById('archive-btn-' + campaignId);
+            },
+            getDeleteBtn = function (campaignId) {
+                return document.getElementById('delete-btn-' + campaignId);
+            }
+
+        var updateStatusButtons = function (campaignId, status) {
+            getStartBtn(campaignId).classList.toggle("disabled", status === "running");
+            getPauseBtn(campaignId).classList.toggle("disabled", status === "paused" || status === "stopped" || status === "trashed");
+            getArchiveBtn(campaignId).classList.toggle("disabled", status === "stopped" || status === "trashed");
+            getDeleteBtn(campaignId).classList.toggle("disabled", status === "stopped" || status === "trashed");
         }
 
         var updateCampaignStatusView = function(id, status) {
