@@ -83,12 +83,22 @@ var vwo = function () {
                                                       '<td>Visitors</td><td>Traffic</td>' +
                                                       '</tr>' +
                                                   '</table>' +
+                                                  '${variation-screenshots}' +
                                                   '<button class="open-campaign-in-vwo-btn" onclick="vwo.openCampaignPage(${id})"><p>Open in VWO</p></button>' +
                                               '</div>',
 
             campaignStatusIconTemplate = '<div class="vwo-campaign-status ${status}" id="vwo-campaign-status-${id}">' +
                                             '<i class="icon icon-status-${status}" title="${title-status}"></i>' +
                                          '</div>';
+
+            var generateVariationScreenshots = function(campaignDetails) {
+                if(campaignDetails.variations.length <= 1) {
+                    return "";
+                }
+
+                return '<div class="variation-screenshots"><img src="' + campaignDetails.variations[0].screenshot + '"></div>';
+            }
+
         return {
             makeCampaignShortcut: function (campaignInfo) {
                 return campaignShortcutTemplate.
@@ -110,7 +120,8 @@ var vwo = function () {
                     replace("${start-btn-disabled}", status == 'running' ? 'disabled' : "").
                     replace("${pause-btn-disabled}", status == 'paused' ? 'disabled' : "").
                     replace("${archive-btn-disabled}", status == 'trashed' ? 'disabled' : "").
-                    replace("${delete-btn-disabled}", status == 'stopped' ? 'disabled' : "");
+                    replace("${delete-btn-disabled}", status == 'stopped' ? 'disabled' : "").
+                    replace("${variation-screenshots}", generateVariationScreenshots(campaignDetails));
             },
             makeCampaignStatusIconShortcut: function (id, status) {
                 return campaignStatusIconTemplate.
