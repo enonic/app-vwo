@@ -1,6 +1,7 @@
 package com.enonic.app.vwo.rest.json;
 
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -96,6 +97,7 @@ class Variation {
     private String name;
     private boolean isControl;
     private boolean isDisabled;
+    private String screenshot;
 
     public Integer getId()
     {
@@ -135,6 +137,17 @@ class Variation {
     public void setIsDisabled( final boolean isDisabled )
     {
         this.isDisabled = isDisabled;
+    }
+
+    public String getScreenshot()
+    {
+        return screenshot;
+    }
+
+    @JsonProperty("screenshots")
+    public void setScreenshot( Map<String, Object> screenshots )
+    {
+        this.screenshot = (String) screenshots.get("quick");
     }
 }
 
