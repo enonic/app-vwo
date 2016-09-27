@@ -388,7 +388,7 @@ i.icon.icon-status-trashed::before {
     float: left;
     font-size: 30px;
     margin: 0 12px;
-    line-height: 32px;
+    line-height: 38px;
 }
 
 .vwo-new-campaign-btn p {
@@ -446,6 +446,10 @@ i.icon.icon-status-trashed::before {
 
 .vwo-new-campaign-logo.conversion {
     background-position: -123px -284px;
+}
+
+.vwo-new-campaign-logo.heatmap {
+    background-position: -345px -99px;
 }
 
 .vwo-new-campaign-item {

@@ -13,6 +13,7 @@
                     <div class="vwo-new-campaign-logo ab"></div>
                     <div class="vwo-campaign-name new">A/B Test</div>
                     <div id="vwo-campaign-desc-ab" class="vwo-campaign-desc">Create multiple versions of your landing page and find which one converts the best</div>
+
                 </div>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
@@ -38,7 +39,15 @@
                     <div class="vwo-campaign-name new">Conversion Tracking</div>
                     <div id="vwo-campaign-desc-conversion" class="vwo-campaign-desc">Estimate conversion rate of your website</div>
                 </div>
-                <button id="open-new-campaign-in-vwo-btn" class="open-new-campaign-in-vwo-btn" onclick="vwo.openNewCampaignWizard()" disabled><p>Open in VWO</p></button>
+                <div class="vwo-new-campaign-item">
+                    <div class="vwo-campaign-radio">
+                        <input type="radio" name="campaignType" value="heatmap" onchange="vwo.toggleCampaignDesc()">
+                    </div>
+                    <div class="vwo-new-campaign-logo heatmap"></div>
+                    <div class="vwo-campaign-name new">Heatmap</div>
+                    <div id="vwo-campaign-desc-heatmap" class="vwo-campaign-desc">Generate a visual report of click behavior on a webpage</div>
+                </div>
+                <button id="open-new-campaign-in-vwo-btn" class="open-new-campaign-in-vwo-btn" onclick="vwo.openNewCampaignWizardAtVWO()" disabled><p>Open in VWO</p></button>
                 <button class="cancel-open-new-campaign-btn" onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>
             </div>
             <p class="campaigns-header">Campaigns</p>
