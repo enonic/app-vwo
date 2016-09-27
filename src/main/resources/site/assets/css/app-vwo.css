@@ -388,7 +388,7 @@ i.icon.icon-status-trashed::before {
     float: left;
     font-size: 30px;
     margin: 0 12px;
-    line-height: 32px;
+    line-height: 38px;
 }
 
 .vwo-new-campaign-btn p {
@@ -413,14 +413,17 @@ i.icon.icon-status-trashed::before {
     margin-left: 5px;
 }
 
-.vwo-campaign-desc {
+.vwo-campaign-wizard {
     display: none;
-    margin: 0 10px 0px 37px;
-    color: #848282;
 }
 
-.vwo-campaign-desc.expanded {
+.vwo-campaign-wizard.expanded {
     display: block;
+}
+
+.vwo-campaign-desc {
+    margin: 0 10px 0px 37px;
+    color: #848282;
 }
 
 .vwo-new-campaign-logo {
@@ -448,6 +451,10 @@ i.icon.icon-status-trashed::before {
     background-position: -123px -284px;
 }
 
+.vwo-new-campaign-logo.heatmap {
+    background-position: -345px -99px;
+}
+
 .vwo-new-campaign-item {
     margin: 15px 0px;
     padding-left: 5px;
@@ -461,7 +468,7 @@ i.icon.icon-status-trashed::before {
     height: 30px;
     width: 100px;
     cursor: pointer;
-    margin: 10px 0 0 30px;
+    margin: 0px;
 }
 
 .open-new-campaign-in-vwo-btn:disabled {
@@ -477,5 +484,27 @@ i.icon.icon-status-trashed::before {
     height: 30px;
     width: 100px;
     cursor: pointer;
-    margin: 10px 0px 0px 10px;
+    margin-left: 10px;
+}
+
+.create-new-campaign-in-vwo-btn {
+    background-color: #5E337B;
+    color: white;
+    font-size: 12px;
+    border: none;
+    height: 30px;
+    width: 100%;
+    cursor: pointer;
+    margin: 0px;
+}
+
+.button-row  {
+    text-align: center;
+    width: 100%;
+    margin: 10px 0px;
+}
+
+.create-new-campaign-in-vwo-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
 }

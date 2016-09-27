@@ -14,6 +14,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
@@ -23,7 +24,9 @@ import org.osgi.service.component.annotations.Component;
 
 import com.enonic.app.vwo.rest.json.VWOCampaignDetailsJson;
 import com.enonic.app.vwo.rest.json.VWOCampaignsJson;
+import com.enonic.app.vwo.rest.json.VWOCreateNewCampaignJson;
 import com.enonic.app.vwo.rest.json.VWOUpdateCampaignStatusJson;
+import com.enonic.app.vwo.rest.json.resource.CreateNewCampaignRequestJson;
 import com.enonic.app.vwo.rest.json.resource.GetCampaignDetailsRequestJson;
 import com.enonic.app.vwo.rest.json.resource.UpdateCampaignStatusRequestJson;
 import com.enonic.app.vwo.rest.json.resource.VWOServiceGeneralRequestJson;
@@ -61,6 +64,14 @@ public class VWOService
         return doVWOAPICall( makeUpdateCampaignStatusVWOApiRequest( json ), VWOUpdateCampaignStatusJson.class );
     }
 
+    @POST
+    @Path("createNewCampaign")
+    public Response createNewCampaign( final CreateNewCampaignRequestJson json )
+        throws IOException
+    {
+        return doVWOAPICall( makeCreateNewCampaignVWOApiRequest( json ), VWOCreateNewCampaignJson.class );
+    }
+
     private <T> Response doVWOAPICall( final HttpRequestBase httpRequest, final Class<T> responseJsonClass )
         throws IOException
     {
@@ -69,7 +80,7 @@ public class VWOService
         {
             response = HttpClients.createDefault().execute( httpRequest );
 
-            if ( response.getStatusLine().getStatusCode() == 200 )
+            if ( response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201 )
             {
                 return Response.ok( parseVWOHttpResponse( response, responseJsonClass ) ).build();
             }
@@ -120,6 +131,19 @@ public class VWOService
         httpPatch.setEntity( input );
 
         return httpPatch;
+    }
+
+    private HttpPost makeCreateNewCampaignVWOApiRequest( final CreateNewCampaignRequestJson json )
+        throws UnsupportedEncodingException
+    {
+        final HttpPost httpPost = new HttpPost( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns" );
+        httpPost.addHeader( "token", json.getTokenId() );
+
+        StringEntity input = new StringEntity( json.getNewCampaignParams() );
+        input.setContentType( "application/json" );
+        httpPost.setEntity( input );
+
+        return httpPost;
     }
 
     private String translateBadStatusCode( int code )

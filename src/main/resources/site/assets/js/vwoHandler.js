@@ -189,6 +189,24 @@ var vwo = function () {
                 return this;
             },
 
+            createNewCampaign: function (newCampaignParamsObject, createCampaignCallback, errorCallback) {
+                var callback = function (data) {
+                    if(data != null && data.length > 0) {
+                        createCampaignCallback(JSON.parse(data).result);
+                    } else {
+                        errorCallback();
+                    }
+                };
+
+                var params = {
+                    accountId: vwoConfig.accountId,
+                    tokenId: vwoConfig.tokenId,
+                    newCampaignParams: JSON.stringify(newCampaignParamsObject)
+                }
+                ajax.post("/admin/rest/vwo/createNewCampaign", params, callback, errorCallback);
+                return this;
+            },
+
             defaultServiceErrorCallback: function() {
                 vwo.hideMask();
             }
@@ -205,6 +223,46 @@ var vwo = function () {
                     vwoCampaignDetailsManager.toggleCampaignDetails(campaignId);
                 }, false);
             }
+        }
+
+        var collectWizardDataForNewCampaign = function() {
+            var newCampaignParams = {};
+            newCampaignParams[$(".wizard-campaign-type").attr("name")] = $(".wizard-campaign-type").val(); // type
+            newCampaignParams[$(".wizard-campaign-primary-url").attr("name")] = $(".wizard-campaign-primary-url").val(); // primary url
+
+            var campaignUrls = [];
+            $( ".wizard-campaign-url" ).each(function( index ) {
+                var campaignUrl = {};
+                campaignUrl.type = "url";
+                campaignUrl.value = $( this ).find("input[name='value']").val();
+                campaignUrls.push(campaignUrl);
+            });
+
+            newCampaignParams["urls"] = campaignUrls;
+
+            var campaignGoals = [];
+            $( ".wizard-campaign-goal" ).each(function( index ) {
+                var campaignGoal = {};
+                campaignGoal.name = $( this ).find("input[name='name']").val();
+                campaignGoal.type = $( this ).find("input[name='type']").val();
+
+                var urls = [];
+                $( this ).find(".wizard-campaign-goal-url").each(function( index ) {
+                    var url = {};
+                    url.type = "url";
+                    url.value = $( this ).find("input[name='value']").val();
+                    urls.push(url);
+                });
+
+                campaignGoal["urls"] = urls;
+                campaignGoals.push(campaignGoal);
+            });
+
+            newCampaignParams["goals"] = campaignGoals;
+
+            console.log(newCampaignParams);
+
+            return newCampaignParams;
         }
 
         return {
@@ -225,6 +283,20 @@ var vwo = function () {
                 };
 
                 vwoService.listCampaigns(callback, vwoService.defaultServiceErrorCallback);
+
+                return this;
+            },
+            collectWizardDataAndSendNewCampaignRequest: function () {
+
+
+                vwo.showMask();
+                var callback = function (result) {
+                    vwo.hideMask();
+                    console.log(result);
+                    vwoCampaignManager.getCampaignsAndShow();
+                };
+
+                vwoService.createNewCampaign(collectWizardDataForNewCampaign(), callback, vwoService.defaultServiceErrorCallback);
 
                 return this;
             }
@@ -362,10 +434,10 @@ var vwo = function () {
             if(!!elems) {
                 for (var j = 0; j < elems.length; j++) {
                     if (elems[j].checked) {
-                        document.getElementById("vwo-campaign-desc-" + elems[j].value).classList.add("expanded");
+                        document.getElementById("vwo-campaign-wizard-" + elems[j].value).classList.add("expanded");
                     }
                     else {
-                        document.getElementById("vwo-campaign-desc-" + elems[j].value).classList.remove("expanded");
+                        document.getElementById("vwo-campaign-wizard-" + elems[j].value).classList.remove("expanded");
                     }
                 }
                 document.getElementById("open-new-campaign-in-vwo-btn").removeAttribute("disabled");
@@ -377,7 +449,7 @@ var vwo = function () {
             document.getElementById("new-campaign-selection-list").classList.toggle("expanded");
         },
 
-        openNewCampaignWizard: function() {
+        openNewCampaignWizardAtVWO: function() {
             var elems = document.getElementsByName('campaignType');
             if(!!elems) {
                 for (var j = 0; j < elems.length; j++) {
@@ -387,7 +459,10 @@ var vwo = function () {
                     }
                 }
             }
+        },
 
+        createNewCampaignFromOurWizard: function() {
+            vwoCampaignManager.collectWizardDataAndSendNewCampaignRequest();
         }
     }
 }();
