@@ -10,22 +10,17 @@ module.exports.logWebpack = function (err, stats) {
     var statColor = stats.compilation.warnings.length < 1 ? 'green' : 'yellow';
     if (stats.compilation.errors.length > 0) {
         gulpUtil.log(gulpUtil.colors.red('Build has (' + stats.compilation.errors.length + ') error.'));
-        stats.compilation.errors.forEach(error = > {
+        stats.compilation.errors.forEach(function (error) {
             errHandler.handleWebpackErrors(error);
         statColor = 'red';
-    }
-    )
-    ;
-}
-else
-{
+        });
+    } else {
     var compileTime = prettifyTime(stats.endTime - stats.startTime);
     var options = {hash: false, timings: false, chunks: false};
     gulpUtil.log(gulpUtil.colors[statColor](stats.toString(options)));
     gulpUtil.log('Compiled with', gulpUtil.colors.cyan('webpack'), 'in', gulpUtil.colors.magenta(compileTime));
 }
-}
-;
+};
 
 module.exports.pipeError = function (callback, err) {
     errHandler.handleErrors("Error in plugin [" + (err.plugin || 'unknown' ) + "]");
