@@ -5,6 +5,9 @@ buildscript {
         maven {
             url 'http://repo.enonic.com/public'
         }
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
 
     dependencies {
@@ -12,8 +15,14 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.moowork.node" version "0.13"
+    id "com.moowork.gulp" version "0.13"
+}
+
 apply plugin: 'maven'
 apply plugin: 'com.enonic.xp.app'
+apply plugin: 'com.moowork.gulp'
 
 app {
     name = project.appName
@@ -36,6 +45,13 @@ dependencies {
     include 'org.apache.httpcomponents:httpclient:4.5.2'
 }
 
+task gulpLess( type: GulpTask, dependsOn: npmInstall ) {
+    description = 'Build less resources.'
+    inputs.files fileTree( dir: 'src/main/resources' )
+    outputs.files fileTree( dir: 'src/main/resources' )
+    args = ['css']
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -51,3 +67,5 @@ uploadArchives {
         }
     }
 }
+
+jar.dependsOn += gulpLess
