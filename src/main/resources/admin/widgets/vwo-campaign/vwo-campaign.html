@@ -26,44 +26,40 @@
                                 </select>
                             </div>
                             <div>
-                                <fieldset name="urls" class="wizard-campaign-urls">
-                                    <legend>Urls:</legend>
-                                    <fieldset class="wizard-campaign-url">
-                                        <select id="wizard-campaign-url-type" class="campaign-wizard-type" name="type" style="display: none;">
-                                            <option value="url">Url</option>
-                                            <option value="startsWith">Starts with</option>
-                                            <option value="endsWith">Ends with</option>
-                                            <option value="contains">Contains</option>
-                                            <option value="pattern">Pattern</option>
-                                            <option value="regex">Regex</option>
-                                        </select>
-                                        <input type="text" name="value"><br>
-                                    </fieldset>
-                                </fieldset>
-                            </div>
-                            <div>
                                 <label for="primaryUrl">PrimaryUrl:</label>
                                 <input id="primaryUrl" class="wizard-campaign-primary-url" type="text" name="primaryUrl"><br>
                             </div>
                             <div>
-                                <fieldset name="goals" class="wizard-campaign-goals">
-                                    <legend>Goals:</legend>
-                                    <fieldset class="wizard-campaign-goal">
-                                        Name: <input type="text" name="name"><br>
-                                        Type: <input type="text" name="type"><br>
-                                        <fieldset class="wizard-campaign-goal-urls">
-                                            <legend>Urls:</legend>
-                                            <fieldset class="wizard-campaign-goal-url">
-                                                <input type="text" name="type" value="url" style="display: none;">
-                                                <input type="text" name="value"><br>
-                                            </fieldset>
+                                <label>Urls</label>
+                                <fieldset class="wizard-campaign-url">
+                                    <select id="wizard-campaign-url-type" class="campaign-wizard-type" name="type" style="display: none;">
+                                        <option value="url">Url</option>
+                                        <option value="startsWith">Starts with</option>
+                                        <option value="endsWith">Ends with</option>
+                                        <option value="contains">Contains</option>
+                                        <option value="pattern">Pattern</option>
+                                        <option value="regex">Regex</option>
+                                    </select>
+                                    <input type="text" name="value"><br>
+                                </fieldset>
+                            </div>
+                            <div class="wizard-campaign-goals">
+                                <label class="centered">Goals</label>
+                                <fieldset class="wizard-campaign-goal">
+                                    Name: <input type="text" name="name"><br>
+                                    Type: <input type="text" name="type"><br>
+                                    <fieldset class="wizard-campaign-goal-urls">
+                                        <label>Urls:</label>
+                                        <fieldset class="wizard-campaign-goal-url">
+                                            <input type="text" name="type" value="url" style="display: none;">
+                                            <input type="text" name="value"><br>
                                         </fieldset>
                                     </fieldset>
                                 </fieldset>
                             </div>
-                            <div>
+                            <div class="wizard-campaign-stats">
+                                <label>Stats:</label>
                                 <fieldset name="stats" class="wizard-campaign-stats">
-                                    <legend>Goals:</legend>
                                     Conversion rate: <input type="text" name="conversionRate" value="0.05"><br>
                                     Certainty Mode: <input type="text" name="certaintyMode" value="0.01"><br>
                                     Expected Monthly Visitors: <input type="text" name="expectedMonthlyVisitors" value="300000"><br>

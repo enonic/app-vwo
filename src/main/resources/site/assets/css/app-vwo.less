@@ -472,6 +472,46 @@ i.icon {
       &.expanded {
         display: block;
       }
+
+      .vwo-campaign-wizard-form {
+
+        padding: 10px;
+
+        select {
+          -webkit-appearance: menulist;
+          -moz-appearance: menulist;
+
+          width: 100%;
+          height: 26px;
+          padding: 2px 4px;
+          border: 1px solid #ccc;
+
+          .glow();
+        }
+
+        input {
+          border: 1px solid #ccc;
+          line-height: 20px;
+          padding: 2px 8px;
+          width: calc(~'100% - 18px');
+
+          .glow();
+        }
+
+        .wizard-campaign-stats {
+          display: none;
+        }
+
+        > div {
+          margin-top: 10px;
+        }
+
+        label.centered {
+          text-align: center;
+          display: inline-block;
+          width: 100%;
+        }
+      }
     }
   }
 
@@ -512,6 +552,8 @@ i.icon {
     cursor: pointer;
     margin: 0px;
 
+    .glow();
+
     &:disabled {
       opacity: 0.5;
       cursor: default;
@@ -525,4 +567,26 @@ i.icon {
   margin: 10px 0px;
 }
 
+.glow(@color: #98c9f2) {
+  &:hover {
+    &:not([disabled]) {
+      border: 1px solid @color;
+    }
+    &[disabled] {
+      border: 1px solid greyscale(@color);
+    }
+  }
+  &:focus {
+    .box-shadow(0px 0px 5px @color);
+    border: 1px solid @color;
+  }
+}
+
+.box-shadow(@value1,@value2:X,...) {
+  @params: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+
+  -webkit-box-shadow: @params;
+  -moz-box-shadow: @params;
+  box-shadow: @params;
+}
 
