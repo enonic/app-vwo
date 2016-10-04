@@ -25,6 +25,7 @@ import org.osgi.service.component.annotations.Component;
 import com.enonic.app.vwo.rest.json.VWOCampaignDetailsJson;
 import com.enonic.app.vwo.rest.json.VWOCampaignsJson;
 import com.enonic.app.vwo.rest.json.VWOCreateNewCampaignJson;
+import com.enonic.app.vwo.rest.json.VWOErrorResponseJson;
 import com.enonic.app.vwo.rest.json.VWOUpdateCampaignStatusJson;
 import com.enonic.app.vwo.rest.json.resource.CreateNewCampaignRequestJson;
 import com.enonic.app.vwo.rest.json.resource.GetCampaignDetailsRequestJson;
@@ -86,13 +87,32 @@ public class VWOService
             }
             else
             {
-                return Response.status( response.getStatusLine().getStatusCode() ).entity(
-                    translateBadStatusCode( response.getStatusLine().getStatusCode() ) ).build();
+                return Response.status( response.getStatusLine().getStatusCode() ).
+                    entity( translateBadResponse( response ) ).build();
             }
         }
         finally
         {
             response.close();
+        }
+    }
+
+    private String translateBadResponse( final CloseableHttpResponse response )
+        throws IOException
+    {
+
+        if ( response.getStatusLine().getStatusCode() == 400 )
+        {
+            final HttpEntity entity = response.getEntity();
+            final VWOErrorResponseJson json = new ObjectMapper().readValue( response.getEntity().getContent(), VWOErrorResponseJson.class );
+            EntityUtils.consume( entity );
+
+            return translateBadStatusCode( response.getStatusLine().getStatusCode() ) +
+                ( json.getErrors().size() > 0 ? json.getErrors().get( 0 ).getMessage() : "" );
+        }
+        else
+        {
+            return translateBadStatusCode( response.getStatusLine().getStatusCode() );
         }
     }
 
@@ -152,7 +172,7 @@ public class VWOService
         switch ( code )
         {
             case 400:
-                badMessage = "Bad Request. Invalid json was sent.";
+                badMessage = "Bad Request. Invalid json was sent. ";
                 break;
             case 401:
                 badMessage = "Unauthorized. Your API token was missing or included in the body rather than the header.";
