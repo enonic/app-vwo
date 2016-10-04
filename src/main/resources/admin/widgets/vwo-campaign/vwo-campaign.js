@@ -7,6 +7,10 @@ function handleGet(req) {
     var view = resolve('vwo-campaign.html');
     var contentId = req.params.contentId;
 
+    var content = contentLib.get({
+        key: contentId
+    });
+
     var siteConfig = contentLib.getSiteConfig({ // get nearest site config
         key: contentId,
         applicationKey: app.name
@@ -22,6 +26,7 @@ function handleGet(req) {
         domain: !!siteConfig && !!siteConfig.domain ? siteConfig.domain : undefined,
         accountId: !!siteConfig && !!siteConfig.accountId ? siteConfig.accountId : "current",
         tokenId: !!siteConfig && !!siteConfig.tokenId ? siteConfig.tokenId : undefined,
+        contentPath: isSite(content) ? "" : content._path,
         uid: uid
     }
 
@@ -29,6 +34,14 @@ function handleGet(req) {
         contentType: 'text/html',
         body: mustacheLib.render(view, params)
     };
+}
+
+function isSite(content) {
+    if (content.type == "portal:site") {
+        return true;
+    }
+
+    return false;
 }
 
 exports.get = handleGet;
