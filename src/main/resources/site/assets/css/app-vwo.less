@@ -261,6 +261,7 @@
     padding: 0px 6px 5px;
     margin-top: 10px;
     color: #333;
+    text-align: left;
   }
 
   .new-campaigns-header {
@@ -383,22 +384,21 @@
     font-size: 12px;
     border: none;
     height: 30px;
-    width: 100%;
+    width: 120px;
     cursor: pointer;
     margin-top: 10px;
     margin-bottom: 15px;
   }
 
-  .vwo-new-campaign-btn, .close-new-campaign-section-btn {
-
+  .vwo-new-campaign-btn {
     background-color: #5E337B;
     color: white;
     font-size: 14px;
     border: none;
-    height: 30px;
-    width: calc(~'100% - 10px');
+    height: 40px;
+    width: 180px;
     cursor: pointer;
-    margin: 10px 6px 10px 5px;
+    margin: 25px auto 10px auto;
     display: none;
 
     p {
@@ -406,7 +406,7 @@
     }
 
     &.expanded {
-      display: inline-block;
+      display: block;
     }
   }
 
@@ -540,7 +540,7 @@
 
             &.wizard-campaign-goal, &.wizard-campaign-section, &.wizard-campaign-variations {
               padding: 10px;
-              border: 2px groove threedface;
+              border: 1px solid lightgray;
 
               legend {
                 padding: 0px 2px;
