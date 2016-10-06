@@ -1,47 +1,432 @@
-@font-face {
-  font-family: 'icomoon';
-  src: url('../icons/fonts/icomoon.eot');
-  src: url('../icons/fonts/icomoon.eot') format('embedded-opentype'),
-  url('../icons/fonts/icomoon.woff') format('woff'),
-  url('../icons/fonts/icomoon.ttf') format('truetype'),
-  url('../icons/fonts/icomoon.svg') format('svg');
-}
-
-.no-error {
-  position: relative;
-  min-height: 80px;
-}
-
-.vwo-campaign {
-  border-bottom: 2px solid #D9DDE1;
-
-  &:first-child {
-    border-top: 2px solid #D9DDE1;
+.vwo-widget {
+  @font-face {
+    font-family: 'icomoon';
+    src: url('../icons/fonts/icomoon.eot');
+    src: url('../icons/fonts/icomoon.eot') format('embedded-opentype'),
+    url('../icons/fonts/icomoon.woff') format('woff'),
+    url('../icons/fonts/icomoon.ttf') format('truetype'),
+    url('../icons/fonts/icomoon.svg') format('svg');
   }
 
-  &.expanded {
-    background: #EEEFF1;
-  }
-
-  .vwo-campaign-info {
+  #campaigns-list.empty {
+    font-size: 16px;
+    font-family: "Open Sans", sans-serif;
+    color: lightgray;
+    line-height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
     width: 100%;
-    position: relative;
-    cursor: pointer;
-    padding-bottom: 10px;
 
-    &:hover {
+    &::before {
+      content: 'No active campaigns found';
+    }
+  }
+
+  .no-error {
+    position: relative;
+    min-height: 80px;
+  }
+
+  .vwo-campaign {
+    border-bottom: 2px solid #D9DDE1;
+
+    &:first-child {
+      border-top: 2px solid #D9DDE1;
+    }
+
+    &.expanded {
       background: #EEEFF1;
     }
 
-    .vwo-campaign-title {
-      text-align: left;
-      margin-top: 10px;
-      display: inline-block;
-      width: calc(~'100% - 95px');
-      margin-right: 5px;
+    .vwo-campaign-info {
+      width: 100%;
+      position: relative;
+      cursor: pointer;
+      padding-bottom: 10px;
 
-      .vwo-campaign-name {
-        display: block;
+      &:hover {
+        background: #EEEFF1;
+      }
+
+      .vwo-campaign-title {
+        text-align: left;
+        margin-top: 10px;
+        display: inline-block;
+        width: calc(~'100% - 95px');
+        margin-right: 5px;
+
+        .vwo-campaign-name {
+          display: block;
+          font-size: 14px;
+          white-space: pre;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          color: #333;
+        }
+
+        .vwo-campaign-url {
+          color: gray;
+          white-space: pre;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: block;
+        }
+      }
+
+      .vwo-campaign-logo {
+        background-size: 400px;
+        background-repeat: no-repeat;
+        float: left;
+        background-image: url('../images/sprite.png');
+        width: 60px !important;
+        height: 60px !important;
+        transform: scale(0.6);
+
+        &.campaign-logo-ab {
+          background-position: -60px -61px;
+        }
+
+        &.campaign-logo-split {
+          background-position: -122px -121px;
+        }
+
+        &.campaign-logo-multivariate {
+          background-position: -183px -61px;
+        }
+
+        &.campaign-logo-heatmap {
+          background-position: -122px -61px;
+        }
+
+        &.campaign-logo-conversion {
+          background-position: -183px -121px;
+        }
+      }
+
+      .vwo-campaign-status {
+
+        background: #788290;
+        height: 20px;
+        width: 20px;
+        display: inline-block;
+        text-align: center;
+        position: relative;
+        margin-bottom: 6px;
+
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -ms-border-radius: 3px;
+        -o-border-radius: 3px;
+        border-radius: 3px;
+
+        &.not_started {
+          background: #788290;
+        }
+
+        &.running {
+          background: #47B178;
+        }
+
+        &.paused {
+          background: #EB5055;
+        }
+
+        &.stopped {
+          background: #EB5055;
+        }
+      }
+    }
+
+    .vwo-campaign-details {
+      overflow: hidden;
+      position: relative;
+      margin: 10px;
+      transition: all 0.5s linear;
+      -moz-transition: all 0.5s linear;
+      -webkit-transition: all 0.5s linear;
+      -o-transition: all 0.5s linear;
+
+      &.hidden {
+        display: none;
+      }
+
+      table {
+        text-align: center;
+        width: 100%;
+      }
+
+      .label {
+        height: 35px;
+        vertical-align: top;
+      }
+
+      .value {
+        font-weight: bold;
+        font-size: 14px;
+
+        &.details-campaign-status {
+          text-transform: capitalize;
+          cursor: pointer;
+        }
+      }
+
+      .update-campaign-buttons-row {
+        background-color: white;
+        height: 30px;
+        width: 100%;
+        margin-bottom: 20px;
+        line-height: 30px;
+
+        .btn {
+          display: inline-block;
+          border: 1px solid #D9DDE1;
+          box-sizing: border-box;
+          width: 25%;
+          height: 100%;
+          text-transform: uppercase;
+          position: relative;
+          font-size: 12px;
+          text-align: center;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          cursor: pointer;
+
+          &.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            cursor: default;
+          }
+
+          &:hover {
+            background-color: #ccc;
+          }
+
+          &:active {
+            background-color: #969090;
+          }
+
+          &.start-btn i::before {
+            content: '\e385';
+            font-family: 'icomoon' !important;
+          }
+
+          &.pause-btn i::before {
+            content: '\e386';
+          }
+
+          &.archive-btn i::before {
+            content: '\e12d';
+          }
+
+          &.delete-btn i::before {
+            content: '\e251';
+          }
+        }
+
+        .label, i.icon {
+          display: inline-block;
+        }
+
+        i.icon {
+          vertical-align: inherit;
+          font-size: 16px;
+          height: 100%;
+          position: relative;
+          top: 2px;
+          text-align: right;
+          width: auto;
+          margin: 0px 5px;
+          white-space: pre;
+          text-overflow: ellipsis;
+        }
+
+        span.label {
+          min-width: 50px;
+        }
+      }
+
+      .variation-screenshots {
+        margin-bottom: 15px;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .campaigns-header {
+    font-size: 16px;
+    padding: 0px 6px 5px;
+    margin-top: 10px;
+    color: #333;
+  }
+
+  .new-campaigns-header {
+    color: #333;
+    font-size: 14px;
+    padding-left: 6px;
+  }
+
+  i.icon {
+    height: 10px;
+    width: 10px;
+    vertical-align: middle;
+    display: block;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+
+    &.icon-status-not_started {
+      border-radius: 50%;
+      border: 3px solid #FFF;
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+
+    &.icon-status-running {
+      color: white;
+      font-size: 20px;
+      position: absolute;
+
+      &::before {
+        content: '\e3b5';
+      }
+    }
+
+    &.icon-status-paused {
+      color: white;
+      position: absolute;
+      font-size: 12px;
+      top: 4px;
+      left: 4px;
+
+      &::before {
+        content: '\e386';
+      }
+    }
+
+    &.icon-status-stopped {
+      height: 8px !important;
+      width: 8px !important;
+      background: white;
+      margin: 6px;
+      border-radius: 1px;
+    }
+
+    &.icon-status-trashed {
+      color: white;
+      font-size: 20px;
+      position: relative;
+
+      &::before {
+        content: '\e251';
+        font-size: 14px;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+      }
+    }
+  }
+
+  .vwo-load-mask {
+
+    background-color: white;
+    position: absolute;
+    -webkit-opacity: 0.5;
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    .mask-splash {
+      position: relative;
+      padding: 10px;
+      left: calc(~'50% - 24px');
+      top: calc(~'50% - 24px');
+
+      .spinner {
+        font-family: 'icomoon' !important;
+        position: static;
+        float: left;
+        top: 0;
+        left: 0;
+        font-family: 'xp-admin-font-icon';
+        font-size: 48px;
+        line-height: 1em;
+        width: 48px;
+        height: 48px;
+
+        -webkit-animation: rotate360 0.5s 0s linear infinite;
+        animation: rotate360 0.5s 0s linear infinite;
+        -moz-animation: rotate360 0.5s 0s linear infinite;
+        -ms-animation: rotate360 0.5s 0s linear infinite;
+
+        &::before {
+          content: '\e1a8';
+        }
+      }
+    }
+  }
+
+  .open-campaign-in-vwo-btn {
+    display: block;
+    background-color: #5E337B;
+    color: white;
+    font-size: 12px;
+    border: none;
+    height: 30px;
+    width: 120px;
+    cursor: pointer;
+    margin: 10px auto 15px auto;
+  }
+
+  .vwo-new-campaign-btn {
+    background-color: #5E337B;
+    color: white;
+    font-size: 14px;
+    border: none;
+    height: 35px;
+    width: 160px;
+    cursor: pointer;
+    margin: 20px auto 10px auto;
+    display: none;
+
+    p {
+      text-align: center;
+    }
+
+    &.expanded {
+      display: block;
+    }
+  }
+
+  .new-campaign-selection-list {
+    margin-top: 20px;
+    display: none;
+
+    &.expanded {
+      display: block;
+    }
+
+    .vwo-new-campaign-item {
+      margin: 15px 0px 0px 0px;
+      padding-left: 5px;
+
+      .vwo-new-campaign-name {
+        display: inline-block;
+        line-height: 32px;
+        width: calc(~'100% - 94px');
+        margin-left: 5px;
+
         font-size: 14px;
         white-space: pre;
         text-overflow: ellipsis;
@@ -49,544 +434,178 @@
         color: #333;
       }
 
-      .vwo-campaign-url {
-        color: gray;
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        display: block;
-      }
-    }
-
-    .vwo-campaign-logo {
-      background-size: 400px;
-      background-repeat: no-repeat;
-      float: left;
-      background-image: url('../images/sprite.png');
-      width: 60px !important;
-      height: 60px !important;
-      transform: scale(0.6);
-
-      &.campaign-logo-ab {
-        background-position: -60px -61px;
-      }
-
-      &.campaign-logo-split {
-        background-position: -122px -121px;
-      }
-
-      &.campaign-logo-multivariate {
-        background-position: -183px -61px;
-      }
-
-      &.campaign-logo-heatmap {
-        background-position: -122px -61px;
-      }
-
-      &.campaign-logo-conversion {
-        background-position: -183px -121px;
-      }
-    }
-
-    .vwo-campaign-status {
-
-      background: #788290;
-      height: 20px;
-      width: 20px;
-      display: inline-block;
-      text-align: center;
-      position: relative;
-      margin-bottom: 6px;
-
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      -ms-border-radius: 3px;
-      -o-border-radius: 3px;
-      border-radius: 3px;
-
-      &.not_started {
-        background: #788290;
-      }
-
-      &.running {
-        background: #47B178;
-      }
-
-      &.paused {
-        background: #EB5055;
-      }
-
-      &.stopped {
-        background: #EB5055;
-      }
-    }
-  }
-
-  .vwo-campaign-details {
-    overflow: hidden;
-    position: relative;
-    margin: 10px;
-    transition: all 0.5s linear;
-    -moz-transition: all 0.5s linear;
-    -webkit-transition: all 0.5s linear;
-    -o-transition: all 0.5s linear;
-
-    &.hidden {
-      display: none;
-    }
-
-    table {
-      text-align: center;
-      width: 100%;
-    }
-
-    .label {
-      height: 35px;
-      vertical-align: top;
-    }
-
-    .value {
-      font-weight: bold;
-      font-size: 14px;
-
-      &.details-campaign-status {
-        text-transform: capitalize;
-        cursor: pointer;
-      }
-    }
-
-    .update-campaign-buttons-row {
-      background-color: white;
-      height: 30px;
-      width: 100%;
-      margin-bottom: 20px;
-      line-height: 30px;
-
-      .btn {
+      .vwo-campaign-radio {
+        float: left;
         display: inline-block;
-        border: 1px solid #D9DDE1;
-        box-sizing: border-box;
-        width: 25%;
-        height: 100%;
-        text-transform: uppercase;
-        position: relative;
-        font-size: 12px;
-        text-align: center;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        cursor: pointer;
-
-        &.disabled {
-          opacity: 0.5;
-          pointer-events: none;
-          cursor: default;
-        }
-
-        &:hover {
-          background-color: #ccc;
-        }
-
-        &:active {
-          background-color: #969090;
-        }
-
-        &.start-btn i::before {
-          content: '\e385';
-          font-family: 'icomoon' !important;
-        }
-
-        &.pause-btn i::before {
-          content: '\e386';
-        }
-
-        &.archive-btn i::before {
-          content: '\e12d';
-        }
-
-        &.delete-btn i::before {
-          content: '\e251';
-        }
-      }
-
-      .label, i.icon {
-        display: inline-block;
-      }
-
-      i.icon {
-        vertical-align: inherit;
-        font-size: 16px;
-        height: 100%;
-        position: relative;
-        top: 2px;
-        text-align: right;
-        width: auto;
-        margin: 0px 5px;
-        white-space: pre;
-        text-overflow: ellipsis;
-      }
-
-      span.label {
-        min-width: 50px;
-      }
-    }
-
-    .variation-screenshots {
-      margin-bottom: 15px;
-
-      img {
-        width: 100%;
-      }
-    }
-  }
-}
-
-.campaigns-header {
-  font-size: 16px;
-  padding: 10px 6px 5px;
-  margin-top: 10px;
-  color: #333;
-}
-
-i.icon {
-  height: 10px;
-  width: 10px;
-  vertical-align: middle;
-  display: block;
-
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box;
-
-  &.icon-status-not_started {
-    border-radius: 50%;
-    border: 3px solid #FFF;
-    margin-left: 5px;
-    margin-top: 5px;
-  }
-
-  &.icon-status-running {
-    color: white;
-    font-size: 20px;
-    position: absolute;
-
-    &::before {
-      content: '\e3b5';
-    }
-  }
-
-  &.icon-status-paused {
-    color: white;
-    position: absolute;
-    font-size: 12px;
-    top: 4px;
-    left: 4px;
-
-    &::before {
-      content: '\e386';
-    }
-  }
-
-  &.icon-status-stopped {
-    height: 8px !important;
-    width: 8px !important;
-    background: white;
-    margin: 6px;
-    border-radius: 1px;
-  }
-
-  &.icon-status-trashed {
-    color: white;
-    font-size: 20px;
-    position: relative;
-
-    &::before {
-      content: '\e251';
-      font-size: 14px;
-      position: absolute;
-      top: 3px;
-      left: 3px;
-    }
-  }
-}
-
-.vwo-load-mask {
-
-  background-color: white;
-  position: absolute;
-  -webkit-opacity: 0.5;
-  -moz-opacity: 0.5;
-  opacity: 0.5;
-
-  top: 0;
-  width: 100%;
-  height: 100%;
-
-  display: none;
-
-  .mask-splash {
-    position: relative;
-    padding: 10px;
-    left: calc(~'50% - 24px');
-    top: calc(~'50% - 24px');
-
-    .spinner {
-      position: static;
-      float: left;
-      top: 0;
-      left: 0;
-      font-family: 'xp-admin-font-icon';
-      font-size: 48px;
-      line-height: 1em;
-      width: 48px;
-      height: 48px;
-
-      -webkit-animation: rotate360 0.5s 0s linear infinite;
-      animation: rotate360 0.5s 0s linear infinite;
-      -moz-animation: rotate360 0.5s 0s linear infinite;
-      -ms-animation: rotate360 0.5s 0s linear infinite;
-
-      &::before {
-        content: "\e007";
-      }
-    }
-  }
-}
-
-.open-campaign-in-vwo-btn {
-  background-color: #5E337B;
-  color: white;
-  font-size: 12px;
-  border: none;
-  height: 30px;
-  width: 100%;
-  cursor: pointer;
-  margin-top: 10px;
-  margin-bottom: 15px;
-}
-
-.vwo-new-campaign-btn {
-
-  background-color: #5E337B;
-  color: white;
-  font-size: 16px;
-  border: none;
-  height: 40px;
-  width: 180px;
-  cursor: pointer;
-  margin-top: 25px;
-  display: none;
-
-  em {
-    float: left;
-    font-size: 30px;
-    margin: 0 12px;
-    line-height: 38px;
-  }
-
-  p {
-    text-align: left;
-  }
-
-  &.expanded {
-    display: inline-block;
-    line-height: 38px;
-  }
-}
-
-.new-campaign-selection-list {
-  margin-top: 20px;
-  padding-bottom: 15px;
-  display: none;
-
-  &.expanded {
-    display: block;
-  }
-
-  .vwo-new-campaign-item {
-    margin: 15px 0px;
-    padding-left: 5px;
-
-    .vwo-new-campaign-name {
-      display: inline-block;
-      line-height: 32px;
-      width: calc(~'100% - 94px');
-      margin-left: 5px;
-
-      font-size: 14px;
-      white-space: pre;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      color: #333;
-    }
-
-    .vwo-campaign-radio {
-      float: left;
-      display: inline-block;
-      padding: 3px 15px 0px 8px;
-
-      input {
-        height: 26px;
-        cursor: pointer;
-      }
-    }
-
-    .vwo-campaign-desc {
-      margin: 0 10px 0px 37px;
-      color: #848282;
-    }
-
-    .vwo-new-campaign-logo {
-      background-size: 400px;
-      background-repeat: no-repeat;
-      background-image: url('../images/sprite.png');
-      width: 32px !important;
-      height: 32px !important;
-      display: inline-block;
-
-      &.ab {
-        background-position: -345px -67px;
-      }
-
-      &.multivariate {
-        background-position: -290px -284px;
-      }
-
-      &.split {
-        background-position: -243px -203px;
-      }
-
-      &.conversion {
-        background-position: -123px -284px;
-      }
-
-      &.heatmap {
-        background-position: -345px -99px;
-      }
-    }
-
-    .vwo-campaign-wizard {
-      display: none;
-
-      &.expanded {
-        display: block;
-      }
-
-      .vwo-campaign-wizard-form {
-
-        padding: 10px;
-
-        select {
-          -webkit-appearance: menulist;
-          -moz-appearance: menulist;
-
-          width: 100%;
-          height: 26px;
-          padding: 2px 4px;
-          border: 1px solid #ccc;
-
-          .glow();
-        }
+        padding: 3px 15px 0px 8px;
 
         input {
-          border: 1px solid #ccc;
-          line-height: 20px;
-          padding: 2px 8px;
-          width: calc(~'100% - 18px');
+          height: 26px;
+          cursor: pointer;
+        }
+      }
 
-          .glow();
+      .vwo-campaign-desc {
+        margin: 0 10px 0px 37px;
+        color: #848282;
+      }
+
+      .vwo-new-campaign-logo {
+        background-size: 400px;
+        background-repeat: no-repeat;
+        background-image: url('../images/sprite.png');
+        width: 32px !important;
+        height: 32px !important;
+        display: inline-block;
+
+        &.ab {
+          background-position: -345px -67px;
         }
 
-        .wizard-campaign-stats {
-          display: none;
+        &.multivariate {
+          background-position: -290px -284px;
         }
 
-        > div {
-          margin-top: 10px;
+        &.split {
+          background-position: -243px -203px;
         }
 
-        label.centered {
-          text-align: center;
-          display: inline-block;
-          width: 100%;
+        &.conversion {
+          background-position: -123px -284px;
         }
+
+        &.heatmap {
+          background-position: -345px -99px;
+        }
+      }
+
+      .vwo-campaign-wizard {
+        display: none;
+
+        &.expanded {
+          display: block;
+        }
+
+        .vwo-campaign-wizard-form {
+
+          padding: 10px;
+
+          select {
+            -webkit-appearance: menulist;
+            -moz-appearance: menulist;
+
+            width: 100%;
+            height: 26px;
+            padding: 2px 4px;
+            border: 1px solid #ccc;
+
+            .glow();
+          }
+
+          input {
+            border: 1px solid #ccc;
+            line-height: 20px;
+            padding: 2px 8px;
+            width: calc(~'100% - 18px');
+
+            .glow();
+          }
+
+          .wizard-campaign-stats {
+            display: none;
+          }
+
+          > div {
+            margin-top: 10px;
+          }
+
+          .button-row {
+            text-align: center;
+            width: 100%;
+            margin: 30px 0px 10px 0px;
+          }
+
+          label.centered {
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+          }
+
+          fieldset {
+
+            input, select {
+              margin-bottom: 10px;
+            }
+
+            &.wizard-campaign-goal, &.wizard-campaign-section, &.wizard-campaign-variations {
+              padding: 10px;
+              border: 1px solid lightgray;
+
+              legend {
+                padding: 0px 2px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .cancel-open-new-campaign-btn {
+      background-color: gray;
+      color: white;
+      font-size: 12px;
+      border: none;
+      height: 30px;
+      width: 100px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .create-new-campaign-in-vwo-btn {
+      background-color: #5E337B;
+      color: white;
+      font-size: 12px;
+      border: none;
+      height: 30px;
+      width: 100px;
+      cursor: pointer;
+      margin: 0px;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: default;
       }
     }
   }
 
-  .open-new-campaign-in-vwo-btn {
-    background-color: #5E337B;
-    color: white;
-    font-size: 12px;
-    border: none;
-    height: 30px;
-    width: 100px;
-    cursor: pointer;
-    margin: 0px;
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: default;
-    }
-  }
-
-  .cancel-open-new-campaign-btn {
-    background-color: gray;
-    color: white;
-    font-size: 12px;
-    border: none;
-    height: 30px;
-    width: 100px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-
-  .create-new-campaign-in-vwo-btn {
-    background-color: #5E337B;
-    color: white;
-    font-size: 12px;
-    border: none;
-    height: 30px;
-    width: 100%;
-    cursor: pointer;
-    margin: 0px;
-
+  button {
     .glow();
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: default;
-    }
   }
-}
 
-.button-row {
-  text-align: center;
-  width: 100%;
-  margin: 10px 0px;
-}
+  .hidden {
+    display: none;
+  }
 
-.glow(@color: #98c9f2) {
-  &:hover {
-    &:not([disabled]) {
+  .glow(@color: #98c9f2) {
+    &:hover {
+      &:not([disabled]) {
+        border: 1px solid @color;
+      }
+      &[disabled] {
+        //  border: 1px solid greyscale(@color);
+      }
+    }
+    &:focus {
+      .box-shadow(0px 0px 5px @color);
       border: 1px solid @color;
     }
-    &[disabled] {
-      border: 1px solid greyscale(@color);
-    }
   }
-  &:focus {
-    .box-shadow(0px 0px 5px @color);
-    border: 1px solid @color;
+
+  .box-shadow(@value1,@value2:X,...) {
+    @params: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
+
+    -webkit-box-shadow: @params;
+    -moz-box-shadow: @params;
+    box-shadow: @params;
   }
 }
-
-.box-shadow(@value1,@value2:X,...) {
-  @params: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
-
-  -webkit-box-shadow: @params;
-  -moz-box-shadow: @params;
-  box-shadow: @params;
-}
-

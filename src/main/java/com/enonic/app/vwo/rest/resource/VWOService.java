@@ -19,12 +19,14 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.osgi.service.component.annotations.Component;
 
 import com.enonic.app.vwo.rest.json.VWOCampaignDetailsJson;
 import com.enonic.app.vwo.rest.json.VWOCampaignsJson;
 import com.enonic.app.vwo.rest.json.VWOCreateNewCampaignJson;
+import com.enonic.app.vwo.rest.json.VWOErrorResponseJson;
 import com.enonic.app.vwo.rest.json.VWOUpdateCampaignStatusJson;
 import com.enonic.app.vwo.rest.json.resource.CreateNewCampaignRequestJson;
 import com.enonic.app.vwo.rest.json.resource.GetCampaignDetailsRequestJson;
@@ -86,8 +88,8 @@ public class VWOService
             }
             else
             {
-                return Response.status( response.getStatusLine().getStatusCode() ).entity(
-                    translateBadStatusCode( response.getStatusLine().getStatusCode() ) ).build();
+                return Response.status( response.getStatusLine().getStatusCode() ).
+                    entity( translateBadResponse( response ) ).build();
             }
         }
         finally
@@ -96,12 +98,48 @@ public class VWOService
         }
     }
 
+    private String translateBadResponse( final CloseableHttpResponse response )
+        throws IOException
+    {
+
+        if ( response.getStatusLine().getStatusCode() == 400 )
+        {
+            final HttpEntity entity = response.getEntity();
+            final VWOErrorResponseJson json = new ObjectMapper().readValue( response.getEntity().getContent(), VWOErrorResponseJson.class );
+            EntityUtils.consume( entity );
+
+            return translateBadStatusCode( response.getStatusLine().getStatusCode() ) +
+                ( json.getErrors().size() > 0 ? json.getErrors().get( 0 ).getMessage() : "" );
+        }
+        else
+        {
+            return translateBadStatusCode( response.getStatusLine().getStatusCode() );
+        }
+    }
+
     private <T> T parseVWOHttpResponse( final CloseableHttpResponse response, final Class<T> clazz )
         throws IOException
     {
         final HttpEntity entity = response.getEntity();
-        final T result = new ObjectMapper().readValue( response.getEntity().getContent(), clazz );
-        EntityUtils.consume( entity );
+        T result = null;
+        try
+        {
+            result = new ObjectMapper().readValue( entity.getContent(), clazz );
+        }
+        catch ( final JsonMappingException e )
+        {
+            try
+            {
+                return clazz.newInstance();
+            }
+            catch ( final Exception exc )
+            {
+            }
+        }
+        finally
+        {
+            EntityUtils.consume( entity );
+        }
         return result;
     }
 
@@ -152,7 +190,7 @@ public class VWOService
         switch ( code )
         {
             case 400:
-                badMessage = "Bad Request. Invalid json was sent.";
+                badMessage = "Bad Request. Invalid json was sent. ";
                 break;
             case 401:
                 badMessage = "Unauthorized. Your API token was missing or included in the body rather than the header.";

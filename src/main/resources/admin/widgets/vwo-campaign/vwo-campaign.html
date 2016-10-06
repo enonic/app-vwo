@@ -2,80 +2,25 @@
 <div>
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
     {{#completeSetup}}
-    <div class="no-error">
-        <p id="vwo-authenticated_{{uid}}" style="text-align: center;">
-            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><em>+</em><p>New Campaign</p></button>
+    <div class="no-error vwo-widget">
+        <div id="vwo-authenticated_{{uid}}">
+            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><p><em>+</em>&nbsp;&nbsp;New
+                Campaign</p></button>
             <div id="new-campaign-selection-list" class="new-campaign-selection-list">
+                <p class="new-campaigns-header">Select campaign type</p>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="ab" onchange="vwo.toggleCampaignDesc()">
+                        <input type="radio" name="campaignType" value="ab" onchange="vwo.toggleCampaignWizard()">
                     </div>
                     <div class="vwo-new-campaign-logo ab"></div>
                     <div class="vwo-new-campaign-name">A/B Test</div>
                     <div id="vwo-campaign-wizard-ab" class="vwo-campaign-wizard">
                         <div class="vwo-campaign-desc">Create multiple versions of your landing page and find which one converts the best</div>
-                        <form class="vwo-campaign-wizard-form">
-                            <div>
-                                <label for="wizard-campaign-type">Type:</label>
-                                <select id="wizard-campaign-type" class="wizard-campaign-type" name="type">
-                                    <option value="ab">AB</option>
-                                    <option value="multivariate">Multivariate</option>
-                                    <option value="heatmap">Heatmap</option>
-                                    <option value="conversion">Conversion</option>
-                                    <option value="split">Split</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="primaryUrl">PrimaryUrl:</label>
-                                <input id="primaryUrl" class="wizard-campaign-primary-url" type="text" name="primaryUrl"><br>
-                            </div>
-                            <div>
-                                <label>Urls</label>
-                                <fieldset class="wizard-campaign-url">
-                                    <select id="wizard-campaign-url-type" class="campaign-wizard-type" name="type" style="display: none;">
-                                        <option value="url">Url</option>
-                                        <option value="startsWith">Starts with</option>
-                                        <option value="endsWith">Ends with</option>
-                                        <option value="contains">Contains</option>
-                                        <option value="pattern">Pattern</option>
-                                        <option value="regex">Regex</option>
-                                    </select>
-                                    <input type="text" name="value"><br>
-                                </fieldset>
-                            </div>
-                            <div class="wizard-campaign-goals">
-                                <label class="centered">Goals</label>
-                                <fieldset class="wizard-campaign-goal">
-                                    Name: <input type="text" name="name"><br>
-                                    Type: <input type="text" name="type"><br>
-                                    <fieldset class="wizard-campaign-goal-urls">
-                                        <label>Urls:</label>
-                                        <fieldset class="wizard-campaign-goal-url">
-                                            <input type="text" name="type" value="url" style="display: none;">
-                                            <input type="text" name="value"><br>
-                                        </fieldset>
-                                    </fieldset>
-                                </fieldset>
-                            </div>
-                            <div class="wizard-campaign-stats">
-                                <label>Stats:</label>
-                                <fieldset name="stats" class="wizard-campaign-stats">
-                                    Conversion rate: <input type="text" name="conversionRate" value="0.05"><br>
-                                    Certainty Mode: <input type="text" name="certaintyMode" value="0.01"><br>
-                                    Expected Monthly Visitors: <input type="text" name="expectedMonthlyVisitors" value="300000"><br>
-                                    Expected Revenue Per Visitor: <input type="text" name="expectedRevenuePerVisitor" value="2"><br>
-                                    Lift In Conversion Rate: <input type="text" name="liftInConversionRate" value="0.05"><br>
-                                </fieldset>
-                            </div>
-                            <div class="button-row">
-                                <button id="create-new-campaign-in-vwo-btn" class="create-new-campaign-in-vwo-btn" onclick="vwo.createNewCampaignFromOurWizard()"><p>Create</p></button>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="multivariate" onchange="vwo.toggleCampaignDesc()">
+                        <input type="radio" name="campaignType" value="multivariate" onchange="vwo.toggleCampaignWizard()">
                     </div>
                     <div class="vwo-new-campaign-logo multivariate"></div>
                     <div class="vwo-new-campaign-name">Multivariate Test</div>
@@ -85,7 +30,7 @@
                 </div>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="split" onchange="vwo.toggleCampaignDesc()">
+                        <input type="radio" name="campaignType" value="split" onchange="vwo.toggleCampaignWizard()">
                     </div>
                     <div class="vwo-new-campaign-logo split"></div>
                     <div class="vwo-new-campaign-name">Split URL Test</div>
@@ -95,7 +40,7 @@
                 </div>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="conversion" onchange="vwo.toggleCampaignDesc()">
+                        <input type="radio" name="campaignType" value="conversion" onchange="vwo.toggleCampaignWizard()">
                     </div>
                     <div class="vwo-new-campaign-logo conversion"></div>
                     <div class="vwo-new-campaign-name">Conversion Tracking</div>
@@ -105,17 +50,13 @@
                 </div>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="heatmap" onchange="vwo.toggleCampaignDesc()">
+                        <input type="radio" name="campaignType" value="heatmap" onchange="vwo.toggleCampaignWizard()">
                     </div>
                     <div class="vwo-new-campaign-logo heatmap"></div>
                     <div class="vwo-new-campaign-name">Heatmap</div>
                     <div id="vwo-campaign-wizard-heatmap" class="vwo-campaign-wizard">
                         <div class="vwo-campaign-desc">Generate a visual report of click behavior on a webpage</div>
                     </div>
-                </div>
-                <div class="button-row">
-                    <button id="open-new-campaign-in-vwo-btn" class="open-new-campaign-in-vwo-btn" onclick="vwo.openNewCampaignWizardAtVWO()" disabled><p>Open in VWO</p></button>
-                    <button class="cancel-open-new-campaign-btn" onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>
                 </div>
             </div>
             <p class="campaigns-header">Campaigns</p>
@@ -130,7 +71,7 @@
     </div>
     {{/completeSetup}}
     {{^completeSetup}}
-    <div class="error">Please set up token and domain</div>
+    <div class="error">Please set up token, account id and domain</div>
     {{/completeSetup}}
 
     {{#completeSetup}}
@@ -139,7 +80,8 @@
                     tokenId: "{{tokenId}}",
                     accountId: "{{ accountId }}",
                     domain: "{{domain}}"
-                };
+            };
+            var contentPath = "{{contentPath}}";
         </script>
         <script src="{{jqueryMinJs}}" type="text/javascript"></script>
         <script src="{{vwoJsUrl}}" type="text/javascript"></script>
