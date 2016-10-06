@@ -14,16 +14,21 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.osgi.service.component.annotations.Component;
 
 import com.enonic.app.vwo.rest.json.VWOCampaignDetailsJson;
 import com.enonic.app.vwo.rest.json.VWOCampaignsJson;
+import com.enonic.app.vwo.rest.json.VWOCreateNewCampaignJson;
+import com.enonic.app.vwo.rest.json.VWOErrorResponseJson;
 import com.enonic.app.vwo.rest.json.VWOUpdateCampaignStatusJson;
+import com.enonic.app.vwo.rest.json.resource.CreateNewCampaignRequestJson;
 import com.enonic.app.vwo.rest.json.resource.GetCampaignDetailsRequestJson;
 import com.enonic.app.vwo.rest.json.resource.UpdateCampaignStatusRequestJson;
 import com.enonic.app.vwo.rest.json.resource.VWOServiceGeneralRequestJson;
@@ -61,6 +66,14 @@ public class VWOService
         return doVWOAPICall( makeUpdateCampaignStatusVWOApiRequest( json ), VWOUpdateCampaignStatusJson.class );
     }
 
+    @POST
+    @Path("createNewCampaign")
+    public Response createNewCampaign( final CreateNewCampaignRequestJson json )
+        throws IOException
+    {
+        return doVWOAPICall( makeCreateNewCampaignVWOApiRequest( json ), VWOCreateNewCampaignJson.class );
+    }
+
     private <T> Response doVWOAPICall( final HttpRequestBase httpRequest, final Class<T> responseJsonClass )
         throws IOException
     {
@@ -69,14 +82,14 @@ public class VWOService
         {
             response = HttpClients.createDefault().execute( httpRequest );
 
-            if ( response.getStatusLine().getStatusCode() == 200 )
+            if ( response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201 )
             {
                 return Response.ok( parseVWOHttpResponse( response, responseJsonClass ) ).build();
             }
             else
             {
-                return Response.status( response.getStatusLine().getStatusCode() ).entity(
-                    translateBadStatusCode( response.getStatusLine().getStatusCode() ) ).build();
+                return Response.status( response.getStatusLine().getStatusCode() ).
+                    entity( translateBadResponse( response ) ).build();
             }
         }
         finally
@@ -85,12 +98,48 @@ public class VWOService
         }
     }
 
+    private String translateBadResponse( final CloseableHttpResponse response )
+        throws IOException
+    {
+
+        if ( response.getStatusLine().getStatusCode() == 400 )
+        {
+            final HttpEntity entity = response.getEntity();
+            final VWOErrorResponseJson json = new ObjectMapper().readValue( response.getEntity().getContent(), VWOErrorResponseJson.class );
+            EntityUtils.consume( entity );
+
+            return translateBadStatusCode( response.getStatusLine().getStatusCode() ) +
+                ( json.getErrors().size() > 0 ? json.getErrors().get( 0 ).getMessage() : "" );
+        }
+        else
+        {
+            return translateBadStatusCode( response.getStatusLine().getStatusCode() );
+        }
+    }
+
     private <T> T parseVWOHttpResponse( final CloseableHttpResponse response, final Class<T> clazz )
         throws IOException
     {
         final HttpEntity entity = response.getEntity();
-        final T result = new ObjectMapper().readValue( response.getEntity().getContent(), clazz );
-        EntityUtils.consume( entity );
+        T result = null;
+        try
+        {
+            result = new ObjectMapper().readValue( entity.getContent(), clazz );
+        }
+        catch ( final JsonMappingException e )
+        {
+            try
+            {
+                return clazz.newInstance();
+            }
+            catch ( final Exception exc )
+            {
+            }
+        }
+        finally
+        {
+            EntityUtils.consume( entity );
+        }
         return result;
     }
 
@@ -122,13 +171,26 @@ public class VWOService
         return httpPatch;
     }
 
+    private HttpPost makeCreateNewCampaignVWOApiRequest( final CreateNewCampaignRequestJson json )
+        throws UnsupportedEncodingException
+    {
+        final HttpPost httpPost = new HttpPost( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns" );
+        httpPost.addHeader( "token", json.getTokenId() );
+
+        StringEntity input = new StringEntity( json.getNewCampaignParams() );
+        input.setContentType( "application/json" );
+        httpPost.setEntity( input );
+
+        return httpPost;
+    }
+
     private String translateBadStatusCode( int code )
     {
         String badMessage = "Something went wrong while executing VWO API call.";
         switch ( code )
         {
             case 400:
-                badMessage = "Bad Request. Invalid json was sent.";
+                badMessage = "Bad Request. Invalid json was sent. ";
                 break;
             case 401:
                 badMessage = "Unauthorized. Your API token was missing or included in the body rather than the header.";
