@@ -501,6 +501,7 @@ var vwo = function () {
                         }
                     }
                 }
+                return null;
             },
 
             appendWizardForm: function (campaignType) {
@@ -652,19 +653,15 @@ var vwo = function () {
                         $("#vwo-campaign-wizard-" + elems[j].value).removeClass("expanded");
                     }
                 }
-                $(".close-new-campaign-section-btn").removeClass("expanded");
             }
         },
 
         toggleNewCampaignList: function() {
-            document.getElementById("vwo-new-campaign-btn").classList.toggle("expanded");
-            document.getElementById("new-campaign-selection-list").classList.toggle("expanded");
-            $(".close-new-campaign-section-btn").toggleClass("expanded",
-                !$("#vwo-new-campaign-btn").hasClass("expanded") && !$("input[name='campaignType']:checked").val());
-        },
-
-        openNewCampaignWizardAtVWO: function() {
-            window.open("http://app.vwo.com/#/test/create/web/" + vwoCampaignManager.getSelectedCampaignType(), "_blank");
+            $("#vwo-new-campaign-btn").toggleClass("expanded");
+            $("#new-campaign-selection-list").toggleClass("expanded");
+            if($("#new-campaign-selection-list").hasClass("expanded") && vwoNewCampaignWizardManager.getSelectedCampaignType() == null) {
+                $('input[name=campaignType]').first().prop("checked", true).change();
+            }
         },
 
         createNewCampaignFromOurWizard: function() {
