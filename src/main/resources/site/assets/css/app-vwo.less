@@ -445,12 +445,12 @@
   }
 
   .new-campaign-selection-list {
-    margin: 20px 0;
     max-height: 0;
     transition: max-height 0.1s ease-out;
     overflow: hidden;
 
     &.expanded {
+      margin: 20px 0;
       max-height: 5000px;
       transition: max-height 0.5s ease-in;
     }
@@ -470,6 +470,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         color: #333;
+        cursor: pointer;
       }
 
       .vwo-campaign-radio {
@@ -495,6 +496,7 @@
         width: 32px !important;
         height: 32px !important;
         display: inline-block;
+        cursor: pointer;
 
         &.ab {
           background-position: -345px -67px;
@@ -563,7 +565,7 @@
           .button-row {
             text-align: center;
             width: 100%;
-            margin: 30px 0px 10px 0px;
+            margin: 20px 0px 10px 0px;
           }
 
           label.centered {
@@ -578,7 +580,7 @@
               margin-bottom: 10px;
             }
 
-            &.wizard-campaign-goal, &.wizard-campaign-section, &.wizard-campaign-variations {
+            &.wizard-campaign-section, &.wizard-campaign-variations {
               padding: 10px;
               border: 1px solid lightgray;
 
@@ -613,14 +615,25 @@
       margin: 0px;
 
       &:disabled {
-        opacity: 0.5;
+        opacity: 0.25;
         cursor: default;
       }
     }
   }
 
-  .new-campaign-selection-list.expanded ~ * {
+  .new-campaign-selection-list.expanded ~ p {
     display: none;
+  }
+
+  #campaigns-list.expanded {
+    max-height: 5000px;
+    transition: max-height 0.2s ease-in 0.1s;
+  }
+
+  #campaigns-list {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.1s ease-out;
   }
 
   button {

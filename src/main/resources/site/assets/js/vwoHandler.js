@@ -99,19 +99,18 @@ var vwo = function () {
             newCampaignWizardGoalsSection =
                 '<div>' +
                     '<fieldset class="wizard-campaign-goal">' +
-                        '<legend>Goal</legend>' +
-                        'Name: <input type="text" name="name"><br>' +
-                        'Type: <select id="wizard-campaign-goal-type" class="campaign-wizard-goal-type" name="goal-type">' +
-                                    '<option value="visitPage" checked>tracks page visits on</option>' +
-                                    '<option value="engagement">tracks engagement</option>' +
-                                    '<option value="formSubmit">tracks form submits to</option>' +
-                                    '<option value="clickLink">tracks clicks on link</option>' +
+                        '<input type="hidden" name="name" value="Default goal">' +
+                        'Goal: <select id="wizard-campaign-goal-type" class="campaign-wizard-goal-type" name="goal-type">' +
+                                    '<option value="clickLink" checked>track clicks on link</option>' +
+                                    '<option value="visitPage">track page visits on</option>' +
+                                    //'<option value="engagement">track engagement</option>' +
+                                    '<option value="formSubmit">track form submits to</option>' +
                                     // '<option value="clickElement">tracks clicks on element(s)</option>' +
-                                    '<option value="revenue">tracks revenue on</option>' +
-                                    '<option value="custom-conversion">tracks custom conversion on</option>' +
+                                    '<option value="revenue">track revenue on</option>' +
+                                    '<option value="custom-conversion">track custom conversion on</option>' +
                                 '</select>' +
                         '<div class="wizard-campaign-goal-urls">' +
-                            '<label>URL:</label>' +
+                            '<label>Target URL:</label>' +
                             '<fieldset class="wizard-campaign-goal-url">' +
                                 '<input type="text" name="type" value="url" class="hidden">' +
                                 '<input type="text" name="value" value="${content-path}"><br>' +
@@ -640,10 +639,13 @@ var vwo = function () {
             window.open("http://app.vwo.com/#/campaign/" + campaignId + "/summary", "_blank");
         },
 
-        toggleCampaignWizard: function () {
+        toggleCampaignWizard: function (index) {
             var elems = document.getElementsByName('campaignType');
             if(!!elems) {
                 $("#close-new-campaign-section-btn").removeClass("visible");
+                if (!isNaN(index)) {
+                    elems[index].checked = true;
+                }
                 for (var j = 0; j < elems.length; j++) {
                     if (elems[j].checked) {
                         vwoNewCampaignWizardManager.appendWizardForm(elems[j].value);
@@ -661,6 +663,7 @@ var vwo = function () {
             $("#vwo-new-campaign-btn").toggleClass("expanded");
             $("#new-campaign-selection-list").toggleClass("expanded");
             $("#close-new-campaign-section-btn").toggleClass("visible", vwoNewCampaignWizardManager.getSelectedCampaignType() == null);
+            $("#campaigns-list").toggleClass("expanded");
         },
 
         createNewCampaignFromOurWizard: function() {
