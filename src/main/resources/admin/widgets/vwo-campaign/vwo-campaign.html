@@ -4,7 +4,7 @@
     {{#completeSetup}}
     <div class="no-error vwo-widget">
         <div id="vwo-authenticated_{{uid}}">
-            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><p><em>+</em>&nbsp;&nbsp;New
+            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><p>New
                 Campaign</p></button>
             <div id="new-campaign-selection-list" class="new-campaign-selection-list">
                 <p class="new-campaigns-header">Select campaign type</p>
@@ -14,8 +14,8 @@
                     </div>
                     <div class="vwo-new-campaign-logo ab"></div>
                     <div class="vwo-new-campaign-name">A/B Test</div>
+                    <div class="vwo-campaign-desc">Create multiple versions of your landing page and find which one converts the best</div>
                     <div id="vwo-campaign-wizard-ab" class="vwo-campaign-wizard">
-                        <div class="vwo-campaign-desc">Create multiple versions of your landing page and find which one converts the best</div>
                     </div>
                 </div>
                 <div class="vwo-new-campaign-item">
@@ -24,8 +24,8 @@
                     </div>
                     <div class="vwo-new-campaign-logo multivariate"></div>
                     <div class="vwo-new-campaign-name">Multivariate Test</div>
+                    <div class="vwo-campaign-desc">Change multiple elements on a single page and find the optimal combination of those changes</div>
                     <div id="vwo-campaign-wizard-multivariate" class="vwo-campaign-wizard">
-                        <div class="vwo-campaign-desc">Change multiple elements on a single page and find the optimal combination of those changes</div>
                     </div>
                 </div>
                 <div class="vwo-new-campaign-item">
@@ -34,8 +34,8 @@
                     </div>
                     <div class="vwo-new-campaign-logo split"></div>
                     <div class="vwo-new-campaign-name">Split URL Test</div>
+                    <div class="vwo-campaign-desc">Distribute traffic to multiple URLs and identify which one converts more</div>
                     <div id="vwo-campaign-wizard-split" class="vwo-campaign-wizard">
-                        <div class="vwo-campaign-desc">Distribute traffic to multiple URLs and identify which one converts more</div>
                     </div>
                 </div>
                 <div class="vwo-new-campaign-item">
@@ -44,8 +44,8 @@
                     </div>
                     <div class="vwo-new-campaign-logo conversion"></div>
                     <div class="vwo-new-campaign-name">Conversion Tracking</div>
+                    <div class="vwo-campaign-desc">Estimate conversion rate of your website</div>
                     <div id="vwo-campaign-wizard-conversion" class="vwo-campaign-wizard">
-                        <div class="vwo-campaign-desc">Estimate conversion rate of your website</div>
                     </div>
                 </div>
                 <div class="vwo-new-campaign-item">
@@ -54,10 +54,11 @@
                     </div>
                     <div class="vwo-new-campaign-logo heatmap"></div>
                     <div class="vwo-new-campaign-name">Heatmap</div>
+                    <div class="vwo-campaign-desc">Generate a visual report of click behavior on a webpage</div>
                     <div id="vwo-campaign-wizard-heatmap" class="vwo-campaign-wizard">
-                        <div class="vwo-campaign-desc">Generate a visual report of click behavior on a webpage</div>
                     </div>
                 </div>
+                <button type="button" id="close-new-campaign-section-btn" class="close-new-campaign-section-btn" onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>
             </div>
             <p class="campaigns-header">Campaigns</p>
             <div id="campaigns-list"></div>

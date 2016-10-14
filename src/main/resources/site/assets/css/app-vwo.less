@@ -389,8 +389,7 @@
     margin: 10px auto 15px auto;
   }
 
-  .vwo-new-campaign-btn {
-    background-color: #5E337B;
+  .vwo-new-campaign-btn, .close-new-campaign-section-btn {
     color: white;
     font-size: 14px;
     border: none;
@@ -398,23 +397,62 @@
     width: 160px;
     cursor: pointer;
     margin: 20px auto 10px auto;
-    display: none;
+    display: block;
+    text-align: center;
 
-    p {
-      text-align: center;
+    &:hover {
+      color: lightgrey;
+
+      &::before {
+        border-bottom-color: lightgrey;
+      }
     }
 
-    &.expanded {
+    &:hover, &:focus {
+      border: none !important;
+    }
+
+  }
+
+  .vwo-new-campaign-btn {
+    background-color: #5E337B;
+
+    &::before {
+      content: '';
+      float: left;
+      margin: 4px 0 0 8px;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 10px solid white;
+
+      transition: 0.2s;
+      transition-timing-function: cubic-bezier(0, 0.4, 1, 0.6);
+    }
+
+    &.expanded::before {
+      transform: rotateX(180deg);
+    }
+  }
+
+  .close-new-campaign-section-btn {
+    background-color: gray;
+    display: none;
+
+    &.visible {
       display: block;
+      margin-top: 50px;
     }
   }
 
   .new-campaign-selection-list {
-    margin-top: 20px;
-    display: none;
+    margin: 20px 0;
+    max-height: 0;
+    transition: max-height 0.1s ease-out;
+    overflow: hidden;
 
     &.expanded {
-      display: block;
+      max-height: 5000px;
+      transition: max-height 0.5s ease-in;
     }
 
     .vwo-new-campaign-item {
@@ -480,10 +518,13 @@
       }
 
       .vwo-campaign-wizard {
-        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.1s ease-out;
 
         &.expanded {
-          display: block;
+          max-height: 5000px;
+          transition: max-height 0.1s ease-in;
         }
 
         .vwo-campaign-wizard-form {
@@ -576,6 +617,10 @@
         cursor: default;
       }
     }
+  }
+
+  .new-campaign-selection-list.expanded ~ * {
+    display: none;
   }
 
   button {

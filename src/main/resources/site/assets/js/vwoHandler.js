@@ -643,6 +643,7 @@ var vwo = function () {
         toggleCampaignWizard: function () {
             var elems = document.getElementsByName('campaignType');
             if(!!elems) {
+                $("#close-new-campaign-section-btn").removeClass("visible");
                 for (var j = 0; j < elems.length; j++) {
                     if (elems[j].checked) {
                         vwoNewCampaignWizardManager.appendWizardForm(elems[j].value);
@@ -659,9 +660,7 @@ var vwo = function () {
         toggleNewCampaignList: function() {
             $("#vwo-new-campaign-btn").toggleClass("expanded");
             $("#new-campaign-selection-list").toggleClass("expanded");
-            if($("#new-campaign-selection-list").hasClass("expanded") && vwoNewCampaignWizardManager.getSelectedCampaignType() == null) {
-                $('input[name=campaignType]').first().prop("checked", true).change();
-            }
+            $("#close-new-campaign-section-btn").toggleClass("visible", vwoNewCampaignWizardManager.getSelectedCampaignType() == null);
         },
 
         createNewCampaignFromOurWizard: function() {
