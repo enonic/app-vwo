@@ -599,7 +599,7 @@ var vwo = function () {
                 var expandedCampaingsNodeList = document.querySelectorAll(".vwo-campaign.expanded");
                 for(let i = 0; i < expandedCampaingsNodeList.length; i++) {
                     let id = expandedCampaingsNodeList[i].id.replace("vwo-campaign-", "");
-                    if (id !== expandedCampaingsNodeList[i].toString()) {
+                    if (id !== campaignId.toString()) {
                         toggleCampaignDetail(id);
                     }
                 }
