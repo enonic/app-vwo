@@ -176,73 +176,73 @@
         height: 30px;
         width: 100%;
         margin-bottom: 20px;
-        line-height: 30px;
 
-        .btn {
-          display: inline-block;
-          border: 1px solid #D9DDE1;
-          box-sizing: border-box;
-          width: 25%;
-          height: 100%;
-          text-transform: uppercase;
-          position: relative;
-          font-size: 12px;
-          text-align: center;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          cursor: pointer;
 
-          &.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            cursor: default;
-          }
+        td {
 
           &:hover {
             background-color: #ccc;
           }
 
-          &:active {
-            background-color: #969090;
+          .btn {
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 12px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            vertical-align: middle;
+            border: 1px solid #D9DDE1;
+
+            &.disabled {
+              opacity: 0.5;
+              pointer-events: none;
+              cursor: default;
+              display: none;
+            }
+
+            &:active {
+              background-color: #969090;
+            }
+
+            &.start-btn i::before {
+              content: '\e385';
+              font-family: 'icomoon' !important;
+            }
+
+            &.pause-btn i::before {
+              content: '\e386';
+            }
+
+            &.archive-btn i::before {
+              content: '\e12d';
+            }
+
+            &.trash-btn i::before {
+              content: '\e251';
+            }
+
+            .label, i.icon {
+              display: inline-block;
+            }
+
+            span {
+              position: relative;
+              top: 5px;
+            }
+
+            i.icon {
+              font-size: 16px;
+              text-align: right;
+              width: auto;
+              margin: 0px 5px;
+              white-space: pre;
+              text-overflow: ellipsis;
+            }
           }
-
-          &.start-btn i::before {
-            content: '\e385';
-            font-family: 'icomoon' !important;
-          }
-
-          &.pause-btn i::before {
-            content: '\e386';
-          }
-
-          &.archive-btn i::before {
-            content: '\e12d';
-          }
-
-          &.delete-btn i::before {
-            content: '\e251';
-          }
-        }
-
-        .label, i.icon {
-          display: inline-block;
-        }
-
-        i.icon {
-          vertical-align: inherit;
-          font-size: 16px;
-          height: 100%;
-          position: relative;
-          top: 2px;
-          text-align: right;
-          width: auto;
-          margin: 0px 5px;
-          white-space: pre;
-          text-overflow: ellipsis;
-        }
-
-        span.label {
-          min-width: 50px;
         }
       }
 
