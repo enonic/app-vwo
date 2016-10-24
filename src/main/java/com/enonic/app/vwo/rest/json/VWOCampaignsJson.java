@@ -41,8 +41,7 @@ class VWOCampaignJson
     @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private Long createdOn;
 
-    @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
-    private boolean isDeleted;
+    private boolean deleted;
 
     @com.fasterxml.jackson.annotation.JsonProperty(access = WRITE_ONLY)
     private CreatedBy createdBy;
@@ -115,14 +114,14 @@ class VWOCampaignJson
         this.createdOn = createdOn;
     }
 
-    public boolean isDeleted()
+    public boolean getDeleted()
     {
-        return isDeleted;
+        return deleted;
     }
 
-    public void setDeleted( final boolean isDeleted )
+    public void setIsDeleted( final boolean isDeleted )
     {
-        this.isDeleted = isDeleted;
+        this.deleted = isDeleted;
     }
 
     public CreatedBy getCreatedBy()

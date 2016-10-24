@@ -64,10 +64,11 @@ var vwo = function () {
 
             campaignDetailsShortcutTemplate = '<div class="vwo-campaign-details" onclick="event.stopPropagation()" id="vwo-campaign-details-${id}">' +
                                                   '<div class="update-campaign-buttons-row">' +
-                                                      '<div class="btn start-btn ${start-btn-disabled}" id="start-btn-${id}"><i class="icon" title="Start"></i><span class="label">Start</span></div>' +
-                                                      '<div class="btn pause-btn ${pause-btn-disabled}" id="pause-btn-${id}"><i class="icon" title="Pause"></i><span class="label">Pause</span></div>' +
-                                                      '<div class="btn archive-btn ${archive-btn-disabled}" id="archive-btn-${id}"><i class="icon" title="Archive"></i><span class="label">Archive</span></div>' +
-                                                      '<div class="btn delete-btn ${delete-btn-disabled}" id="delete-btn-${id}"><i class="icon" title="Delete"></i><span class="label">Delete</span></div>' +
+                                                      '<div class="btn start-btn ${start-btn-disabled}" id="start-btn-${id}" title="Start"><i class="icon"></i><span class="label">Start</span></div>' +
+                                                      '<div class="btn pause-btn ${pause-btn-disabled}" id="pause-btn-${id}" title="Pause"><i class="icon"></i><span class="label">Pause</span></div>' +
+                                                      '<div class="btn archive-btn ${archive-btn-disabled}" id="archive-btn-${id}" title="Archive"><i class="icon"></i><span class="label">Archive</span></div>' +
+                                                      '<div class="btn unarchive-btn ${unarchive-btn-disabled}" id="unarchive-btn-${id}" title="Restore"><i class="icon"></i><span class="label">Restore</span></div>' +
+                                                      '<div class="btn delete-btn ${delete-btn-disabled}" id="delete-btn-${id}" title="Delete"><i class="icon"></i><span class="label">Delete</span></div>' +
                                                   '</div>' +
                                                   '<table>' +
                                                       '<tr class="value"><td>${goals}</td><td>${variations}</td></tr>' +
@@ -189,10 +190,11 @@ var vwo = function () {
                     replace("${variations}", !!campaignDetails.variations ? campaignDetails.variations.length : "N/A").
                     replace("${traffic}", campaignDetails.percentTraffic).
                     replace("${visitors}", !!campaignDetails.thresholds ? campaignDetails.thresholds.visitors : "N/A").
-                    replace("${start-btn-disabled}", status == 'running' ? 'disabled' : "").
-                    replace("${pause-btn-disabled}", status == 'paused' ? 'disabled' : "").
-                    replace("${archive-btn-disabled}", status == 'trashed' ? 'disabled' : "").
-                    replace("${delete-btn-disabled}", status == 'stopped' ? 'disabled' : "").
+                    replace("${start-btn-disabled}", status == 'running' || status == 'stopped' || status == 'trashed' ? 'disabled' : "").
+                    replace("${pause-btn-disabled}", status == 'paused' || status == 'stopped' || status == 'trashed' ? 'disabled' : "").
+                    replace("${archive-btn-disabled}", status == 'stopped' || status == 'trashed' ? 'disabled' : "").
+                    replace("${delete-btn-disabled}", status == 'trashed' ? 'disabled' : "").
+                    replace("${unarchive-btn-disabled}", status != 'stopped' ? 'disabled' : "").
                     replace("${variation-screenshots}", generateVariationScreenshots(campaignDetails));
             },
             makeCampaignStatusIconShortcut: function (id, status) {
@@ -278,7 +280,7 @@ var vwo = function () {
             updateCampaignStatus: function (campaignId, status, updateCampaignStatusCallback, errorCallback) {
                 var callback = function (data) {
                     if(data != null && data.length > 0) {
-                        updateCampaignStatusCallback(JSON.parse(data).result);
+                        updateCampaignStatusCallback(JSON.parse(data).result, (status == "TRASHED") ? status : null);
                     } else {
                         errorCallback();
                     }
@@ -289,7 +291,7 @@ var vwo = function () {
                     tokenId: vwoConfig.tokenId,
                     campaignId: campaignId,
                     status: status
-                }
+                };
                 ajax.post("/admin/rest/vwo/updateCampaignStatus", params, callback, errorCallback);
                 return this;
             },
@@ -333,7 +335,11 @@ var vwo = function () {
         return {
             getCampaignsAndShow: function () {
                 vwo.showMask();
-                var callback = function (campaigns) {
+                var callback = function (allCampaigns) {
+                    // Remove this if we need to show all campaigns, including deleted
+                    var campaigns = allCampaigns.filter(function (campaign) {
+                        return !campaign.deleted;
+                    });
                     if(campaigns) {
                         $("#campaigns-list").removeClass("empty");
                         var campaignShortcuts = "";
@@ -532,23 +538,23 @@ var vwo = function () {
             };
 
             vwoService.getCampaignDetails(campaignId, getCampaignDetailsCallback, vwoService.defaultServiceErrorCallback);
-        }
+        };
 
         var handleUpdateButtonsClick = function(campaignId) {
             addClickListenerToButton(getStartBtn(campaignId), campaignId, "RUNNING");
             addClickListenerToButton(getPauseBtn(campaignId), campaignId, "PAUSED");
             addClickListenerToButton(getArchiveBtn(campaignId), campaignId, "STOPPED");
+            addClickListenerToButton(getUnarchiveBtn(campaignId), campaignId, "PAUSED");
             addClickListenerToButton(getDeleteBtn(campaignId), campaignId, "TRASHED");
-        }
+        };
 
         var addClickListenerToButton = function(btnElement, campaignId, newStatus) {
-
-            var updateCampaignStatusCallback = function (updateResult) {
+            var updateCampaignStatusCallback = function (updateResult, newStatus) {
                 vwo.hideMask();
                 var ids = updateResult.ids; // ids of campaigns that got updated, we expect only one to come
                 for(let i = 0; i < ids.length; i++) {
-                    updateCampaignStatusView(ids[i], updateResult.status)
-                    updateStatusButtons(ids[i], updateResult.status.toLowerCase());
+                    updateCampaignStatusView(ids[i], newStatus || updateResult.status);
+                    updateStatusButtons(ids[i], (newStatus || updateResult.status).toLowerCase());
                 }
             };
 
@@ -556,7 +562,7 @@ var vwo = function () {
                 vwo.showMask();
                 vwoService.updateCampaignStatus(campaignId, newStatus, updateCampaignStatusCallback, vwoService.defaultServiceErrorCallback);
             }, false);
-        }
+        };
 
         var getStartBtn = function (campaignId) {
                 return document.getElementById('start-btn-' + campaignId);
@@ -567,30 +573,42 @@ var vwo = function () {
             getArchiveBtn = function (campaignId) {
                 return document.getElementById('archive-btn-' + campaignId);
             },
+            getUnarchiveBtn = function (campaignId) {
+                return document.getElementById('unarchive-btn-' + campaignId);
+            },
             getDeleteBtn = function (campaignId) {
                 return document.getElementById('delete-btn-' + campaignId);
-            }
+            };
 
         var updateStatusButtons = function (campaignId, status) {
-            getStartBtn(campaignId).classList.toggle("disabled", status === "running");
+            getStartBtn(campaignId).classList.toggle("disabled", status === "running" || status === "stopped" || status === "trashed");
             getPauseBtn(campaignId).classList.toggle("disabled", status === "paused" || status === "stopped" || status === "trashed");
             getArchiveBtn(campaignId).classList.toggle("disabled", status === "stopped" || status === "trashed");
-            getDeleteBtn(campaignId).classList.toggle("disabled", status === "stopped" || status === "trashed");
-        }
+            getDeleteBtn(campaignId).classList.toggle("disabled", status === "trashed");
+            getUnarchiveBtn(campaignId).classList.toggle("disabled", status !== "stopped" && status !== "trashed");
+        };
 
         var updateCampaignStatusView = function(id, status) {
-            var elem = document.getElementById("vwo-campaign-status-" + id);
+            var elem;
+            if (status.toLowerCase() == "trashed") {
+                elem = document.getElementById("vwo-campaign-" + id);
+                elem.parentNode.removeChild(elem);
+                
+                return;
+            }
+
+            elem = document.getElementById("vwo-campaign-status-" + id);
             elem.parentNode.removeChild(elem);
 
             var infoElem = document.getElementById("vwo-campaign-info-" + id);
             infoElem.insertAdjacentHTML('beforeend', templateHelper.makeCampaignStatusIconShortcut(id, status));
-        }
+        };
 
         var toggleCampaignDetail = function(campaignId) {
             document.getElementById("vwo-campaign-" + campaignId).classList.toggle("expanded");
             var detailsEl = document.getElementById("vwo-campaign-details-" + campaignId);
             detailsEl.classList.toggle("hidden");
-        }
+        };
 
 
         return {

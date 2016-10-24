@@ -1,6 +1,6 @@
 .vwo-widget {
   @font-face {
-    font-family: 'icomoon';
+    font-family: 'vwo-icomoon';
     src: url('../icons/fonts/icomoon.eot');
     src: url('../icons/fonts/icomoon.eot') format('embedded-opentype'),
     url('../icons/fonts/icomoon.woff') format('woff'),
@@ -133,7 +133,7 @@
         }
 
         &.stopped {
-          background: #EB5055;
+          background: darkgray;
         }
       }
     }
@@ -172,17 +172,18 @@
       }
 
       .update-campaign-buttons-row {
-        background-color: white;
         height: 30px;
         width: 100%;
         margin-bottom: 20px;
         line-height: 30px;
+        text-align: center;
 
         .btn {
           display: inline-block;
           border: 1px solid #D9DDE1;
           box-sizing: border-box;
           width: 25%;
+          max-width: 130px;
           height: 100%;
           text-transform: uppercase;
           position: relative;
@@ -191,9 +192,15 @@
           overflow: hidden;
           text-overflow: ellipsis;
           cursor: pointer;
+          background-color: white;
+
+          i::before {
+            font-family: 'vwo-icomoon';
+          }
 
           &.disabled {
-            opacity: 0.5;
+            display: none;
+            //opacity: 0.5;
             pointer-events: none;
             cursor: default;
           }
@@ -208,7 +215,6 @@
 
           &.start-btn i::before {
             content: '\e385';
-            font-family: 'icomoon' !important;
           }
 
           &.pause-btn i::before {
@@ -221,6 +227,10 @@
 
           &.delete-btn i::before {
             content: '\e251';
+          }
+
+          &.unarchive-btn i::before {
+            content: '\e900';
           }
         }
 
@@ -281,6 +291,11 @@
     -o-box-sizing: border-box;
     box-sizing: border-box;
 
+
+    &::before {
+      font-family: 'vwo-icomoon' !important;
+    }
+
     &.icon-status-not_started {
       border-radius: 50%;
       border: 3px solid #FFF;
@@ -290,11 +305,13 @@
 
     &.icon-status-running {
       color: white;
-      font-size: 20px;
+      font-size: 14px;
       position: absolute;
+      top: 4px;
+      left: 4px;
 
       &::before {
-        content: '\e3b5';
+        content: '\e385';
       }
     }
 
@@ -311,11 +328,15 @@
     }
 
     &.icon-status-stopped {
-      height: 8px !important;
-      width: 8px !important;
-      background: white;
-      margin: 6px;
-      border-radius: 1px;
+      color: white;
+      position: absolute;
+      font-size: 12px;
+      top: 4px;
+      left: 4px;
+
+      &::before {
+        content: '\e12d';
+      }
     }
 
     &.icon-status-trashed {
@@ -354,12 +375,11 @@
       top: calc(~'50% - 24px');
 
       .spinner {
-        font-family: 'icomoon' !important;
+        font-family: 'vwo-icomoon' !important;
         position: static;
         float: left;
         top: 0;
         left: 0;
-        font-family: 'xp-admin-font-icon';
         font-size: 48px;
         line-height: 1em;
         width: 48px;
