@@ -6,13 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CreateNewCampaignRequestJson
     extends VWOServiceGeneralRequestJson
 {
-
     private String newCampaignParams;
 
     @JsonCreator
-    public CreateNewCampaignRequestJson( @JsonProperty("accountId") final String accountId, @JsonProperty("tokenId") final String tokenId,
-                                         @JsonProperty("newCampaignParams") final String newCampaignParams ) {
-        super(accountId, tokenId);
+    public CreateNewCampaignRequestJson( @JsonProperty("newCampaignParams") final String newCampaignParams ) {
+        super();
         this.newCampaignParams = newCampaignParams;
     }
 

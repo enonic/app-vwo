@@ -2,6 +2,7 @@ package com.enonic.app.vwo.rest.resource;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.POST;
@@ -21,7 +22,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+
+import com.google.common.base.Strings;
 
 import com.enonic.app.vwo.rest.json.VWOCampaignDetailsJson;
 import com.enonic.app.vwo.rest.json.VWOCampaignsJson;
@@ -42,6 +46,41 @@ import com.enonic.xp.security.RoleKeys;
 public class VWOService
     implements JaxRsComponent
 {
+
+    private static final String VWO_TOKEN_CONFIG_KEY = "vwo.token";
+
+    private static final String VWO__ACCOUNT_ID_CONFIG_KEY = "vwo.accountId";
+
+    private static final String CONFIG_ERROR_MESSAGE = "Please, specify vwo token and account id in config file.";
+
+    private String vwoToken;
+
+    private String accountId;
+
+    @Activate
+    public void activate( final Map<String, String> map )
+    {
+        this.vwoToken = map.get( VWO_TOKEN_CONFIG_KEY );
+        if ( this.vwoToken != null )
+        {
+            this.vwoToken = this.vwoToken.trim();
+        }
+        this.accountId = map.get( VWO__ACCOUNT_ID_CONFIG_KEY );
+        if ( this.accountId != null )
+        {
+            this.accountId = this.accountId.trim();
+        }
+    }
+
+    private boolean isConfigOk()
+    {
+        if ( Strings.isNullOrEmpty( vwoToken ) || Strings.isNullOrEmpty( accountId ) )
+        {
+            return false;
+        }
+        return true;
+    }
+
     @POST
     @Path("listCampaigns")
     public Response listCampaigns( final VWOServiceGeneralRequestJson json )
@@ -77,6 +116,11 @@ public class VWOService
     private <T> Response doVWOAPICall( final HttpRequestBase httpRequest, final Class<T> responseJsonClass )
         throws IOException
     {
+        if ( !isConfigOk() )
+        {
+            return Response.status( Response.Status.UNAUTHORIZED ).entity( CONFIG_ERROR_MESSAGE ).build();
+        }
+
         CloseableHttpResponse response = null;
         try
         {
@@ -145,24 +189,23 @@ public class VWOService
 
     private HttpGet makeListCampaignsVWOApiRequest( final VWOServiceGeneralRequestJson json )
     {
-        final HttpGet httpGet = new HttpGet( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns" );
-        httpGet.addHeader( "token", json.getTokenId() );
+        final HttpGet httpGet = new HttpGet( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns" );
+        httpGet.addHeader( "token", vwoToken );
         return httpGet;
     }
 
     private HttpGet makeGetCampaignDetailsVWOApiRequest( final GetCampaignDetailsRequestJson json )
     {
-        final HttpGet httpGet =
-            new HttpGet( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns/" + json.getCampaignId() );
-        httpGet.addHeader( "token", json.getTokenId() );
+        final HttpGet httpGet = new HttpGet( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns/" + json.getCampaignId() );
+        httpGet.addHeader( "token", vwoToken );
         return httpGet;
     }
 
     private HttpPatch makeUpdateCampaignStatusVWOApiRequest( final UpdateCampaignStatusRequestJson json )
         throws UnsupportedEncodingException
     {
-        final HttpPatch httpPatch = new HttpPatch( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns/status" );
-        httpPatch.addHeader( "token", json.getTokenId() );
+        final HttpPatch httpPatch = new HttpPatch( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns/status" );
+        httpPatch.addHeader( "token", vwoToken );
 
         StringEntity input = new StringEntity( "{\"ids\":[" + json.getCampaignId() + "],\"status\":\"" + json.getStatus() + "\"}" );
         input.setContentType( "application/json" );
@@ -174,8 +217,8 @@ public class VWOService
     private HttpPost makeCreateNewCampaignVWOApiRequest( final CreateNewCampaignRequestJson json )
         throws UnsupportedEncodingException
     {
-        final HttpPost httpPost = new HttpPost( "http://app.vwo.com/api/v2/accounts/" + json.getAccountId() + "/campaigns" );
-        httpPost.addHeader( "token", json.getTokenId() );
+        final HttpPost httpPost = new HttpPost( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns" );
+        httpPost.addHeader( "token", vwoToken );
 
         StringEntity input = new StringEntity( json.getNewCampaignParams() );
         input.setContentType( "application/json" );
