@@ -24,7 +24,9 @@
                     </div>
                     <div class="vwo-new-campaign-logo multivariate" onclick="vwo.toggleCampaignWizard(1)"></div>
                     <div class="vwo-new-campaign-name" onclick="vwo.toggleCampaignWizard(1)">Multivariate Test</div>
-                    <div class="vwo-campaign-desc">Change multiple elements on a single page and find the optimal combination of those changes</div>
+                    <div class="vwo-campaign-desc">Change multiple elements on a single page and find the optimal combination of those
+                        changes
+                    </div>
                     <div id="vwo-campaign-wizard-multivariate" class="vwo-campaign-wizard">
                     </div>
                 </div>
@@ -58,7 +60,8 @@
                     <div id="vwo-campaign-wizard-heatmap" class="vwo-campaign-wizard">
                     </div>
                 </div>
-                <button type="button" id="close-new-campaign-section-btn" class="close-new-campaign-section-btn" onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>
+                <button type="button" id="close-new-campaign-section-btn" class="close-new-campaign-section-btn"
+                        onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>
             </div>
             <p class="campaigns-header">Campaigns</p>
             <div id="campaigns-list" class="expanded"></div>
@@ -72,20 +75,18 @@
     </div>
     {{/completeSetup}}
     {{^completeSetup}}
-    <div class="error">Please set up token, account id and domain</div>
+    <div class="error">{{errorMessage}}</div>
     {{/completeSetup}}
 
     {{#completeSetup}}
-        <script type="text/javascript">
-            var vwoConfig = {
-                    tokenId: "{{tokenId}}",
-                    accountId: "{{ accountId }}",
-                    domain: "{{domain}}"
-            };
-            var contentPath = "{{contentPath}}";
-        </script>
-        <script src="{{jqueryMinJs}}" type="text/javascript"></script>
-        <script src="{{vwoJsUrl}}" type="text/javascript"></script>
+    <script type="text/javascript">
+        var vwoConfig = {
+            domain: "{{domain}}"
+        };
+        var contentPath = "{{contentPath}}";
+    </script>
+    <script src="{{jqueryMinJs}}" type="text/javascript"></script>
+    <script src="{{vwoJsUrl}}" type="text/javascript"></script>
     {{/completeSetup}}
 </div>
 </body>

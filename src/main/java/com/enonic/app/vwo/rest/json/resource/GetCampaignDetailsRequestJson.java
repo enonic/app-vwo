@@ -9,10 +9,8 @@ public class GetCampaignDetailsRequestJson extends VWOServiceGeneralRequestJson
     private Integer campaignId;
 
     @JsonCreator
-    public GetCampaignDetailsRequestJson( @JsonProperty("accountId") final String accountId,
-                                          @JsonProperty("tokenId") final String tokenId,
-                                          @JsonProperty("campaignId") final Integer campaignId ) {
-        super(accountId, tokenId);
+    public GetCampaignDetailsRequestJson( @JsonProperty("campaignId") final Integer campaignId ) {
+        super();
         this.campaignId = campaignId;
     }
 

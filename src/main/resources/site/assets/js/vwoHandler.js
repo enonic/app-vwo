@@ -251,10 +251,7 @@ var vwo = function () {
                     }
                 };
 
-                var params = {
-                    accountId: vwoConfig.accountId,
-                    tokenId: vwoConfig.tokenId
-                }
+                var params = {}
                 ajax.post("/admin/rest/vwo/listCampaigns", params, callback, errorCallback);
                 return this;
             },
@@ -269,8 +266,6 @@ var vwo = function () {
                 };
 
                 var params = {
-                    accountId: vwoConfig.accountId,
-                    tokenId: vwoConfig.tokenId,
                     campaignId: campaignId
                 }
                 ajax.post("/admin/rest/vwo/getCampaignDetails", params, callback, errorCallback);
@@ -287,8 +282,6 @@ var vwo = function () {
                 };
 
                 var params = {
-                    accountId: vwoConfig.accountId,
-                    tokenId: vwoConfig.tokenId,
                     campaignId: campaignId,
                     status: status
                 };
@@ -306,8 +299,6 @@ var vwo = function () {
                 };
 
                 var params = {
-                    accountId: vwoConfig.accountId,
-                    tokenId: vwoConfig.tokenId,
                     newCampaignParams: JSON.stringify(newCampaignParamsObject)
                 }
                 ajax.post("/admin/rest/vwo/createNewCampaign", params, callback, errorCallback);

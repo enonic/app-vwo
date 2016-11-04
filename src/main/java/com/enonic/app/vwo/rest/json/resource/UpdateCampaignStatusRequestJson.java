@@ -9,11 +9,9 @@ public class UpdateCampaignStatusRequestJson extends GetCampaignDetailsRequestJs
     private String status;
 
     @JsonCreator
-    public UpdateCampaignStatusRequestJson( @JsonProperty("accountId") final String accountId,
-                                          @JsonProperty("tokenId") final String tokenId,
-                                          @JsonProperty("campaignId") final Integer campaignId,
+    public UpdateCampaignStatusRequestJson( @JsonProperty("campaignId") final Integer campaignId,
                                             @JsonProperty("status") final String status) {
-        super(accountId, tokenId, campaignId);
+        super(campaignId);
         this.status = status;
     }
 

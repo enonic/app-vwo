@@ -18,25 +18,43 @@ function handleGet(req) {
 
     var pathToResourceOnSite;
 
-    if(isSite(content)) {
+    if (isSite(content)) {
         pathToResourceOnSite = "";
     } else {
         var site = contentLib.getSite({
             key: contentId
         });
-        pathToResourceOnSite = stripfOffSitePath(site._path, content._path);
+        if (!!site) {
+            pathToResourceOnSite = stripfOffSitePath(site._path, content._path);
+        }
     }
 
-    var completeSetup = !!siteConfig && !!siteConfig.tokenId && !!siteConfig.domain;
+    var accountAndTokenArePresent = accountAndTokenArePresentInConfig(),
+        domainIsValid = !!siteConfig && isValidDomain(siteConfig.domain),
+        completeSetup = !!siteConfig && accountAndTokenArePresent && domainIsValid,
+        errorMessage = "";
+
+    if (!!siteConfig) {
+        if (!completeSetup) {
+            errorMessage += accountAndTokenArePresent ? "" : "Please, add token and account id to VWO app config.";
+            if (!siteConfig.domain) {
+                errorMessage += "Domain name is not specified.";
+            } else if (!domainIsValid) {
+                errorMessage += "Domain name should start with http:// or https://";
+            }
+        }
+    } else {
+        errorMessage += "VWO app config is not found.";
+    }
+
 
     var params = {
         vwoCssUrl: portalLib.assetUrl({path: 'css/app-vwo.css'}),
         vwoJsUrl: portalLib.assetUrl({path: 'js/vwoHandler.js'}),
         jqueryMinJs: portalLib.assetUrl({path: 'js/jquery-2.0.3.min.js'}),
         completeSetup: completeSetup,
+        errorMessage: errorMessage,
         domain: !!siteConfig && !!siteConfig.domain ? siteConfig.domain : undefined,
-        accountId: !!siteConfig && !!siteConfig.accountId ? siteConfig.accountId : "current",
-        tokenId: !!siteConfig && !!siteConfig.tokenId ? siteConfig.tokenId : undefined,
         contentPath: pathToResourceOnSite,
         uid: uid
     }
@@ -57,6 +75,14 @@ function isSite(content) {
 
 function stripfOffSitePath(sitePath, contentPath) {
     return contentPath.replace(sitePath, "");
+}
+
+function isValidDomain(domain) {
+    return !!domain && (domain.startsWith("http://") || domain.startsWith("https://"));
+}
+
+function accountAndTokenArePresentInConfig() {
+    return !!app.config["vwo.accountId"] && !!app.config["vwo.token"];
 }
 
 exports.get = handleGet;
