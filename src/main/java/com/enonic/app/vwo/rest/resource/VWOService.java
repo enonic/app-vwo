@@ -51,7 +51,7 @@ public class VWOService
 
     private static final String VWO__ACCOUNT_ID_CONFIG_KEY = "vwo.accountId";
 
-    private static final String CONFIG_ERROR_MESSAGE = "Please, specify vwo token and account id in config file.";
+    private static final String CONFIG_ERROR_MESSAGE = "VWO token and/or accountId not found in the config file";
 
     private String vwoToken;
 
@@ -126,13 +126,15 @@ public class VWOService
         {
             response = HttpClients.createDefault().execute( httpRequest );
 
-            if ( response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201 )
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if ( statusCode == 200 || statusCode == 201 )
             {
                 return Response.ok( parseVWOHttpResponse( response, responseJsonClass ) ).build();
             }
             else
             {
-                return Response.status( response.getStatusLine().getStatusCode() ).
+                return Response.status( statusCode ).
                     entity( translateBadResponse( response ) ).build();
             }
         }
@@ -236,7 +238,7 @@ public class VWOService
                 badMessage = "Bad Request. Invalid json was sent. ";
                 break;
             case 401:
-                badMessage = "Unauthorized. Your API token was missing or included in the body rather than the header.";
+                badMessage = "Authentication failed. Please check that token and accountId are valid.";
                 break;
             case 403:
                 badMessage = "Forbidden. You provided invalid or revoked token or don't have read/write access.";

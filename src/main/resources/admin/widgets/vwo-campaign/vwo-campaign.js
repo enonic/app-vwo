@@ -34,19 +34,17 @@ function handleGet(req) {
         completeSetup = !!siteConfig && accountAndTokenArePresent && domainIsValid,
         errorMessage = "";
 
-    if (!!siteConfig) {
-        if (!completeSetup) {
-            errorMessage += accountAndTokenArePresent ? "" : "Please, add token and account id to VWO app config.";
-            if (!siteConfig.domain) {
-                errorMessage += "Domain name is not specified.";
-            } else if (!domainIsValid) {
-                errorMessage += "Domain name should start with http:// or https://";
-            }
+    if (!completeSetup) {
+        if (!siteConfig) {
+            errorMessage += "VWO app config is not found";
+        } else if (!accountAndTokenArePresent) {
+            errorMessage = "VWO token and/or accountId not found in the config file";
+        } else if (!siteConfig.domain) {
+            errorMessage = "Domain name is not specified";
+        } else if (!domainIsValid) {
+            errorMessage = "Domain name in the VWO config should start with http:// or https:// (" + siteConfig.domain + ")";
         }
-    } else {
-        errorMessage += "VWO app config is not found.";
     }
-
 
     var params = {
         vwoCssUrl: portalLib.assetUrl({path: 'css/app-vwo.css'}),
