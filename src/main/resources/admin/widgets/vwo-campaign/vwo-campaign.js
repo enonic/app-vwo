@@ -36,11 +36,11 @@ function handleGet(req) {
 
     if (!completeSetup) {
         if (!siteConfig) {
-            errorMessage += "VWO app config is not found";
+            errorMessage += "VWO app not added to the site";
         } else if (!accountAndTokenArePresent) {
-            errorMessage = "VWO token and/or accountId not found in the config file";
+            errorMessage = "Token or accountId not found in the VWO config";
         } else if (!siteConfig.domain) {
-            errorMessage = "Domain name is not specified";
+            errorMessage = "Domain name not found in the VWO config";
         } else if (!domainIsValid) {
             errorMessage = "Domain name in the VWO config should start with http:// or https:// (" + siteConfig.domain + ")";
         }
