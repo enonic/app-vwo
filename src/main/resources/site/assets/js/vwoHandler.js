@@ -324,9 +324,9 @@ var vwo = function () {
         }
 
         return {
-            getCampaignsAndShow: function () {
+            getCampaignsAndShow: function (getCampaignsCallback, getCampaignsErrorCallback) {
                 vwo.showMask();
-                var callback = function (allCampaigns) {
+                var onSuccessCallback = function (allCampaigns) {
                     // Remove this if we need to show all campaigns, including deleted
                     var campaigns = allCampaigns.filter(function (campaign) {
                         return !campaign.deleted;
@@ -345,10 +345,20 @@ var vwo = function () {
                     } else {
                         $("#campaigns-list").addClass("empty");
                     }
+                    if(getCampaignsCallback) {
+                        getCampaignsCallback();
+                    }
                     vwo.hideMask();
                 };
+                var errorCallback = vwoService.defaultServiceErrorCallback;
+                if(getCampaignsErrorCallback) {
+                    errorCallback = function () {
+                        vwoService.defaultServiceErrorCallback();
+                        getCampaignsErrorCallback();
+                    }
+                }
 
-                vwoService.listCampaigns(callback, vwoService.defaultServiceErrorCallback);
+                vwoService.listCampaigns(onSuccessCallback, errorCallback);
 
                 return this;
             }
@@ -625,7 +635,14 @@ var vwo = function () {
 
     return {
         startWithCampaigns: function() {
-            vwoCampaignManager.getCampaignsAndShow();
+            var onSuccessCallback = function () {
+                    $(".vwo-campaigns-block").addClass("visible");
+                },
+                errorCallback = function () {
+                    $(".vwo-campaigns-block-error").addClass("visible");
+                }
+
+            vwoCampaignManager.getCampaignsAndShow(onSuccessCallback, errorCallback);
         },
 
         showMask: function() {

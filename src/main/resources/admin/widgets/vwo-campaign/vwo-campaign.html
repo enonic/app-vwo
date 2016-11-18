@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
     {{#completeSetup}}
     <div class="no-error vwo-widget">
-        <div id="vwo-authenticated_{{uid}}">
+        <div id="vwo-authenticated_{{uid}}" class="vwo-campaigns-block">
             <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><p>New
                 Campaign</p></button>
             <div id="new-campaign-selection-list" class="new-campaign-selection-list">
@@ -65,13 +65,13 @@
             </div>
             <p class="campaigns-header">Campaigns</p>
             <div id="campaigns-list" class="expanded"></div>
-            <div id="vwo-widget-loadmask" class="vwo-load-mask">
-                <div class="mask-splash">
-                    <div class="spinner"/>
-                </div>
+        </div>
+        <div id="vwo-not-authenticated_{{uid}}" class="vwo-campaigns-block-error error"></div>
+        <div id="vwo-widget-loadmask" class="vwo-load-mask">
+            <div class="mask-splash">
+                <div class="spinner"/>
             </div>
         </div>
-        <div id="vwo-not-authenticated_{{uid}}" class="error" hidden="true"></div>
     </div>
     {{/completeSetup}}
     {{^completeSetup}}
