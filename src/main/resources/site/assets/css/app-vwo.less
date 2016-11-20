@@ -8,6 +8,25 @@
     url('../icons/fonts/icomoon.svg') format('svg');
   }
 
+  .vwo-campaigns-block {
+    display: none;
+
+    &.visible {
+      display: block;
+    }
+  }
+
+  .vwo-campaigns-block-error {
+    display: none;
+
+    &.visible {
+      display: block;
+      &::before {
+        content: 'An error occurred';
+      }
+    }
+  }
+
   #campaigns-list.empty {
     font-size: 16px;
     font-family: "Open Sans", sans-serif;
