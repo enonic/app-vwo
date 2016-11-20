@@ -1,6 +1,6 @@
 # Installing the app
 
-*This guide assumes that you already have a VWO account. If not, please create one at [VWO site](https://vwo.com/).*
+*This guide assumes that you already have a VWO account with access to API. If not, please contact [VWO](https://vwo.com/) for getting an account and access to their API.*
 
 *Before proceeding with installing our XP VWO App, you should have two things:*
 
@@ -31,7 +31,7 @@
 ![](images/vwo_05.png)
 
 * In the XP VWO App config section enter domain of your website.
-*Ensure, that domain name starts with http:// or https://, otherwise site config will get invalid.*
+*Ensure that domain name starts with http:// or https://, otherwise site config will not be valid.*
 
 ![](images/vwo_06.png)
 
