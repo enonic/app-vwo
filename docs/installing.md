@@ -32,6 +32,7 @@
 
 * In the XP VWO App config section enter domain of your website.
 *Ensure that domain name starts with http:// or https://, otherwise site config will not be valid.*
+*Check off "Embed VWO Smart Code script" if you want VWO tracking to be enabled on the pages of your website.*
 
 ![](images/vwo_06.png)
 
