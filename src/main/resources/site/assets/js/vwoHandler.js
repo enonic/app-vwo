@@ -476,7 +476,7 @@ var vwo = function () {
             collectWizardDataAndSendNewCampaignRequest: function () {
 
                 vwo.showMask();
-                var callback = function (result) {
+                var successCallback = function (result) {
                     vwo.hideMask();
                     var selectedCampaignType = vwoNewCampaignWizardManager.getSelectedCampaignType();
                     window.open("http://app.vwo.com/#/test/" + selectedCampaignType + "/" + result.id + "/editor", "_blank");
@@ -488,12 +488,14 @@ var vwo = function () {
 
                     cleanWizardForm(selectedCampaignType);
 
+                    vwo.toggleNewCampaignList();
+
                     setTimeout(function () { // delay before refreshing campaigns view to void 429 response - too many requests
                         vwoCampaignManager.getCampaignsAndShow();
                     }, 2000);
                 };
 
-                vwoService.createNewCampaign(collectWizardDataForNewCampaign(), callback, vwoService.defaultServiceErrorCallback);
+                vwoService.createNewCampaign(collectWizardDataForNewCampaign(), successCallback, vwoService.defaultServiceErrorCallback);
 
                 return this;
             },
