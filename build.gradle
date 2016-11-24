@@ -47,9 +47,12 @@ dependencies {
 
 task gulpLess( type: GulpTask, dependsOn: npmInstall ) {
     description = 'Build less resources.'
-    inputs.files fileTree( dir: 'src/main/resources' )
-    outputs.files fileTree( dir: 'src/main/resources' )
     args = ['css']
+}
+
+task cleanLessFiles( type: Delete ) {
+    description = 'Clean source less files.'
+    delete fileTree( dir: 'build/resources/main/site/assets/css' , excludes: ['*.css'])
 }
 
 repositories {
@@ -69,3 +72,4 @@ uploadArchives {
 }
 
 jar.dependsOn += gulpLess
+build.dependsOn += cleanLessFiles

@@ -16,11 +16,6 @@ var CONFIG = {
                     dest: '/css/app-vwo.css'
                 }
             }
-        },
-        clean: {
-            pattern: '/**/app-vwo.css',
-            cleanDest: true,
-            cleanDot: true
         }
     }
 };
