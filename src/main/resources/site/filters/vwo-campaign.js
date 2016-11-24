@@ -2,17 +2,16 @@ var portal = require('/lib/xp/portal');
 
 exports.responseFilter = function (req, res) {
     var siteConfig = portal.getSiteConfig();
-    var accountId = siteConfig['accountId'] || '';
     var enableTracking = siteConfig['enableTracking'] || false;
 
-    if(!accountId || !enableTracking /*|| req.mode !== 'live'*/) {
+    if (!enableTracking || req.mode !== 'live') {
         return res;
     }
 
     var snippet = '<!-- Start Visual Website Optimizer Asynchronous Code -->';
     snippet += '<script type=\'text/javascript\'>';
     snippet += 'var _vwo_code=(function(){';
-    snippet += 'var account_id=' + accountId + ',';
+    snippet += 'var account_id=' + app.config["vwo.accountId"] + ',';
     snippet += 'settings_tolerance=2000,';
     snippet += 'library_tolerance=2500,';
     snippet += 'use_existing_jquery=false,';
