@@ -41,7 +41,7 @@ import com.enonic.xp.security.RoleKeys;
 
 @Path("admin/rest/vwo")
 @RolesAllowed(RoleKeys.ADMIN_ID)
-@Component(immediate = true, configurationPid = "com.enonic.app.vwo")
+@Component(immediate = true, configurationPid = "com.enonic.app.vwo", property = "group=admin")
 @Produces(MediaType.APPLICATION_JSON)
 public class VWOService
     implements JaxRsComponent
