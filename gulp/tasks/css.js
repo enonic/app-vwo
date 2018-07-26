@@ -53,4 +53,4 @@ _.forOwn(subtasks, function (task, name) {
 /*
  Main CSS task
  */
-gulp.task('css', Object.keys(subtasks).map(cssResolver));
+gulp.task('css', gulp.parallel(Object.keys(subtasks).map(cssResolver)));
