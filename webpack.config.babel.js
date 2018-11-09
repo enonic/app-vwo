@@ -6,8 +6,9 @@ const assets = path.join(__dirname, '/build/resources/main/assets');
 module.exports = {
     context: path.join(__dirname, '/src/main/resources/assets'),
     mode: 'development',
-    //entry: './css/app-vwo.less',
-    entry: './js/app-vwo.js',
+    entry: {
+        'bundle': './js/app-vwo.js'
+    },
     module: {
         rules: [
             {
@@ -22,7 +23,6 @@ module.exports = {
                     {
                         loader: "css-loader",
                         options: {
-                            modules: true,
                             sourceMap: true,
                             importLoader: 2,
                             url: false
@@ -55,7 +55,7 @@ module.exports = {
     },
     output: {
         path: assets,
-        filename: './js/bundle.js'
+        filename: './js/[name].js'
     },
     plugins: [
         new MiniCssExtractPlugin({
