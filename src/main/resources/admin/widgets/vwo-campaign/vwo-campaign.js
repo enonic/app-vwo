@@ -47,9 +47,8 @@ function handleGet(req) {
     }
 
     var params = {
-        vwoCssUrl: portalLib.assetUrl({path: 'css/app-vwo.css'}),
-        vwoJsUrl: portalLib.assetUrl({path: 'js/vwoHandler.js'}),
-        jqueryMinJs: portalLib.assetUrl({path: 'js/jquery-2.0.3.min.js'}),
+        vwoCssUrl: portalLib.assetUrl({path: 'css/bundle.css'}),
+        vwoJsUrl: portalLib.assetUrl({path: 'js/bundle.js'}),
         completeSetup: completeSetup,
         errorMessage: errorMessage,
         domain: !!siteConfig && !!siteConfig.domain ? siteConfig.domain : undefined,

@@ -1,3 +1,6 @@
+import "../css/app-vwo.less";
+import $ from 'jquery';
+
 var vwo = function () {
 
     var ajax = function () {
