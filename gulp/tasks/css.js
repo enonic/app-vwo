@@ -41,7 +41,8 @@ _.forOwn(subtasks, function (task, name) {
             .pipe(sourcemaps.init())
             .pipe(less({
                 plugins: [autoprefix],
-                relativeUrls: true
+                relativeUrls: true,
+                javascriptEnabled: true
             }))
             .on('error', logger.pipeError.bind(null, cb))
             .pipe(sourcemaps.write())
