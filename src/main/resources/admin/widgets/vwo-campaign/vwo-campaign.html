@@ -40,6 +40,7 @@
                     <div id="vwo-campaign-wizard-split" class="vwo-campaign-wizard">
                     </div>
                 </div>
+                <!--
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
                         <input type="radio" name="campaignType" value="conversion" onchange="vwo.toggleCampaignWizard()">
@@ -60,11 +61,13 @@
                     <div id="vwo-campaign-wizard-heatmap" class="vwo-campaign-wizard">
                     </div>
                 </div>
+                -->
                 <button type="button" id="close-new-campaign-section-btn" class="close-new-campaign-section-btn"
                         onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>
             </div>
-            <p class="campaigns-header">Campaigns</p>
-            <div id="campaigns-list" class="expanded"></div>
+            <div id="campaigns-list" class="expanded">
+                <p class="campaigns-header">Campaigns</p>
+            </div>
         </div>
         <div id="vwo-not-authenticated_{{uid}}" class="vwo-campaigns-block-error error"></div>
         <div id="vwo-widget-loadmask" class="vwo-load-mask">

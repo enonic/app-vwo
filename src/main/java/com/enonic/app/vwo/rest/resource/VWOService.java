@@ -191,14 +191,14 @@ public class VWOService
 
     private HttpGet makeListCampaignsVWOApiRequest( final VWOServiceGeneralRequestJson json )
     {
-        final HttpGet httpGet = new HttpGet( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns" );
+        final HttpGet httpGet = new HttpGet( "https://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns" );
         httpGet.addHeader( "token", vwoToken );
         return httpGet;
     }
 
     private HttpGet makeGetCampaignDetailsVWOApiRequest( final GetCampaignDetailsRequestJson json )
     {
-        final HttpGet httpGet = new HttpGet( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns/" + json.getCampaignId() );
+        final HttpGet httpGet = new HttpGet( "https://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns/" + json.getCampaignId() );
         httpGet.addHeader( "token", vwoToken );
         return httpGet;
     }
@@ -206,7 +206,7 @@ public class VWOService
     private HttpPatch makeUpdateCampaignStatusVWOApiRequest( final UpdateCampaignStatusRequestJson json )
         throws UnsupportedEncodingException
     {
-        final HttpPatch httpPatch = new HttpPatch( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns/status" );
+        final HttpPatch httpPatch = new HttpPatch( "https://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns/status" );
         httpPatch.addHeader( "token", vwoToken );
 
         StringEntity input = new StringEntity( "{\"ids\":[" + json.getCampaignId() + "],\"status\":\"" + json.getStatus() + "\"}" );
@@ -219,7 +219,7 @@ public class VWOService
     private HttpPost makeCreateNewCampaignVWOApiRequest( final CreateNewCampaignRequestJson json )
         throws UnsupportedEncodingException
     {
-        final HttpPost httpPost = new HttpPost( "http://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns" );
+        final HttpPost httpPost = new HttpPost( "https://app.vwo.com/api/v2/accounts/" + accountId + "/campaigns" );
         httpPost.addHeader( "token", vwoToken );
 
         StringEntity input = new StringEntity( json.getNewCampaignParams() );
@@ -231,7 +231,7 @@ public class VWOService
 
     private String translateBadStatusCode( int code )
     {
-        String badMessage = "Something went wrong while executing VWO API call.";
+        String badMessage = "Something went wrong while executing VWO API call: code " + code;
         switch ( code )
         {
             case 400:

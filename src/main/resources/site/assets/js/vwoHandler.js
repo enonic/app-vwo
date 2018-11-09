@@ -244,11 +244,11 @@ var vwo = function () {
             listCampaigns: function (listCampaignsCallback, errorCallback) {
 
                 var callback = function (data) {
-                    if(data != null && data.length > 0) {
-                        listCampaignsCallback(JSON.parse(data).campaigns);
-                    } else {
+                    if (!data) {
                         errorCallback();
+                        return;
                     }
+                    listCampaignsCallback(JSON.parse(data).campaigns);
                 };
 
                 var params = {}
@@ -328,10 +328,13 @@ var vwo = function () {
                 vwo.showMask();
                 var onSuccessCallback = function (allCampaigns) {
                     // Remove this if we need to show all campaigns, including deleted
-                    var campaigns = allCampaigns.filter(function (campaign) {
-                        return !campaign.deleted;
-                    });
-                    if(campaigns) {
+                    var campaigns = [];
+                    if(allCampaigns) {
+                        campaigns = allCampaigns.filter(function (campaign) {
+                            return !campaign.deleted;
+                        });
+                    }
+                    if(campaigns.length > 0) {
                         $("#campaigns-list").removeClass("empty");
                         var campaignShortcuts = "";
                         for (var i = 0; i < campaigns.length; i++) {
@@ -483,7 +486,7 @@ var vwo = function () {
 
                     var campaignName = $("#vwo-campaign-wizard-" + vwoNewCampaignWizardManager.getSelectedCampaignType() + " form .wizard-campaign-name").val();
                     if (api.notify.NotifyManager) {
-                        api.notify.NotifyManager.get().showSuccess("Successfully created " + campaignName + " campaign.");
+                        api.notify.NotifyManager.get().showSuccess('Successfully created campaign "' + campaignName + '".');
                     }
 
                     cleanWizardForm(selectedCampaignType);
