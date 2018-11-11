@@ -1,29 +1,27 @@
-<body>
-<div>
+<widget>
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
     {{#completeSetup}}
     <div class="no-error vwo-widget">
         <div id="vwo-authenticated_{{uid}}" class="vwo-campaigns-block">
-            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><p>New
-                Campaign</p></button>
+            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded">New Campaign</button>
             <div id="new-campaign-selection-list" class="new-campaign-selection-list">
                 <p class="new-campaigns-header">Select campaign type</p>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="ab" onchange="vwo.toggleCampaignWizard()">
+                        <input type="radio" name="campaignType" value="ab">
                     </div>
-                    <div class="vwo-new-campaign-logo ab" onclick="vwo.toggleCampaignWizard(0)"></div>
-                    <div class="vwo-new-campaign-name" onclick="vwo.toggleCampaignWizard(0)">A/B Test</div>
+                    <div class="vwo-new-campaign-logo ab"></div>
+                    <div class="vwo-new-campaign-name">A/B Test</div>
                     <div class="vwo-campaign-desc">Create multiple versions of your landing page and find which one converts the best</div>
                     <div id="vwo-campaign-wizard-ab" class="vwo-campaign-wizard">
                     </div>
                 </div>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="multivariate" onchange="vwo.toggleCampaignWizard()">
+                        <input type="radio" name="campaignType" value="multivariate">
                     </div>
-                    <div class="vwo-new-campaign-logo multivariate" onclick="vwo.toggleCampaignWizard(1)"></div>
-                    <div class="vwo-new-campaign-name" onclick="vwo.toggleCampaignWizard(1)">Multivariate Test</div>
+                    <div class="vwo-new-campaign-logo multivariate"></div>
+                    <div class="vwo-new-campaign-name">Multivariate Test</div>
                     <div class="vwo-campaign-desc">Change multiple elements on a single page and find the optimal combination of those
                         changes
                     </div>
@@ -32,10 +30,10 @@
                 </div>
                 <div class="vwo-new-campaign-item">
                     <div class="vwo-campaign-radio">
-                        <input type="radio" name="campaignType" value="split" onchange="vwo.toggleCampaignWizard()">
+                        <input type="radio" name="campaignType" value="split">
                     </div>
-                    <div class="vwo-new-campaign-logo split" onclick="vwo.toggleCampaignWizard(2)"></div>
-                    <div class="vwo-new-campaign-name" onclick="vwo.toggleCampaignWizard(2)">Split URL Test</div>
+                    <div class="vwo-new-campaign-logo split"></div>
+                    <div class="vwo-new-campaign-name">Split URL Test</div>
                     <div class="vwo-campaign-desc">Distribute traffic to multiple URLs and identify which one converts more</div>
                     <div id="vwo-campaign-wizard-split" class="vwo-campaign-wizard">
                     </div>
@@ -67,6 +65,7 @@
             </div>
             <div id="campaigns-list" class="expanded">
                 <p class="campaigns-header">Campaigns</p>
+                <div id="campaigns-list-list"></div>
             </div>
         </div>
         <div id="vwo-not-authenticated_{{uid}}" class="vwo-campaigns-block-error error"></div>
@@ -90,5 +89,4 @@
     </script>
     <script src="{{vwoJsUrl}}" type="text/javascript"></script>
     {{/completeSetup}}
-</div>
-</body>
+</widget>
