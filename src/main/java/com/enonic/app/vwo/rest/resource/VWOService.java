@@ -128,7 +128,7 @@ public class VWOService
 
             int statusCode = response.getStatusLine().getStatusCode();
 
-            if ( statusCode == 200 || statusCode == 201 )
+            if ( statusCode == 200 || statusCode == 201 || statusCode == 429)
             {
                 return Response.ok( parseVWOHttpResponse( response, responseJsonClass ) ).build();
             }

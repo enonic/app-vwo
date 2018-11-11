@@ -279,6 +279,10 @@ var vwo = function () {
                 var callback = function (data) {
                     if(data != null && data.length > 0) {
                         updateCampaignStatusCallback(JSON.parse(data).result, (status == "TRASHED") ? status : null);
+
+                        if (status == "TRASHED" && $("#campaigns-list-content").html() == '') {
+                            $("#campaigns-list").addClass("empty");
+                        }
                     } else {
                         errorCallback();
                     }
@@ -344,11 +348,11 @@ var vwo = function () {
                             campaignShortcuts += templateHelper.makeCampaignShortcut(campaigns[i]);
                         }
                         if (campaigns.length > 0) {
-                            document.getElementById("campaigns-list").innerHTML = campaignShortcuts;
+                            document.getElementById("campaigns-list-content").innerHTML = campaignShortcuts;
                         }
 
                         bindToggleOnCampaignClick(campaigns);
-                    } else {
+                    } else if ($("#campaigns-list-content").html() == '') {
                         $("#campaigns-list").addClass("empty");
                     }
                     if(getCampaignsCallback) {
@@ -563,7 +567,9 @@ var vwo = function () {
                 var ids = updateResult.ids; // ids of campaigns that got updated, we expect only one to come
                 for(let i = 0; i < ids.length; i++) {
                     updateCampaignStatusView(ids[i], newStatus || updateResult.status);
-                    updateStatusButtons(ids[i], (newStatus || updateResult.status).toLowerCase());
+                    if (newStatus && newStatus !== 'TRASHED') {
+                        updateStatusButtons(ids[i], (newStatus || updateResult.status).toLowerCase());
+                    }
                 }
             };
 
@@ -707,5 +713,6 @@ var vwo = function () {
 }();
 
 (function () {
+    window.vwo = vwo;
     vwo.startWithCampaigns();
 }());
