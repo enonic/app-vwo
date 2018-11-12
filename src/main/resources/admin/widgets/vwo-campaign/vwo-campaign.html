@@ -4,8 +4,10 @@
     {{#completeSetup}}
     <div class="no-error vwo-widget">
         <div id="vwo-authenticated_{{uid}}" class="vwo-campaigns-block">
-            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded" onclick="vwo.toggleNewCampaignList()"><p>New
-                Campaign</p></button>
+            <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded{{^isPublished}} disabled{{/isPublished}}" onclick="vwo.toggleNewCampaignList()">
+                <p>New Campaign</p>
+            </button>
+            <p id="vwo-not-published-message">This item is not published</p>
             <div id="new-campaign-selection-list" class="new-campaign-selection-list">
                 <p class="new-campaigns-header">Select campaign type</p>
                 <div class="vwo-new-campaign-item">
@@ -85,9 +87,12 @@
     {{#completeSetup}}
     <script type="text/javascript">
         var vwoConfig = {
-            domain: "{{domain}}"
+            domain: "{{domain}}",
+            contentPath: "{{contentPath}}",
+            isPublished: {{isPublished}},
+            isModified: {{isModified}}
         };
-        var contentPath = "{{contentPath}}";
+
     </script>
     <script src="{{vwoJsUrl}}" type="text/javascript"></script>
     {{/completeSetup}}

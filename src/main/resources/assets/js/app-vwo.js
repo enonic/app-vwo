@@ -67,11 +67,12 @@ var vwo = function () {
 
             campaignDetailsShortcutTemplate = '<div class="vwo-campaign-details" onclick="event.stopPropagation()" id="vwo-campaign-details-${id}">' +
                                                   '<div class="update-campaign-buttons-row">' +
-                                                      '<div class="btn start-btn ${start-btn-disabled}" id="start-btn-${id}" title="Start"><i class="icon"></i><span class="label">Start</span></div>' +
+                                                      '<div class="btn start-btn ${start-btn-disabled}" id="start-btn-${id}" title="${start-btn-tooltip}"><i class="icon"></i><span class="label">Start</span></div>' +
                                                       '<div class="btn pause-btn ${pause-btn-disabled}" id="pause-btn-${id}" title="Pause"><i class="icon"></i><span class="label">Pause</span></div>' +
                                                       '<div class="btn archive-btn ${archive-btn-disabled}" id="archive-btn-${id}" title="Archive"><i class="icon"></i><span class="label">Archive</span></div>' +
                                                       '<div class="btn unarchive-btn ${unarchive-btn-disabled}" id="unarchive-btn-${id}" title="Restore"><i class="icon"></i><span class="label">Restore</span></div>' +
                                                       '<div class="btn delete-btn ${delete-btn-disabled}" id="delete-btn-${id}" title="Delete"><i class="icon"></i><span class="label">Delete</span></div>' +
+                                                      '<div id="vwo-content-modified-message" class="${content-modified}">This item has been modified</div>' +
                                                   '</div>' +
                                                   '<table>' +
                                                       '<tr class="value"><td>${goals}</td><td>${variations}</td></tr>' +
@@ -193,11 +194,14 @@ var vwo = function () {
                     replace("${variations}", !!campaignDetails.variations ? campaignDetails.variations.length : "N/A").
                     replace("${traffic}", campaignDetails.percentTraffic).
                     replace("${visitors}", !!campaignDetails.thresholds ? campaignDetails.thresholds.visitors : "N/A").
+                    replace("${start-btn-tooltip}", (vwoConfig.isPublished || vwoConfig.isModified) ? 'Start' : 'This item is not published').
+                    replace("${start-btn-disabled}", ((vwoConfig.isPublished || vwoConfig.isModified) ? '' : 'readonly') + ' ${start-btn-disabled}').
                     replace("${start-btn-disabled}", status == 'running' || status == 'stopped' || status == 'trashed' ? 'disabled' : "").
-                    replace("${pause-btn-disabled}", status == 'paused' || status == 'stopped' || status == 'trashed' ? 'disabled' : "").
+                    replace("${pause-btn-disabled}", status == 'not_started' || status == 'paused' || status == 'stopped' || status == 'trashed' ? 'disabled' : "").
                     replace("${archive-btn-disabled}", status == 'stopped' || status == 'trashed' ? 'disabled' : "").
                     replace("${delete-btn-disabled}", status == 'trashed' ? 'disabled' : "").
                     replace("${unarchive-btn-disabled}", status != 'stopped' ? 'disabled' : "").
+                    replace("${content-modified}", vwoConfig.isModified ? 'visible' : '').
                     replace("${variation-screenshots}", generateVariationScreenshots(campaignDetails));
             },
             makeCampaignStatusIconShortcut: function (id, status) {
@@ -229,12 +233,12 @@ var vwo = function () {
 
                 var path = vwoConfig.domain;
 
-                if (!!contentPath && contentPath.length > 0) {
+                if (!!vwoConfig.contentPath && vwoConfig.contentPath.length > 0) {
                     if (path.endsWith("/")) {
                         path = path.substring(0, path.length - 1);
                     }
 
-                    path += contentPath;
+                    path += vwoConfig.contentPath;
                 }
 
                 return result.replace(/\$\{content-path\}/g, path) + newCampaignWizardButtonRow + '</form>';
@@ -563,17 +567,22 @@ var vwo = function () {
 
         var addClickListenerToButton = function(btnElement, campaignId, newStatus) {
             var updateCampaignStatusCallback = function (updateResult, newStatus) {
+                var status = newStatus || updateResult.status;
                 vwo.hideMask();
                 var ids = updateResult.ids; // ids of campaigns that got updated, we expect only one to come
                 for(let i = 0; i < ids.length; i++) {
-                    updateCampaignStatusView(ids[i], newStatus || updateResult.status);
-                    if (newStatus && newStatus !== 'TRASHED') {
-                        updateStatusButtons(ids[i], (newStatus || updateResult.status).toLowerCase());
+                    updateCampaignStatusView(ids[i], status);
+                    if (status !== 'TRASHED') {
+                        updateStatusButtons(ids[i], status.toLowerCase());
                     }
                 }
             };
 
-            btnElement.addEventListener("click", function () {
+            btnElement.addEventListener("click", function (e) {
+                if (btnElement.classList.contains('readonly')) {
+                    e.stopPropagation();
+                    return false;
+                }
                 vwo.showMask();
                 vwoService.updateCampaignStatus(campaignId, newStatus, updateCampaignStatusCallback, vwoService.defaultServiceErrorCallback);
             }, false);

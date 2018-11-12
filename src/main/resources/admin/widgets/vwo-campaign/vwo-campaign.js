@@ -7,32 +7,18 @@ function handleGet(req) {
     var view = resolve('vwo-campaign.html');
     var contentId = req.params.contentId;
 
-    var content = contentLib.get({
-        key: contentId
-    });
-
     var siteConfig = contentLib.getSiteConfig({ // get nearest site config
         key: contentId,
         applicationKey: app.name
     });
 
-    var pathToResourceOnSite;
-
-    if (isSite(content)) {
-        pathToResourceOnSite = "";
-    } else {
-        var site = contentLib.getSite({
-            key: contentId
-        });
-        if (!!site) {
-            pathToResourceOnSite = stripfOffSitePath(site._path, content._path);
-        }
-    }
-
     var accountAndTokenArePresent = accountAndTokenArePresentInConfig(),
         domainIsValid = !!siteConfig && isValidDomain(siteConfig.domain),
         completeSetup = !!siteConfig && accountAndTokenArePresent && domainIsValid,
-        errorMessage = "";
+        errorMessage = "",
+        pathToResourceOnSite = "",
+        isPublished = false,
+        isModified = false;
 
     if (!completeSetup) {
         if (!siteConfig) {
@@ -45,6 +31,34 @@ function handleGet(req) {
             errorMessage = "Domain name in the VWO config should start with http:// or https:// (" + siteConfig.domain + ")";
         }
     }
+    else {
+        var masterContent = contentLib.get({
+            key: contentId,
+            branch: 'master'
+        });
+
+        if (!!masterContent) {
+
+            var draftContent = contentLib.get({
+                key: contentId,
+                branch: 'draft'
+            });
+
+            isPublished = true;
+            isModified = (draftContent.modifiedTime !== masterContent.modifiedTime);
+
+            if (isSite(masterContent)) {
+                pathToResourceOnSite = "";
+            } else {
+                var site = contentLib.getSite({
+                    key: contentId
+                });
+                if (!!site) {
+                    pathToResourceOnSite = stripfOffSitePath(site._path, masterContent._path);
+                }
+            }
+        }
+    }
 
     var params = {
         vwoCssUrl: portalLib.assetUrl({path: 'css/bundle.css'}),
@@ -53,8 +67,10 @@ function handleGet(req) {
         errorMessage: errorMessage,
         domain: !!siteConfig && !!siteConfig.domain ? siteConfig.domain : undefined,
         contentPath: pathToResourceOnSite,
-        uid: uid
-    }
+        uid: uid,
+        isPublished: isPublished,
+        isModified: isModified
+    };
 
     return {
         contentType: 'text/html',

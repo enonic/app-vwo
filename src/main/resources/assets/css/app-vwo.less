@@ -195,11 +195,20 @@
       }
 
       .update-campaign-buttons-row {
-        height: 30px;
         width: 100%;
         margin-bottom: 20px;
         line-height: 30px;
         text-align: center;
+
+        #vwo-content-modified-message {
+          display: none;
+
+          &.visible {
+            opacity: 0.6;
+            margin-top: -10px;
+            display: block;
+          }
+        }
 
         .btn {
           display: inline-block;
@@ -207,7 +216,7 @@
           box-sizing: border-box;
           width: 25%;
           max-width: 130px;
-          height: 100%;
+          height: 30px;
           text-transform: uppercase;
           position: relative;
           font-size: 12px;
@@ -221,19 +230,23 @@
             font-family: 'vwo-icomoon';
           }
 
-          &.disabled {
-            display: none;
-            //opacity: 0.5;
-            pointer-events: none;
+          &.readonly {
+            opacity: 0.5;
             cursor: default;
           }
 
-          &:hover {
-            background-color: #ccc;
+          &.disabled {
+            display: none;
           }
 
-          &:active {
-            background-color: #969090;
+          &:not(.readonly) {
+            &:hover {
+              background-color: #ccc;
+            }
+
+            &:active {
+              background-color: #969090;
+            }
           }
 
           &.start-btn i::before {
@@ -433,7 +446,7 @@
     margin: 10px auto 15px auto;
   }
 
-  .vwo-new-campaign-btn, .close-new-campaign-section-btn {
+  #vwo-new-campaign-btn, #close-new-campaign-section-btn {
     color: white;
     font-size: 14px;
     border: none;
@@ -458,7 +471,13 @@
 
   }
 
-  .vwo-new-campaign-btn {
+  #vwo-not-published-message {
+    display: none;
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  #vwo-new-campaign-btn {
     background-color: #5E337B;
 
     &::before {
@@ -476,9 +495,18 @@
     &.expanded::before {
       transform: rotateX(180deg);
     }
+
+    &.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+
+      & + #vwo-not-published-message {
+        display: block;
+      }
+    }
   }
 
-  .close-new-campaign-section-btn {
+  #close-new-campaign-section-btn {
     background-color: gray;
     display: none;
 
