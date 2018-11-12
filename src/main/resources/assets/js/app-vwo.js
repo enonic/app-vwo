@@ -235,7 +235,7 @@ var vwo = function () {
 
                 if (!!vwoConfig.contentPath && vwoConfig.contentPath.length > 0) {
                     if (path.endsWith("/")) {
-                        path = path.substring(0, path.length - 1);
+                        path = path.slice(0, -1);
                     }
 
                     path += vwoConfig.contentPath;
@@ -342,7 +342,7 @@ var vwo = function () {
                     var campaigns = [];
                     if(allCampaigns) {
                         campaigns = allCampaigns.filter(function (campaign) {
-                            return !campaign.deleted;
+                            return !campaign.deleted && (!vwoConfig.contentPath.length || campaign.primaryUrl == vwoConfig.domain + vwoConfig.contentPath);
                         });
                     }
                     if(campaigns.length > 0) {

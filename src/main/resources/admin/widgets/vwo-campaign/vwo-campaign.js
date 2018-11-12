@@ -37,37 +37,48 @@ function handleGet(req) {
             branch: 'master'
         });
 
+        var draftContent = contentLib.get({
+            key: contentId,
+            branch: 'draft'
+        });
+
         if (!!masterContent) {
-
-            var draftContent = contentLib.get({
-                key: contentId,
-                branch: 'draft'
-            });
-
             isPublished = true;
             isModified = (draftContent.modifiedTime !== masterContent.modifiedTime);
+        }
 
-            if (isSite(masterContent)) {
-                pathToResourceOnSite = "";
-            } else {
-                var site = contentLib.getSite({
-                    key: contentId
-                });
-                if (!!site) {
-                    pathToResourceOnSite = stripfOffSitePath(site._path, masterContent._path);
-                }
+        if (isSite(masterContent || draftContent)) {
+            pathToResourceOnSite = "";
+        } else {
+            var site = contentLib.getSite({
+                key: contentId
+            });
+            if (!!site) {
+                pathToResourceOnSite = stripfOffSitePath(site._path, (masterContent || draftContent)._path);
             }
         }
     }
+
+    var siteDomain;
+
+    if (!!siteConfig && !!siteConfig.domain) {
+        siteDomain = siteConfig.domain.trim();
+        log.info(siteDomain.indexOf('/'));
+        if (siteDomain.lastIndexOf('/') == (siteDomain.length-1)) {
+            siteDomain = siteDomain.slice(0, -1);
+        }
+    }
+
 
     var params = {
         vwoCssUrl: portalLib.assetUrl({path: 'css/bundle.css'}),
         vwoJsUrl: portalLib.assetUrl({path: 'js/bundle.js'}),
         completeSetup: completeSetup,
         errorMessage: errorMessage,
-        domain: !!siteConfig && !!siteConfig.domain ? siteConfig.domain : undefined,
+        domain: siteDomain,
         contentPath: pathToResourceOnSite,
         uid: uid,
+        isSite: pathToResourceOnSite.length == 0,
         isPublished: isPublished,
         isModified: isModified
     };
@@ -79,15 +90,11 @@ function handleGet(req) {
 }
 
 function isSite(content) {
-    if (content.type == "portal:site") {
-        return true;
-    }
-
-    return false;
+    return (content.type == "portal:site");
 }
 
 function stripfOffSitePath(sitePath, contentPath) {
-    return contentPath.replace(sitePath, "");
+    return contentPath.replace(sitePath, "").trim();
 }
 
 function isValidDomain(domain) {
