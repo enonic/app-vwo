@@ -352,7 +352,7 @@ var vwo = function () {
                             campaignShortcuts += templateHelper.makeCampaignShortcut(campaigns[i]);
                         }
                         if (campaigns.length > 0) {
-                            document.getElementById("campaigns-list-content").innerHTML = campaignShortcuts;
+                            $("#campaigns-list-content").html(campaignShortcuts);
                         }
 
                         bindToggleOnCampaignClick(campaigns);

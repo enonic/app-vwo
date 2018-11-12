@@ -63,7 +63,6 @@ function handleGet(req) {
 
     if (!!siteConfig && !!siteConfig.domain) {
         siteDomain = siteConfig.domain.trim();
-        log.info(siteDomain.indexOf('/'));
         if (siteDomain.lastIndexOf('/') == (siteDomain.length-1)) {
             siteDomain = siteDomain.slice(0, -1);
         }
