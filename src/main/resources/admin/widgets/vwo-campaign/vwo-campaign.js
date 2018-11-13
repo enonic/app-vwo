@@ -72,6 +72,12 @@ function handleGet(req) {
     var params = {
         vwoCssUrl: portalLib.assetUrl({path: 'css/bundle.css'}),
         vwoJsUrl: portalLib.assetUrl({path: 'js/bundle.js'}),
+        contentServiceUrl: portalLib.serviceUrl({
+            service: 'contentTree',
+            params: {
+                contentId: contentId
+            }
+        }),
         completeSetup: completeSetup,
         errorMessage: errorMessage,
         domain: siteDomain,
