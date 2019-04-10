@@ -1,9 +1,9 @@
-<body>
+<widget id="widget-{{widgetId}}">
 <div>
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
     {{#completeSetup}}
     <div class="no-error vwo-widget">
-        <div id="vwo-authenticated_{{uid}}" class="vwo-campaigns-block">
+        <div id="vwo-authenticated" class="vwo-campaigns-block">
             <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded{{^isPublished}} disabled{{/isPublished}}" onclick="vwo.toggleNewCampaignList()">
                 <p>New Campaign</p>
             </button>
@@ -72,7 +72,7 @@
                 <div id="campaigns-list-content" class="expanded"></div>
             </div>
         </div>
-        <div id="vwo-not-authenticated_{{uid}}" class="vwo-campaigns-block-error error"></div>
+        <div id="vwo-not-authenticated" class="vwo-campaigns-block-error error"></div>
         <div id="vwo-widget-loadmask" class="vwo-load-mask">
             <div class="mask-splash">
                 <div class="spinner"/>
@@ -91,11 +91,12 @@
             contentPath: "{{contentPath}}",
             isPublished: {{isPublished}},
             isModified: {{isModified}},
-            contentServiceUrl: "{{contentServiceUrl}}"
+            contentServiceUrl: "{{contentServiceUrl}}",
+            widgetId:"{{widgetId}}"
         };
 
     </script>
     <script src="{{vwoJsUrl}}" type="text/javascript"></script>
     {{/completeSetup}}
 </div>
-</body>
+</widget>
