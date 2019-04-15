@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget>
   <display-name>VW Optimizer</display-name>
+  <description>Tweak, optimize and personalize your website</description>
   <interfaces>
     <interface>contentstudio.contextpanel</interface>
   </interfaces>

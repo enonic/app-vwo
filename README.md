@@ -11,7 +11,7 @@ Here's the documentation for this application:
 
 | App version | Required XP version | Download |
 | ----------- | ------------------- | -------- |
-| 2.0.0 | 7.0.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/2.0.0/vwo-2.0.0.jar) |
+| 1.2.0 | 7.0.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.2.0/vwo-1.2.0.jar) |
 | 1.1.0 | 6.15.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.1.0/vwo-1.1.0.jar) |
 | 1.0.2 | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.2/vwo-1.0.2.jar) |
 | 1.0.1 | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.1/vwo-1.0.1.jar) |

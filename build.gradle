@@ -23,9 +23,9 @@ dependencies {
     include "com.enonic.xp:lib-content:${xpVersion}"
     include "com.enonic.xp:lib-context:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
-    include "com.enonic.lib:lib-mustache:2.0.0-B1"
-    include 'org.codehaus.jackson:jackson-mapper-asl:1.8.5'
-    include 'org.apache.httpcomponents:httpclient:4.5.2'
+    include "com.enonic.lib:lib-mustache:2.0.0-RC1"
+    include 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+    include 'org.apache.httpcomponents:httpclient:4.5.8'
 }
 
 repositories {
