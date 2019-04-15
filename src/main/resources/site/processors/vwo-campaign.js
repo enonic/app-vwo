@@ -1,6 +1,6 @@
 var portal = require('/lib/xp/portal');
 
-exports.responseFilter = function (req, res) {
+exports.responseProcessor = function (req, res) {
     var siteConfig = portal.getSiteConfig();
     var enableTracking = siteConfig['enableTracking'] || false;
 

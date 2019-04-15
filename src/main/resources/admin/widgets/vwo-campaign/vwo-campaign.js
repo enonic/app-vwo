@@ -1,11 +1,22 @@
 var portalLib = require('/lib/xp/portal');
-var mustacheLib = require('/lib/xp/mustache');
+var mustacheLib = require('/lib/mustache');
 var contentLib = require('/lib/xp/content');
+var contextLib = require('/lib/xp/context');
 
 function handleGet(req) {
-    var uid = req.url.split('?uid=')[1];
     var view = resolve('vwo-campaign.html');
     var contentId = req.params.contentId;
+
+    if (!contentId && portalLib.getContent()) {
+        contentId = portalLib.getContent()._id;
+    }
+
+    if (!contentId) {
+        return {
+            contentType: 'text/html',
+            body: '<widget class="error">No content selected</widget>'
+        };
+    }
 
     var siteConfig = contentLib.getSiteConfig({ // get nearest site config
         key: contentId,
@@ -30,40 +41,41 @@ function handleGet(req) {
         } else if (!domainIsValid) {
             errorMessage = "Domain name in the VWO config should start with http:// or https:// (" + siteConfig.domain + ")";
         }
-    }
-    else {
-        var masterContent = contentLib.get({
-            key: contentId,
-            branch: 'master'
-        });
-
-        var draftContent = contentLib.get({
-            key: contentId,
-            branch: 'draft'
-        });
-
-        if (!!masterContent) {
-            isPublished = true;
-            isModified = (draftContent.modifiedTime !== masterContent.modifiedTime);
-        }
-
-        if (isSite(masterContent || draftContent)) {
-            pathToResourceOnSite = "";
-        } else {
-            var site = contentLib.getSite({
+    } else {
+        contextLib.run({branch: 'master'}, function () {
+            var masterContent = contentLib.get({
                 key: contentId
             });
-            if (!!site) {
-                pathToResourceOnSite = stripfOffSitePath(site._path, (masterContent || draftContent)._path);
-            }
-        }
+
+            contextLib.run({branch: 'draft'}, function () {
+                var draftContent = contentLib.get({
+                    key: contentId
+                });
+
+                if (masterContent) {
+                    isPublished = true;
+                    isModified = (draftContent.modifiedTime !== masterContent.modifiedTime);
+                }
+
+                if (isSite(masterContent || draftContent)) {
+                    pathToResourceOnSite = "";
+                } else {
+                    var site = contentLib.getSite({
+                        key: contentId
+                    });
+                    if (!!site) {
+                        pathToResourceOnSite = stripfOffSitePath(site._path, (masterContent || draftContent)._path);
+                    }
+                }
+            });
+        });
     }
 
     var siteDomain;
 
     if (!!siteConfig && !!siteConfig.domain) {
         siteDomain = siteConfig.domain.trim();
-        if (siteDomain.lastIndexOf('/') == (siteDomain.length-1)) {
+        if (siteDomain.lastIndexOf('/') == (siteDomain.length - 1)) {
             siteDomain = siteDomain.slice(0, -1);
         }
     }
@@ -82,7 +94,7 @@ function handleGet(req) {
         errorMessage: errorMessage,
         domain: siteDomain,
         contentPath: pathToResourceOnSite,
-        uid: uid,
+        widgetId: app.name,
         isSite: pathToResourceOnSite.length == 0,
         isPublished: isPublished,
         isModified: isModified
