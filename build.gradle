@@ -9,13 +9,13 @@ app {
     name = project.appName
     displayName = 'Visual Website Optimizer'
     vendorName = 'Enonic AS'
-    vendorUrl = 'http://enonic.com'
+    vendorUrl = 'https://enonic.com'
     systemVersion = "${xpVersion}"
 }
 
 node {
     download = true
-    version = '9.9.0'
+    version '10.16.0'
 }
 
 dependencies {
@@ -23,7 +23,7 @@ dependencies {
     include "com.enonic.xp:lib-content:${xpVersion}"
     include "com.enonic.xp:lib-context:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
-    include "com.enonic.lib:lib-mustache:2.0.0-RC1"
+    include "com.enonic.lib:lib-mustache:2.0.0"
     include 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     include 'org.apache.httpcomponents:httpclient:4.5.8'
 }
