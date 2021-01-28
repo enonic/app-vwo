@@ -41,7 +41,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-normalize": "^9.0.0",
     "postcss-sort-media-queries": "^1.4.23",
-    "prettier": "^2.0.4",
+    "prettier": "^2.2.1",
     "style-loader": "^2.0.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^4.4.0"
