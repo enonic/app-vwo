@@ -1,6 +1,6 @@
 package com.enonic.app.vwo.rest.json;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VWOErrorJson

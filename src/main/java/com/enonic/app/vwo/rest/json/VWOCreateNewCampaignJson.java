@@ -1,8 +1,8 @@
 package com.enonic.app.vwo.rest.json;
 
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VWOCreateNewCampaignJson
 {
