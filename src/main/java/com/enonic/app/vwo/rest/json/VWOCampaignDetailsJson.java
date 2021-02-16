@@ -3,8 +3,8 @@ package com.enonic.app.vwo.rest.json;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @SuppressWarnings( "unused" )
 public class VWOCampaignDetailsJson extends VWOCampaignJson
