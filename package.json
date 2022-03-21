@@ -28,7 +28,7 @@
     "@babel/plugin-transform-object-assign": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/register": "^7.17.7",
-    "autoprefixer": "^10.4.2",
+    "autoprefixer": "^10.4.4",
     "babel-loader": "^8.2.3",
     "babel-plugin-array-includes": "^2.0.3",
     "clean-webpack-plugin": "^4.0.0",
