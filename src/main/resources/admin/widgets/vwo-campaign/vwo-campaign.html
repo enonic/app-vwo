@@ -1,7 +1,6 @@
 <widget id="widget-{{widgetId}}">
-<div>
     <link rel="stylesheet" href="{{vwoCssUrl}}" type="text/css"/>
-    {{#completeSetup}}
+    <script src="{{vwoJsUrl}}" type="text/javascript" data-config-service-url="{{configServiceUrl}}"></script>
     <div class="no-error vwo-widget">
         <div id="vwo-authenticated" class="vwo-campaigns-block">
             <button id="vwo-new-campaign-btn" class="vwo-new-campaign-btn expanded{{^isPublished}} disabled{{/isPublished}}" onclick="vwo.toggleNewCampaignList()">
@@ -79,24 +78,4 @@
             </div>
         </div>
     </div>
-    {{/completeSetup}}
-    {{^completeSetup}}
-    <div class="error">{{errorMessage}}</div>
-    {{/completeSetup}}
-
-    {{#completeSetup}}
-    <script type="text/javascript">
-        var vwoConfig = {
-            domain: "{{domain}}",
-            contentPath: "{{contentPath}}",
-            isPublished: {{isPublished}},
-            isModified: {{isModified}},
-            contentServiceUrl: "{{contentServiceUrl}}",
-            widgetId:"{{widgetId}}"
-        };
-
-    </script>
-    <script src="{{vwoJsUrl}}" type="text/javascript"></script>
-    {{/completeSetup}}
-</div>
 </widget>
