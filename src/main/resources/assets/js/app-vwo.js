@@ -79,7 +79,9 @@ const vwo = function () {
                                                       '<tr class="value"><td>${visitors}</td><td>${traffic}%</td></tr>' +
                                                       '<tr class="label"><td>Visitors</td><td>Traffic</td></tr>' +
                                                   '</table>' +
-                                                  '${variation-screenshots}' +
+                                                // The line below injects campaign screenshots. It's removed since links
+                                                // to external images are not allowed due to Content Security Policy.
+                                                  //'${variation-screenshots}' +
                                                   '<button class="open-campaign-in-vwo-btn"><p>Open in VWO</p></button>' +
                                               '</div>',
 
