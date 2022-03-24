@@ -1,11 +1,10 @@
-var contentLib = require('/lib/xp/content');
+const contentLib = require('/lib/xp/content');
+const helper = require("../../helper/helper");
 
 function handleGet(req) {
-
-    var contentId = req.params.contentId;
+    const contentId = req.params.contentId;
 
     if (!contentId) {
-
         return {
             status: 500,
             contentType: 'application/json',
@@ -23,25 +22,13 @@ function handleGet(req) {
 }
 
 function getItems(contentId) {
-
-    var site = contentLib.getSite({
+    const site = contentLib.getSite({
         key: contentId
     });
 
-    var siteConfig = contentLib.getSiteConfig({ // get nearest site config
-        key: contentId,
-        applicationKey: app.name
-    });
+    const siteDomain = helper.getDomainFromConfig(contentId);
 
-    var siteDomain = '';
-    if (!!siteConfig && !!siteConfig.domain) {
-        siteDomain = siteConfig.domain.trim();
-        if (siteDomain.lastIndexOf('/') == (siteDomain.length-1)) {
-            siteDomain = siteDomain.slice(0, -1);
-        }
-    }
-
-    var items =
+    const items =
         contentLib.query({
             query: "_path LIKE '/content" + site._path + "/*'",
             start: 0,

@@ -1,6 +1,24 @@
 const contentLib = require('/lib/xp/content');
 const contextLib = require('/lib/xp/context');
 
+exports.getDomainFromConfig = function (contentId) {
+    let domain = '';
+
+    const siteConfig = contentLib.getSiteConfig({ // get nearest site config
+        key: contentId,
+        applicationKey: app.name
+    });
+
+    if (!!siteConfig && !!siteConfig.domain) {
+        domain = siteConfig.domain.trim();
+        if (domain.lastIndexOf('/') == (domain.length - 1)) {
+            domain = domain.slice(0, -1);
+        }
+    }
+
+    return domain;
+}
+
 exports.validate = function (contentId) {
     const siteConfig = contentLib.getSiteConfig({ // get nearest site config
         key: contentId,

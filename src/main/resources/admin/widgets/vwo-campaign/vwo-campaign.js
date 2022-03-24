@@ -1,7 +1,5 @@
 const portalLib = require('/lib/xp/portal');
 const mustacheLib = require('/lib/mustache');
-const contentLib = require('/lib/xp/content');
-const contextLib = require('/lib/xp/context');
 const helper = require('/helper/helper');
 
 function handleGet(req) {

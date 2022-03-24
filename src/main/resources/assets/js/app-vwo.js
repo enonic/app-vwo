@@ -80,7 +80,7 @@ const vwo = function () {
                                                       '<tr class="label"><td>Visitors</td><td>Traffic</td></tr>' +
                                                   '</table>' +
                                                   '${variation-screenshots}' +
-                                                  '<button class="open-campaign-in-vwo-btn" onclick="vwo.openCampaignPage(${id})"><p>Open in VWO</p></button>' +
+                                                  '<button class="open-campaign-in-vwo-btn"><p>Open in VWO</p></button>' +
                                               '</div>',
 
             campaignStatusIconTemplate = '<div class="vwo-campaign-status ${status}" id="vwo-campaign-status-${id}">' +
@@ -167,8 +167,8 @@ const vwo = function () {
 
             newCampaignWizardButtonRow =
                 '<div class="button-row">' +
-                    '<button type="button" class="create-new-campaign-in-vwo-btn" onclick="vwo.createNewCampaignFromOurWizard()" disabled><p>Create</p></button>' +
-                    '<button type="button" class="cancel-open-new-campaign-btn" onclick="vwo.toggleNewCampaignList()"><p>Cancel</p></button>' +
+                    '<button type="button" class="create-new-campaign-in-vwo-btn" disabled><p>Create</p></button>' +
+                    '<button type="button" class="cancel-open-new-campaign-btn"><p>Cancel</p></button>' +
                 '</div>';
 
             const generateVariationScreenshots = function(campaignDetails) {
@@ -194,7 +194,6 @@ const vwo = function () {
                         replace(/\$\{status\}/g, campaignInfo.status.toLowerCase());
             },
             makeCampaignDetailsShortcut: function (campaignDetails) {
-                console.log(vwoConfig);
                 const status = campaignDetails.status.toLowerCase();
                 return campaignDetailsShortcutTemplate.
                     replace(/\$\{id\}/g, campaignDetails.id).
@@ -238,7 +237,6 @@ const vwo = function () {
                               newCampaignWizardGoalsSection();
                     break;
                 }
-                console.log(vwoConfig);
                 let path = vwoConfig.domain;
 
                 if (!!vwoConfig.contentPath && vwoConfig.contentPath.length > 0) {
@@ -429,10 +427,10 @@ const vwo = function () {
 
             // set variations (for split campaign)
             const variations = [];
-            $(form).find(".wizard-campaign-variation").each(function (index) {
+            $(form).find(".wizard-campaign-variation").each(function () {
                 const variation = {};
                 const variationUrls = [];
-                $(this).find(".wizard-campaign-variation-url").each(function (index) {
+                $(this).find(".wizard-campaign-variation-url").each(function () {
                     const variationUrl = {};
                     variationUrl.type = "url";
                     variationUrl.value = ensureUrlHasProtocol($(this).find("input[name='value']").val());
@@ -445,9 +443,9 @@ const vwo = function () {
 
             // set goals
             const campaignGoals = [];
-            $(form).find(".wizard-campaign-goal").each(function (index) {
+            $(form).find(".wizard-campaign-goal").each(function () {
                 const campaignGoal = {};
-                campaignGoal.name = $( this ).find("input[name='name']").val();
+                campaignGoal.name = $(this).find("input[name='name']").val();
                 campaignGoal.type = $(this).find("select[name='goal-type']").val();
 
                 const urls = [];
@@ -465,7 +463,7 @@ const vwo = function () {
 
             // set sections (for multivariate campaign)
             const sections = [];
-            $(form).find(".wizard-campaign-section").each(function (index) {
+            $(form).find(".wizard-campaign-section").each(function () {
                 const section = {};
                 section.name = $(this).find("input[name='name']").val();
                 section.cssSelector = $(this).find("input[name='cssSelector']").val();
@@ -490,9 +488,12 @@ const vwo = function () {
         const createWizardFormAndAppend = function (campaignType) {
             $("#vwo-campaign-wizard-" + campaignType).append(getWizardTemplateForSelectedCampaign(campaignType));
 
+            $(".create-new-campaign-in-vwo-btn").click(() => vwo.createNewCampaignFromOurWizard());
+            $(".cancel-open-new-campaign-btn").click(() => vwo.toggleNewCampaignList());
+
             const form = $("#vwo-campaign-wizard-" + vwoNewCampaignWizardManager.getSelectedCampaignType() + " form");
 
-            $(form).find("input").each(function (index) {
+            $(form).find("input").each(function () {
                 $(this).on("input propertychange", function () {
                     validateForm(form);
                 });
@@ -576,6 +577,8 @@ const vwo = function () {
             const getCampaignDetailsCallback = function (campaignDetails) {
                 const campaignDetailsHtml = templateHelper.makeCampaignDetailsShortcut(campaignDetails),
                     campaignElem = document.getElementById('vwo-campaign-' + campaignId);
+
+                $('.open-campaign-in-vwo-btn').click(() => vwo.openCampaignPage(campaignDetails.id));
 
                 campaignElem.insertAdjacentHTML('beforeend', campaignDetailsHtml);
 
@@ -698,8 +701,25 @@ const vwo = function () {
             return vwoService.fetchContentItems();
         },
 
+        addEventListeners: function() {
+            $("#vwo-new-campaign-btn, #close-new-campaign-section-btn").each(function() {
+                $(this).click(() => vwo.toggleNewCampaignList());
+            });
+            $("[name='campaignType']").each(function() {
+                $(this).click(() => vwo.toggleCampaignWizard());
+            });
+            $(".vwo-new-campaign-logo").each(function(index) {
+                $(this).click(() => vwo.toggleCampaignWizard(index));
+            });
+            $(".vwo-new-campaign-name").each(function(index) {
+                $(this).click(() => vwo.toggleCampaignWizard(index));
+            });
+        },
+
         startWithCampaigns: function() {
-            const onSuccessCallback = function () {
+            vwo.addEventListeners();
+            const
+                onSuccessCallback = function () {
                     $(".vwo-campaigns-block").addClass("visible");
                 },
                 errorCallback = function () {
