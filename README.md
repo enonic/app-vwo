@@ -1,6 +1,6 @@
-# Visual Website Optimizer for Enonic XP
+# VWO integration for Enonic XP
 
-This app enables integration with Visual Website Optimizer API to tweak, optimize and personalize your website
+This app enables integration with VWO (Visual Website Optimizer) API to tweak, optimize and personalize your website
 
 Here's the documentation for this application:
 
