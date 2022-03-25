@@ -1,5 +1,6 @@
 import "../css/app-vwo.less";
 import $ from 'jquery';
+import toast from 'toast-me';
 
 let vwoConfig = {};
 const vwo = function () {
@@ -20,13 +21,8 @@ const vwo = function () {
                             if (errorCallback) {
                                 errorCallback(xhr.responseText);
                             }
-                            if (xhr.responseText) {/*
-                                if (api.notify.NotifyManager) {
-                                    api.notify.NotifyManager.get().showError(xhr.responseText);
-                                } else {
-                                    console.log(xhr.responseText);
-                                }*/
-                                console.log(xhr.responseText);
+                            if (xhr.responseText) {
+                                vwo.giveError(xhr.responseText);
                             }
                         }
                     }
@@ -317,6 +313,20 @@ const vwo = function () {
                         if (status == "TRASHED" && $("#campaigns-list-content").html() == '') {
                             $("#campaigns-list").addClass("empty");
                         }
+                        switch (status.toLowerCase()) {
+                            case 'trashed':
+                                vwo.giveNotification('The campaign is successfully deleted.');
+                                break;
+                            case 'running':
+                                vwo.giveNotification('The campaign has been successfully started.');
+                                break;
+                            case 'paused':
+                                vwo.giveNotification('The campaign has been successfully stopped.');
+                                break;
+                            case 'stopped':
+                                vwo.giveNotification('The campaign has been successfully archived.');
+                                break;
+                        }
                     } else {
                         errorCallback();
                     }
@@ -348,6 +358,7 @@ const vwo = function () {
 
             defaultServiceErrorCallback: function() {
                 vwo.hideMask();
+                vwo.giveError();
             }
         };
     }();
@@ -528,11 +539,9 @@ const vwo = function () {
                     window.open("http://app.vwo.com/#/test/" + selectedCampaignType + "/" + result.id + "/editor", "_blank");
 
                     const campaignName = $("#vwo-campaign-wizard-" + vwoNewCampaignWizardManager.getSelectedCampaignType() + " form .wizard-campaign-name").val();
-/*
-                    if (api.notify.NotifyManager) {
-                        api.notify.NotifyManager.get().showSuccess('Successfully created campaign "' + campaignName + '".');
-                    }
-*/
+
+                    vwo.giveNotification(`Successfully created campaign "${campaignName}".`);
+
                     cleanWizardForm(selectedCampaignType);
 
                     vwo.toggleNewCampaignList();
@@ -745,6 +754,20 @@ const vwo = function () {
                 detailsEl.style.display = 'none';
             }
             return this;
+        },
+
+        giveError: function(errorMessage) {
+            toast(errorMessage || 'Unexpected error', {
+                position: 'bottom',
+                toastClass: 'vwo-toast-error'
+            });
+        },
+
+        giveNotification: function(message) {
+            toast(message, {
+                position: 'bottom',
+                toastClass: 'vwo-toast-notification'
+            });
         },
 
         openCampaignPage: function(campaignId) {
