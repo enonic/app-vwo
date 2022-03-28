@@ -2,10 +2,12 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const assets = path.join(__dirname, '/build/resources/main/assets');
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
     context: path.join(__dirname, '/src/main/resources/assets'),
-    mode: 'production',
+    mode: isProd ? 'production' : 'development',
+    devtool: isProd ? false : 'source-map',
     entry: {
         'bundle': './js/app-vwo.js'
     },
@@ -23,7 +25,7 @@ module.exports = {
                     {
                         loader: "css-loader",
                         options: {
-                            sourceMap: false,
+                            sourceMap: isProd,
                             importLoaders: 1,
                             url: false
                         }
@@ -31,27 +33,19 @@ module.exports = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            sourceMap: false
+                            sourceMap: isProd
                         }
                     },
                     {
                         loader: 'less-loader',
                         options: {
-                            sourceMap: false,
+                            sourceMap: isProd,
                             lessOptions: {
                                 javascriptEnabled: true
                             }
                         }
                     }
                 ],
-            },
-            {
-                test: /\.(eot|woff|woff2|ttf)$|icomoon.svg/,
-                use: 'file-loader?name=fonts/[name].[ext]'
-            },
-            {
-                test: /^\.(png)$/,
-                use: 'file-loader?name=images/[name].[ext]'
             }
         ]
     },

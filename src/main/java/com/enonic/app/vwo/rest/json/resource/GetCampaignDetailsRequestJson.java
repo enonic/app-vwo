@@ -1,18 +1,8 @@
 package com.enonic.app.vwo.rest.json.resource;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class GetCampaignDetailsRequestJson extends VWOServiceGeneralRequestJson
+public class GetCampaignDetailsRequestJson
 {
-
     private Integer campaignId;
-
-    @JsonCreator
-    public GetCampaignDetailsRequestJson( @JsonProperty("campaignId") final Integer campaignId ) {
-        super();
-        this.campaignId = campaignId;
-    }
 
     public Integer getCampaignId()
     {
