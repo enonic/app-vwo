@@ -10,14 +10,15 @@ Here's the documentation for this application:
 ## Releases and Compatibility
 
 | App version | Required XP version | Download |
-| ----------- | ------------------- | -------- |
-| 1.3.0 | 7.3.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.3.0/vwo-1.3.0.jar) |
-| 1.2.1 | 7.0.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.2.1/vwo-1.2.1.jar) |
-| 1.2.0 | 7.0.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.2.0/vwo-1.2.0.jar) |
-| 1.1.0 | 6.15.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.1.0/vwo-1.1.0.jar) |
-| 1.0.2 | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.2/vwo-1.0.2.jar) |
-| 1.0.1 | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.1/vwo-1.0.1.jar) |
-| 1.0.0 | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.0/vwo-1.0.0.jar) |
+|-------------| ------------------- | -------- |
+| 1.4.0       | 7.3.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.4.0/vwo-1.4.0.jar) |
+| 1.3.0       | 7.3.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.3.0/vwo-1.3.0.jar) |
+| 1.2.1       | 7.0.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.2.1/vwo-1.2.1.jar) |
+| 1.2.0       | 7.0.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.2.0/vwo-1.2.0.jar) |
+| 1.1.0       | 6.15.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.1.0/vwo-1.1.0.jar) |
+| 1.0.2       | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.2/vwo-1.0.2.jar) |
+| 1.0.1       | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.1/vwo-1.0.1.jar) |
+| 1.0.0       | 6.7.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.0.0/vwo-1.0.0.jar) |
 
 
 ## Building and deploying

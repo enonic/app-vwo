@@ -25,7 +25,6 @@ module.exports = {
                     {
                         loader: "css-loader",
                         options: {
-                            sourceMap: isProd,
                             importLoaders: 1,
                             url: false
                         }
@@ -33,13 +32,12 @@ module.exports = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            sourceMap: isProd
+                            sourceMap: !isProd
                         }
                     },
                     {
                         loader: 'less-loader',
                         options: {
-                            sourceMap: isProd,
                             lessOptions: {
                                 javascriptEnabled: true
                             }

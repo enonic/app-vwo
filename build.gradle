@@ -40,5 +40,8 @@ task webpack(
     script = file('node_modules/webpack/bin/webpack.js')
 }
 
-processResources.dependsOn webpack
+jar {
+    exclude 'assets/**/*.less'
 
+    dependsOn += webpack
+}

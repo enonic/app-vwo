@@ -808,7 +808,10 @@ const vwo = function () {
 }();
 
 (() => {
-    //window.vwo = vwo;
+    if (!document.currentScript) {
+        throw 'Legacy browsers are not supported';
+    }
+
     const configServiceUrl = document.currentScript.getAttribute('data-config-service-url');
     if (!configServiceUrl) {
         throw 'Unable to fetch widget config';
