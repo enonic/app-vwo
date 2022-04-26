@@ -12,7 +12,7 @@
 
 ![](images/vwo_02.png)
 
-* In the config folder of your XP installation (xp_home/config) create a text file called “com.enonic.app.vwo.cfg”.
+* In the config folder of your XP installation ($XP_HOME/config) create a text file called “com.enonic.app.vwo.cfg”.
 
 ![](images/vwo_03.png)
 
@@ -22,15 +22,15 @@
     vwo.token = <token>
 ```
 
-* Now install XP VWO App from Enonic Market via XP Application Manager or [download](https://github.com/enonic/app-vwo.git), build and deploy. The XP VWO App should now appear in the Applications console.
+* Now install VWO App from Enonic Market via Application Manager or [download](https://github.com/enonic/app-vwo.git), build and deploy. VWO App should now appear in the Applications console.
 
 ![](images/vwo_04.png)
 
-* In the Content Manager of Enonic XP click Edit for a site you’re setting up integration for and select “Visual Website Optimizer” from Site config dropdown.
+* In Content Studio click Edit for the site you’re setting up integration for and select “VWO” from Site config dropdown.
 
 ![](images/vwo_05.png)
 
-* In the XP VWO App config section enter domain of your website.
+* In the VWO App config section enter domain of your website.
 *Ensure that domain name starts with http:// or https://, otherwise site config will not be valid.*
 *Check off "Embed VWO Smart Code script" if you want VWO tracking to be enabled on the pages of your website.*
 

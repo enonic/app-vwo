@@ -7,7 +7,7 @@ plugins {
 
 app {
     name = project.appName
-    displayName = 'Visual Website Optimizer'
+    displayName = 'VWO'
     vendorName = 'Enonic AS'
     vendorUrl = 'https://enonic.com'
     systemVersion = "${xpVersion}"
