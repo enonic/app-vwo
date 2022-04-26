@@ -1,6 +1,6 @@
 # VWO integration for Enonic XP
 
-This app enables integration with VWO (Visual Website Optimizer) API to tweak, optimize and personalize your website
+This app enables integration with VWO API to tweak, optimize and personalize your website
 
 Here's the documentation for this application:
 
@@ -9,8 +9,9 @@ Here's the documentation for this application:
 
 ## Releases and Compatibility
 
-| App version | Required XP version | Download |
-|-------------| ------------------- | -------- |
+| App version | Required XP version | Download                                                                         |
+|-------------| ------------------- |----------------------------------------------------------------------------------|
+| 1.4.1       | 7.3.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.4.1/vwo-1.4.1.jar) |
 | 1.4.0       | 7.3.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.4.0/vwo-1.4.0.jar) |
 | 1.3.0       | 7.3.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.3.0/vwo-1.3.0.jar) |
 | 1.2.1       | 7.0.0 | [Download](http://repo.enonic.com/public/com/enonic/app/vwo/1.2.1/vwo-1.2.1.jar) |

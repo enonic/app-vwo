@@ -1,7 +1,7 @@
 {
   "name": "app-vwo",
-  "version": "1.4.0",
-  "description": "Visual Web Optimizer",
+  "version": "1.4.1",
+  "description": "VWO",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enonic/app-vwo.git"
