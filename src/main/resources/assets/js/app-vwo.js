@@ -1,46 +1,51 @@
 import "../css/app-vwo.less";
 import $ from 'jquery';
 import toast from 'toast-me';
+import * as httpClient from '/lib/http-client';
 
 let vwoConfig = {};
 const vwo = function () {
 
-    const ajax = function () {
+    const http = function () {
         return {
-            getRequest: function () {
-                return new XMLHttpRequest();
+            getRequest: function (url, method, data) {
+                const request = { url, method };
+
+                if (data) {
+                    request.body = data;
+                }
+
+                if (method === 'POST') {
+                    request.contentType = 'application/json' 
+                }
+
+                return request;
             },
             send: function (url, callback, errorCallback, method, data) {
-                const xhr = ajax.getRequest();
-                xhr.open(method, url);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if(xhr.status === 200) {
-                            callback(xhr.responseText);
-                        } else {
-                            if (errorCallback) {
-                                errorCallback(xhr.responseText);
-                            }
-                            if (xhr.responseText) {
-                                vwo.giveError(xhr.responseText);
-                            }
-                        }
-                    }
-                };
-                if (method == 'POST') {
-                    xhr.setRequestHeader('Content-type', 'application/json');
+                const request = http.getRequest(url, method, data);
+
+                const response = httpClient.request(request);
+
+                if (response.status === 200) {
+                    callback(response.body);
+                    return;
                 }
-                data ? xhr.send(data) : xhr.send();
+
+                if (errorCallback) {
+                    errorCallback(response.body);
+                }
+
+                vwo.giveError(response.body);
             },
             get: function (url, data, callback, errorCallback) {
                 const query = [];
                 for (const key in data) {
                     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
                 }
-                ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, errorCallback, 'GET')
+                http.send(url + (query.length ? '?' + query.join('&') : ''), callback, errorCallback, 'GET')
             },
             post: function (url, data, callback, errorCallback) {
-                ajax.send(url, callback, errorCallback, 'POST', JSON.stringify(data))
+                http.send(url, callback, errorCallback, 'POST', JSON.stringify(data))
             }
         };
     }();
@@ -271,7 +276,7 @@ const vwo = function () {
                         reject();
                     };
 
-                    ajax.get(vwoConfig.contentServiceUrl, {}, callbackFn, errorCallback);
+                    http.get(vwoConfig.contentServiceUrl, {}, callbackFn, errorCallback);
                 });
             },
             listCampaigns: function (listCampaignsCallback, errorCallback) {
@@ -285,7 +290,7 @@ const vwo = function () {
                 };
 
                 const params = {}
-                ajax.post("/admin/rest/vwo/listCampaigns", params, callback, errorCallback);
+                http.post("/admin/rest/vwo/listCampaigns", params, callback, errorCallback);
                 return this;
             },
 
@@ -301,7 +306,7 @@ const vwo = function () {
                 const params = {
                     campaignId: campaignId
                 }
-                ajax.post("/admin/rest/vwo/getCampaignDetails", params, callback, errorCallback);
+                http.post("/admin/rest/vwo/getCampaignDetails", params, callback, errorCallback);
                 return this;
             },
 
@@ -336,7 +341,7 @@ const vwo = function () {
                     campaignId: campaignId,
                     status: status
                 };
-                ajax.post("/admin/rest/vwo/updateCampaignStatus", params, callback, errorCallback);
+                http.post("/admin/rest/vwo/updateCampaignStatus", params, callback, errorCallback);
                 return this;
             },
 
@@ -352,7 +357,7 @@ const vwo = function () {
                 const params = {
                     newCampaignParams: JSON.stringify(newCampaignParamsObject)
                 }
-                ajax.post("/admin/rest/vwo/createNewCampaign", params, callback, errorCallback);
+                http.post("/admin/rest/vwo/createNewCampaign", params, callback, errorCallback);
                 return this;
             },
 
@@ -704,7 +709,7 @@ const vwo = function () {
 
         fetchConfig: function(configServiceUrl) {
             return new Promise(function(resolve, reject) {
-                ajax.get(configServiceUrl, {}, (config) => resolve(JSON.parse(config)), () => reject());
+                http.get(configServiceUrl, {}, (config) => resolve(JSON.parse(config)), () => reject());
             });
         },
 

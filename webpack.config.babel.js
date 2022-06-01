@@ -4,8 +4,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const assets = path.join(__dirname, '/build/resources/main/assets');
 const isProd = process.env.NODE_ENV === 'production';
 
+const SRC_DIR = 'src/main/resources';
+
 module.exports = {
     context: path.join(__dirname, '/src/main/resources/assets'),
+    externals: [/\/lib\/(http-client)/],
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? false : 'source-map',
     entry: {
@@ -58,6 +61,9 @@ module.exports = {
         })
     ],
     resolve: {
-        extensions: ['.js', '.less', '.css']
+        extensions: ['.js', '.less', '.css'],
+        alias: {
+			'/lib': path.resolve(__dirname, SRC_DIR, 'lib'),
+		},
     }
 };
