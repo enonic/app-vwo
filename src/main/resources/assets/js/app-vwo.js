@@ -1,41 +1,47 @@
 import "../css/app-vwo.less";
 import $ from 'jquery';
 import toast from 'toast-me';
-import * as httpClient from '/lib/http-client';
 
 let vwoConfig = {};
 const vwo = function () {
 
     const http = function () {
         return {
-            getRequest: function (url, method, data) {
-                const request = { url, method };
+            getRequest: function (method, data) {
+                const request = { method };
 
                 if (data) {
                     request.body = data;
                 }
 
                 if (method === 'POST') {
-                    request.contentType = 'application/json' 
+                    request.headers = { 'Content-Type': 'application/json' };
                 }
 
                 return request;
             },
             send: function (url, callback, errorCallback, method, data) {
-                const request = http.getRequest(url, method, data);
-
-                const response = httpClient.request(request);
-
-                if (response.status === 200) {
-                    callback(response.body);
-                    return;
-                }
-
-                if (errorCallback) {
-                    errorCallback(response.body);
-                }
-
-                vwo.giveError(response.body);
+                const request = http.getRequest(method, data);
+                fetch(url, request)
+                    .then((response) => {
+                        if (!response.ok) {
+                            if (errorCallback) {
+                                return response.json().then((data) => errorCallback(data));
+                            } else {
+                                return response.json().then((data) => vwo.giveError(data));
+                            }
+                            return;
+                        }
+                        return response.json();
+                    })
+                    .then((data) => callback(data))
+                    .catch((error) => {
+                        if (errorCallback) {
+                            errorCallback(error);
+                        } else {
+                            vwo.giveError(error);
+                        }
+                    });
             },
             get: function (url, data, callback, errorCallback) {
                 const query = [];
@@ -267,7 +273,7 @@ const vwo = function () {
                     }
 
                     const callbackFn = function (data) {
-                        contentItemsJson = JSON.parse(data) || [];
+                        contentItemsJson = data || [];
                         resolve();
                     };
 
@@ -286,7 +292,7 @@ const vwo = function () {
                         errorCallback();
                         return;
                     }
-                    listCampaignsCallback(JSON.parse(data).campaigns);
+                    listCampaignsCallback(data.campaigns);
                 };
 
                 const params = {}
@@ -296,8 +302,8 @@ const vwo = function () {
 
             getCampaignDetails: function (campaignId, getCampaignDetailsCallback, errorCallback) {
                 const callback = function (data) {
-                    if(data != null && data.length > 0) {
-                        getCampaignDetailsCallback(JSON.parse(data).campaign);
+                    if (!!data && !!data.campaign) {
+                        getCampaignDetailsCallback(data.campaign);
                     } else {
                         errorCallback();
                     }
@@ -312,8 +318,8 @@ const vwo = function () {
 
             updateCampaignStatus: function (campaignId, status, updateCampaignStatusCallback, errorCallback) {
                 const callback = function (data) {
-                    if(data != null && data.length > 0) {
-                        updateCampaignStatusCallback(JSON.parse(data).result, (status == "TRASHED") ? status : null);
+                    if (!!data && !!data.result) {
+                        updateCampaignStatusCallback(data.result, (status == "TRASHED") ? status : null);
 
                         if (status == "TRASHED" && $("#campaigns-list-content").html() == '') {
                             $("#campaigns-list").addClass("empty");
@@ -347,8 +353,8 @@ const vwo = function () {
 
             createNewCampaign: function (newCampaignParamsObject, createCampaignCallback, errorCallback) {
                 const callback = function (data) {
-                    if(data != null && data.length > 0) {
-                        createCampaignCallback(JSON.parse(data).result);
+                    if (!!data && !!data.result) {
+                        createCampaignCallback(data.result);
                     } else {
                         errorCallback();
                     }
@@ -594,9 +600,9 @@ const vwo = function () {
                 const campaignDetailsHtml = templateHelper.makeCampaignDetailsShortcut(campaignDetails),
                     campaignElem = document.getElementById('vwo-campaign-' + campaignId);
 
-                $('.open-campaign-in-vwo-btn').click(() => vwo.openCampaignPage(campaignDetails.id));
-
                 campaignElem.insertAdjacentHTML('beforeend', campaignDetailsHtml);
+
+                $('.open-campaign-in-vwo-btn').click(() => vwo.openCampaignPage(campaignDetails.id));
 
                 campaignDetailsStore[campaignId] = 1;
                 handleUpdateButtonsClick(campaignId);
@@ -666,7 +672,7 @@ const vwo = function () {
             if (status.toLowerCase() == "trashed") {
                 elem = document.getElementById("vwo-campaign-" + id);
                 elem.parentNode.removeChild(elem);
-                
+
                 return;
             }
 
@@ -709,7 +715,7 @@ const vwo = function () {
 
         fetchConfig: function(configServiceUrl) {
             return new Promise(function(resolve, reject) {
-                http.get(configServiceUrl, {}, (config) => resolve(JSON.parse(config)), () => reject());
+                http.get(configServiceUrl, {}, (config) => resolve(config), () => reject());
             });
         },
 

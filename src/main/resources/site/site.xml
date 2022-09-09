@@ -13,7 +13,7 @@
       <occurrences minimum="0" maximum="1"/>
     </input>
   </form>
-  <filters>
+  <processors>
     <response-processor name="vwo-campaign" order="10"/>
-  </filters>
+  </processors>
 </site>
