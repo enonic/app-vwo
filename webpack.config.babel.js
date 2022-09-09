@@ -8,7 +8,6 @@ const SRC_DIR = 'src/main/resources';
 
 module.exports = {
     context: path.join(__dirname, '/src/main/resources/assets'),
-    externals: [/\/lib\/(http-client)/],
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? false : 'source-map',
     entry: {
