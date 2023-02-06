@@ -49,6 +49,6 @@
   },
   "dependencies": {
     "jquery": "^3.6.3",
-    "toast-me": "^1.4.8"
+    "toast-me": "^1.4.14"
   }
 }
