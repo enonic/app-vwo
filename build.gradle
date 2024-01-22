@@ -19,7 +19,7 @@ node {
 }
 
 dependencies {
-    compile "com.enonic.xp:jaxrs-api:${xpVersion}"
+    implementation "com.enonic.xp:jaxrs-api:${xpVersion}"
     include "com.enonic.xp:lib-content:${xpVersion}"
     include "com.enonic.xp:lib-context:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
