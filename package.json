@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/enonic/app-vwo#readme",
   "devDependencies": {
-    "@babel/core": "^7.24.6",
+    "@babel/core": "^7.24.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/plugin-transform-object-assign": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
