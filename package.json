@@ -27,7 +27,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/plugin-transform-object-assign": "^7.27.1",
     "@babel/preset-env": "^7.28.0",
-    "@babel/register": "^7.27.1",
+    "@babel/register": "^7.28.3",
     "autoprefixer": "^10.4.21",
     "babel-loader": "^10.0.0",
     "babel-plugin-array-includes": "^2.0.3",
