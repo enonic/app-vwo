@@ -33,7 +33,7 @@
     "babel-plugin-array-includes": "^2.0.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^7.1.2",
-    "cssnano": "^7.1.0",
+    "cssnano": "^7.1.1",
     "file-loader": "^6.2.0",
     "less": "^4.4.0",
     "less-loader": "^12.3.0",
