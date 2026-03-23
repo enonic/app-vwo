@@ -45,7 +45,7 @@
     "prettier": "^3.8.1",
     "style-loader": "^4.0.0",
     "webpack": "^5.105.4",
-    "webpack-cli": "^7.0.0"
+    "webpack-cli": "^7.0.2"
   },
   "dependencies": {
     "jquery": "^4.0.0",
