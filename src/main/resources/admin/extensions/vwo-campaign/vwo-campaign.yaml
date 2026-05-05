@@ -1,0 +1,5 @@
+kind: "AdminExtension"
+title: "VWO"
+description: "Tweak, optimize and personalize your website"
+interfaces:
+  - "contentstudio.contextpanel"
