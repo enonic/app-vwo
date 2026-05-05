@@ -1,16 +1,8 @@
 plugins {
     id 'maven-publish'
     id "com.github.node-gradle.node" version '7.1.0'
-    id 'com.enonic.xp.app' version '3.6.2'
+    id 'com.enonic.xp.app'
     id 'com.enonic.defaults' version '2.1.6'
-}
-
-app {
-    name = project.appName
-    displayName = 'VWO'
-    vendorName = 'Enonic AS'
-    vendorUrl = 'https://enonic.com'
-    systemVersion = "${xpVersion}"
 }
 
 node {
@@ -19,10 +11,10 @@ node {
 }
 
 dependencies {
-    implementation "com.enonic.xp:jaxrs-api:${xpVersion}"
-    include "com.enonic.xp:lib-content:${xpVersion}"
-    include "com.enonic.xp:lib-context:${xpVersion}"
-    include "com.enonic.xp:lib-portal:${xpVersion}"
+    implementation xplibs.api.jaxrs
+    include xplibs.content
+    include xplibs.context
+    include xplibs.portal
     include "com.enonic.lib:lib-mustache:2.1.1"
     include 'com.fasterxml.jackson.core:jackson-databind:2.21.3'
     include 'org.apache.httpcomponents:httpclient:4.5.14'
@@ -30,7 +22,7 @@ dependencies {
 
 repositories {
     mavenCentral()
-    xp.enonicRepo()
+    xp.enonicRepo( 'dev' )
 }
 
 task webpack(

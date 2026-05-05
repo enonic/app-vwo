@@ -1,0 +1,5 @@
+kind: "Application"
+title: "VWO"
+description: "Experimentation platform to run A/B tests on your websites, apps, and products"
+vendorName: "Enonic AS"
+vendorUrl: "https://enonic.com"
