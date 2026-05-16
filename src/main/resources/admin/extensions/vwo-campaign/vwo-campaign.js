@@ -1,8 +1,12 @@
 const portalLib = require('/lib/xp/portal');
 const mustacheLib = require('/lib/mustache');
+const staticLib = require('/lib/enonic/static');
 const helper = require('/helper/helper');
+const router = require('/lib/router')();
 
-function handleGet(req) {
+const STATIC_BASE_PATH = '/_static';
+
+router.get('', function (req) {
     let contentId = req.params.contentId;
 
     if (!contentId && portalLib.getContent()) {
@@ -16,13 +20,14 @@ function handleGet(req) {
         };
     }
 
+    const baseAssetUrl = req.contextPath + STATIC_BASE_PATH;
     const errorMessage = helper.validate(contentId);
 
     if (errorMessage) {
         return {
             contentType: 'text/html',
             body: mustacheLib.render(resolve('vwo-error.html'), {
-                vwoCssUrl: portalLib.assetUrl({path: 'css/bundle.css'}),
+                vwoCssUrl: baseAssetUrl + '/css/bundle.css',
                 widgetId: app.name,
                 errorMessage
             })
@@ -32,8 +37,8 @@ function handleGet(req) {
     const contentProperties = helper.getContentProperties(contentId);
 
     const params = {
-        vwoCssUrl: portalLib.assetUrl({path: 'css/bundle.css'}),
-        vwoJsUrl: portalLib.assetUrl({path: 'js/bundle.js'}),
+        vwoCssUrl: baseAssetUrl + '/css/bundle.css',
+        vwoJsUrl: baseAssetUrl + '/js/bundle.js',
         configServiceUrl: portalLib.serviceUrl({
             service: 'config',
             params: {
@@ -51,6 +56,16 @@ function handleGet(req) {
         contentType: 'text/html',
         body: mustacheLib.render(view, params)
     };
-}
+});
 
-exports.get = handleGet;
+router.get(STATIC_BASE_PATH + '/{path:.*}', function (req) {
+    return staticLib.requestHandler(req, {
+        index: false,
+        root: '/assets',
+        relativePath: staticLib.mappedRelativePath(STATIC_BASE_PATH)
+    });
+});
+
+exports.all = function (req) {
+    return router.dispatch(req);
+};
