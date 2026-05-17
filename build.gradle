@@ -16,8 +16,8 @@ dependencies {
     include xplibs.context
     include xplibs.portal
     include libs.lib.mustache
-    include "com.enonic.lib:lib-static:3.0.0-SNAPSHOT"
-    include "com.enonic.lib:lib-router:4.0.0-SNAPSHOT"
+    include libs.lib.static
+    include libs.lib.router
     include libs.jackson.databind
     include libs.httpclient
 }
