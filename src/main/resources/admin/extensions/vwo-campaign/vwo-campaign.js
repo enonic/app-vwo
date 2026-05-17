@@ -62,10 +62,10 @@ router.get(STATIC_BASE_PATH + '/{path:.*}', function (req) {
     return staticLib.requestHandler(req, {
         index: false,
         root: '/assets',
-        relativePath: staticLib.mappedRelativePath(STATIC_BASE_PATH)
+        relativePath: function (r) { return r.pathParams.path; }
     });
 });
 
-exports.all = function (req) {
+exports.GET = function (req) {
     return router.dispatch(req);
 };
