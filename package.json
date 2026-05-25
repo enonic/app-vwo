@@ -36,7 +36,7 @@
     "cssnano": "^8.0.1",
     "file-loader": "^6.2.0",
     "less": "^4.6.4",
-    "less-loader": "^12.3.2",
+    "less-loader": "^13.0.0",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss": "^8.5.14",
     "postcss-loader": "^8.2.1",
