@@ -42,7 +42,7 @@
     "postcss-loader": "^8.2.1",
     "postcss-normalize": "^13.0.1",
     "postcss-sort-media-queries": "^6.7.1",
-    "prettier": "^3.9.5",
+    "prettier": "^3.9.6",
     "style-loader": "^4.0.0",
     "webpack": "^5.109.0",
     "webpack-cli": "^7.2.1"
